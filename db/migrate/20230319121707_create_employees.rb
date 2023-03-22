@@ -3,7 +3,7 @@ class CreateEmployees < ActiveRecord::Migration[7.0]
     create_table :employees do |t|
       t.string :name
       t.string :email
-      t.string :password_digest
+      t.string :password
       t.boolean :is_admin
 
       t.timestamps

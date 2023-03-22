@@ -42,7 +42,26 @@ Employee.create(
     is_admin: true
 )
 
+Employee.create(
+    name: "Jennifer Walker",
+    email: "jennifer@email.com",
+    password: "test12345",
+    is_admin: false
+)
 
+Employee.create(
+    name: "Tyler Clark",
+    email: "Tyler@email.com",
+    password: "test12345",
+    is_admin: true
+)
+
+Employee.create(
+    name: "Kris Johnson",
+    email: "kris@email.com",
+    password: "test12345",
+    is_admin: true
+)
 
 
 Product.create(
