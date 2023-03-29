@@ -17,50 +17,43 @@ Product.destroy_all
 Employee.create(
     name: "Allen Carrera",
     email: "allen@email.com",
-    password: "test123",
-    is_admin: true
+    password: "test123"
 )
 
 Employee.create(
     name: "John Smith",
     email: "test@email.com",
-    password: "test12345",
-    is_admin: false
+    password: "test12345"
 )
 
 Employee.create(
     name: "Justin Gaethje",
     email: "justin@email.com",
-    password: "justin123",
-    is_admin: true
+    password: "justin123"
 )
 
 Employee.create(
     name: "Jon Snow",
     email: "john@email.com",
-    password: "snow123",
-    is_admin: true
+    password: "snow123"
 )
 
 Employee.create(
     name: "Jennifer Walker",
     email: "jennifer@email.com",
-    password: "test12345",
-    is_admin: false
+    password: "test12345"
 )
 
 Employee.create(
     name: "Tyler Clark",
     email: "Tyler@email.com",
-    password: "test12345",
-    is_admin: true
+    password: "test12345"
 )
 
 Employee.create(
     name: "Kris Johnson",
     email: "kris@email.com",
-    password: "test12345",
-    is_admin: true
+    password: "test12345"
 )
 
 
@@ -166,8 +159,8 @@ Product.create(
     )
 end
 
-10.times do
-    Invoice.create(
+40.times do
+    Invoice.create!(
         employee_id: Employee.all.sample.id,
         product_id: Product.all.sample.id, 
         client_id: Client.all.sample.id,

@@ -13,10 +13,9 @@ class InvoicesController < ApplicationController
         invoice = Invoice.create!(invoice_params)
         render json: invoice, status: :created
     end
-
   
     private
     def invoice_params
-        params.permit(:employee_id, :product_id, :client_id, :charge)
+        params.permit(:employee_id,:client_id, :charge, :product_id)
     end
 end

@@ -9,11 +9,11 @@ export default function InvoiceList({invoiceList}){
     return(
         <div >
             <Header/>
-            <div class="row row-cols-5 g-3" >
+            <br/>
+            <div class="row row-cols-4 g-5" >
                 {invoiceList.map(invoice=>(
                     <Invoice invoice={invoice}/>
                 ))}
-                
             </div>
         </div>
     )
