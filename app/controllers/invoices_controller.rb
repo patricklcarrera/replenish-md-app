@@ -1,4 +1,5 @@
 class InvoicesController < ApplicationController
+    skip_before_action :authorized_employee
     def index 
         invoices = Invoice.all 
         render json: invoices, status: :ok
@@ -16,6 +17,6 @@ class InvoicesController < ApplicationController
   
     private
     def invoice_params
-        params.permit(:employee_id,:client_id, :charge, :product_id)
+        params.permit(:employee_id, :client_id, :product_id, :charge)
     end
 end

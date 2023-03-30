@@ -7,16 +7,16 @@ import Form from "react-bootstrap/Form";
 import Search from './Search'
 
 
-export default function ProductList({filteredProducts, productList, onDeleteProduct, changeSearch, searchTerm}){
+export default function ProductList({filteredProducts, productList, onDeleteProduct, changeSearch, searchTerm ,onSave}){
 
 
     return(
         <div >
             <Header/>
             <br/>
-            <Search
+            {/* <Search
                 searchTerm = {searchTerm}
-                changeSearch= {changeSearch}/>
+                changeSearch= {changeSearch}/> */}
                 <br/>
             <div class="col-md-12 text-center">
             <a href='/addproduct'type="button" class="btn btn-primary">Add product</a>
@@ -24,7 +24,7 @@ export default function ProductList({filteredProducts, productList, onDeleteProd
         <br></br>
             <div class="row row-cols-4 g-5" >
                 {productList.map(product=>(
-                    <Product product={product} onDeleteProduct={onDeleteProduct}/>
+                    <Product product={product} onSave={onSave}onDeleteProduct={onDeleteProduct}/>
                 ))}
                 
             </div>

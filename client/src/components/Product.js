@@ -3,8 +3,37 @@ import {Button , Card, Form} from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
-export default function Employee({product, onDeleteProduct}){
+export default function Employee({product, onDeleteProduct, onSave}){
    const {id} = product
+
+   const [name, setName] = useState(product.name);
+   const [productType, setProductType] = useState(product.product_type);
+   const [costPrice, setCostPrice] = useState(product.cost_price);
+   const [retailPrice, setRetailPrice] = useState(product.retail_price);
+
+
+   const handleSave = async () => {
+      const updatedProduct = {
+        ...product,
+        name,
+        product_type: productType,
+        cost_price: costPrice,
+        retail_price: retailPrice,
+      };
+      const response = await fetch(`/updateproduct/${product.id}`, {
+         method: 'PATCH',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(updatedProduct),
+       });
+   
+       if (!response.ok) {
+         const errorMessage = `Failed to update product  `;
+         console.error(errorMessage);
+         return;
+       }
+   
+       onSave(updatedProduct);
+     };
 
    const updatePopover = (
       <Popover id="popover-basic">
@@ -13,38 +42,22 @@ export default function Employee({product, onDeleteProduct}){
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
             <Form.Control
-               type="text"
-               placeholder="Edit Name"
-               name="name"
-               // value={edit?.comment}
-               // onChange={handleChange}
+                  type="text" value={name} onChange={(e) => setName(e.target.value)}
             />
-             <Form.Label>Retail Price</Form.Label>
+             <Form.Label>Product Type</Form.Label>
             <Form.Control
-               type="text"
-               placeholder="Product Type"
-               name="product_type"
-               // value={edit?.comment}
-               // onChange={handleChange}
+               type="text" value={productType} onChange={(e) => setProductType(e.target.value)}
             />
             <Form.Label>Cost Price</Form.Label>
             <Form.Control
-               type="integer"
-               placeholder="$ Edit Price"
-               name="cost_price"
-               // value={edit?.comment}
-               // onChange={handleChange}
+               type="number" value={costPrice} onChange={(e) => setCostPrice(parseFloat(e.target.value))}
             />
             <Form.Label>Retail Price</Form.Label>
             <Form.Control
-               type="integer"
-               placeholder="$ Retail Price"
-               name="retail_price"
-               // value={edit?.comment}
-               // onChange={handleChange}
+              type="number" value={retailPrice} onChange={(e) => setRetailPrice(parseFloat(e.target.value))}
             />
             <br></br>
-            <Button>Done editing</Button>
+            <Button onClick={handleSave}>Save your changes</Button>
             
           </Form.Group>
         </Popover.Body>

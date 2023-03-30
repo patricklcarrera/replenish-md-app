@@ -21,17 +21,6 @@ function App() {
   const [searchTerm, setSearch] = useState("")
   const [employee, setEmployee] = useState(null)
 
-  // useEffect(()=> {
-  //   fetch('/authorized')
-  //   .then(res =>{
-  //     if(res.ok){
-  //       res.json().then(employee => setEmployee(employee))
-  //     } else{
-  //       setEmployee(null)
-  //     }
-  //   })
-  // },[])
-
   useEffect(()=> {
     fetch("/employees")
     .then(r => r.json())
@@ -54,7 +43,7 @@ function App() {
   useEffect(() => {
     fetch("/myprofile").then((res) => {
       if (res.ok) {
-        res.json().then((user) => setEmployee(employee));
+        res.json().then((employee) => setEmployee(employee));
       } else {
         setEmployee(null)
       }
@@ -88,9 +77,12 @@ function App() {
   const changeSearch = (value) => {
     setSearch(value)
   }
+  const handleProductSave = (updatedProduct) => {
+    const updatedProducts = productList.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
+    setProductList(updatedProducts);
+  };
 
   // const filteredProducts = productList.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
-console.log(employeeList)
 
 
   return (
@@ -106,7 +98,8 @@ console.log(employeeList)
       <Route path='/invoicelist'
       element={<InvoiceList invoiceList={invoiceList}/>}/>
       <Route path='/products'
-      element={<ProductList productList={productList}
+      element={<ProductList onSave={handleProductSave}
+      productList={productList}
       onDeleteProduct={onDeleteProduct}
       searchTerm={searchTerm}
       changeSearch={changeSearch}/>}/>

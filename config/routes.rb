@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   get '/products', to: 'product#index'
   get '/greeting/:name', to: 'employees#name'
   delete '/logout', to: 'sessions#destroy'
-  patch '/api/product/:id', to: 'product#update_product'
+  patch '/updateproduct/:id', to: 'products#update'
   post '/products/new', to: 'product#create'
   post '/invoices/new', to: 'invoices#create'
   post '/employees/new', to: 'employees#create'

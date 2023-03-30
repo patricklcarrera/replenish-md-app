@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+    skip_before_action :authorized_employee
     before_action :set_access_control_headers
     def index 
         products = Product.all 
@@ -13,7 +14,7 @@ class ProductsController < ApplicationController
         product = Product.create!(product_params)
         render json: product, status: :created
     end
-    def update_product
+    def update
         product = Product.find(params[:id])
         product.update!(product_params)
         render json: product

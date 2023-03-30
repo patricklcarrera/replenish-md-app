@@ -23,8 +23,9 @@ function UserPage(){
        
     },[])
 
-    if(loading) return <h1>Loading</h1>
+    if(loading) return <h1>Waaaaaait</h1>
     if(errors) return <h1>{errors}</h1>
+
 
 
     return (
@@ -39,11 +40,23 @@ function UserPage(){
                 {employee.invoices.map(invoice => (
                 <div className="bg-blue-100 p-4 rounded-lg shadow-lg">
                 <h2 className="text-blue-800 text-xl font-bold mb-2">Invoice ID: {invoice.id}</h2>
+                
+                
                 {/* <p className="text-blue-700">Client name: {invoice.employee.name}</p>
                 <p className="text-blue-700">Product: {invoice.product_id}</p> */}
                 <p className="text-blue-700">Charge: {invoice.charge}</p>
+                <p className="text-blue-700">Product name: {invoice.product_name}</p>
+                <p className="text-blue-700">Client name: {invoice.client_name}</p>
+            
+
            </div>
                 ))}
+                <div className="bg-blue-100 p-4 rounded-lg shadow-lg">
+                <h2 className="text-blue-800 text-xl font-bold mb-2">Invoice ID: 46</h2>
+                    <p className="text-blue-700">Charge: 123</p>
+                    <p className="text-blue-700">Product name: Test product name</p>
+                    <p className="text-blue-700">Client name: Test client name</p>
+            </div>
             </ul>
         </div>
     )
