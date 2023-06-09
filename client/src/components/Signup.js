@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
+import Header from './Header'
 import { Form } from 'react-bootstrap'
 
 export default function SignUp() {
@@ -34,27 +35,29 @@ export default function SignUp() {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
       }
+      
     return (
         <> 
-        <h1>Signup Here</h1>
-        <Form onSubmit={onSubmit}>
-        <label>
+        <Header/>
+        <h1 align="center">Create an account</h1>
+        <form onSubmit={onSubmit} className="max-w-md mx-auto p-4 bg-blue-100 rounded-lg shadow-md">
+        <label htmlFor="username" className="block text-base font-medium text-blue-800">
           Username
           </label>  
           <input type='text' name='name' value={name} onChange={handleChange} />
        
-        <label>
+          <label htmlFor="" className="block text-base font-medium text-blue-800">
          Email
          </label>
         <input type='text' name='email' value={email} onChange={handleChange} />
        
-        <label>
+        <label htmlFor="password" className="block text-base font-medium text-blue-800">
          Password
          </label>
         <input type='password' name='password' value={password} onChange={handleChange} />
         {/* <input href='/' type='submit' value='Sign up' /> */}
-        <a href='/'><button type='submit' value='Sign up'>Sign up</button></a>
-      </Form>
+        <a href='/'><button type='submit' className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400" value='Sign up'>Sign up</button></a>
+      </form>
         </>
     )
 }
