@@ -18,6 +18,7 @@ export default function Invoice({invoice}){
  </div>
 
    return (
+      <>
     <div>
        {/* <Card>
             <p>Employee: {invoice.employee.name}</p>
@@ -27,5 +28,6 @@ export default function Invoice({invoice}){
        </Card> */}
        {tailwindInvoiceCard}
     </div>
+    </>
    )
 }

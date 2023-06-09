@@ -10,10 +10,13 @@ export default function InvoiceList({invoiceList}){
         <div >
             <Header/>
             <br/>
-            <div class="row row-cols-4 g-5" >
+            <div class="row row-cols-4 g-3" >
                 {invoiceList.map(invoice=>(
                     <Invoice invoice={invoice}/>
                 ))}
+                <div className="bg-blue-100 p-4 rounded-lg shadow-md">
+ </div>
+
             </div>
         </div>
     )

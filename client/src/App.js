@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Switch , Route, Routes } from "react-router-dom";
 import Login from './components/Login';
 import AddInvoice from './components/AddInvoice';
+import AddInvoices from './components/AddInvoices';
 import InvoiceList from './components/InvoiceList';
 import ProductList from './components/ProductList';
 import Signup from './components/Signup';
@@ -29,6 +30,8 @@ function App() {
     })
   }, [])
 
+
+  console.log(employeeList)
   
   useEffect(()=> {
     fetch("/invoices")
@@ -104,7 +107,8 @@ function App() {
       searchTerm={searchTerm}
       changeSearch={changeSearch}/>}/>
       <Route path='/addinvoice'
-      element={<AddInvoice addInvoice={addInvoice} />}/>
+      element={<AddInvoices addInvoice={addInvoice}
+      productList={productList} />}/>
       <Route path='/signup'
       element={<Signup/>}/>
        <Route path='/myprofile'

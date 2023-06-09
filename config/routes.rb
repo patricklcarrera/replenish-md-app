@@ -16,5 +16,6 @@ Rails.application.routes.draw do
   post '/invoices/new', to: 'invoices#create'
   post '/employees/new', to: 'employees#create'
   post '/login', to: 'sessions#create'
+  get '/clients', to: 'clients#index'
   delete '/products', to: 'product#destroy'
 end
