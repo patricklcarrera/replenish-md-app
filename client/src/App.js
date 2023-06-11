@@ -20,7 +20,8 @@ function App() {
   const [invoiceList, setInvoiceList] = useState();
   const [productList, setProductList] = useState();
   const [searchTerm, setSearch] = useState("")
-  const [employee, setEmployee] = useState(null)
+  const [userProfile, setUserProfile] = useState(null);
+  const [clientsList, setClientsList] = useState();
 
   useEffect(()=> {
     fetch("/employees")
@@ -31,7 +32,7 @@ function App() {
   }, [])
 
 
-  console.log(employeeList)
+  // console.log(employeeList)
   
   useEffect(()=> {
     fetch("/invoices")
@@ -41,19 +42,26 @@ function App() {
     })
   }, [])
 
+  useEffect(()=> {
+    fetch("/clients")
+        .then(r => r.json())
+        .then(data => {
+          setClientsList(data)
+        })
+  }, [])
+
   const [errors, setErrors] = useState(null)
 
   useEffect(() => {
-    fetch("/myprofile").then((res) => {
+    fetch(`/employees/myprofile`).then((res) => {
       if (res.ok) {
-        res.json().then((employee) => setEmployee(employee));
+        res.json().then((userProfile) => setUserProfile(userProfile));
       } else {
-        setEmployee(null)
+        setUserProfile(null)
       }
     });
   }, []);
-
-  const updateEmployee = (employee) => setEmployee(employee)
+  const updateEmployee = (employee) => setUserProfile(employee)
 
   useEffect(()=> {
     fetch("/products")
@@ -107,8 +115,8 @@ function App() {
       searchTerm={searchTerm}
       changeSearch={changeSearch}/>}/>
       <Route path='/addinvoice'
-      element={<AddInvoices addInvoice={addInvoice}
-      productList={productList} />}/>
+      element={<AddInvoices
+      productList={productList} clientsList = {clientsList} userProfile = {userProfile}/>}/>
       <Route path='/signup'
       element={<Signup/>}/>
        <Route path='/myprofile'
