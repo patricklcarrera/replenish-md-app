@@ -1,31 +1,27 @@
 import React, { useState} from 'react';
 import {Button , Card, Form} from 'react-bootstrap';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Popover from 'react-bootstrap/Popover';
-import InvoiceList from './InvoiceList';
-
+import CustomModal from "./CustomModal";
 export default function Invoice({invoice}){
-
-   console.log(invoice)
-
-   const tailwindInvoiceCard =  
-   <div className="bg-blue-100 p-4 rounded-lg shadow-md">
-      <h2 className="text-blue-800 text-xl font-bold mb-2">Invoice id {invoice.id}</h2>
-      <p className="text-blue-700">Employee: {invoice.employee.name}</p>
-      <p className="text-blue-700">Product: {invoice.product.name}</p>
-      <p className="text-blue-700">Client: {invoice.client.name}</p>
-      <p className="text-blue-700">Charge: ${invoice.charge}</p>
- </div>
-
+    const [modalShow, setModalShow] = useState(false);
+    function handleClick () {
+        setModalShow(!modalShow)
+    }
+   const tailwindInvoiceCard =
+       <Card className='text-center' border="info" style={{ width: '18rem' }}>
+           <Card.Header as="h5">Invoice Id {invoice.id}</Card.Header>
+           <Card.Body className=''>
+               <Card.Title className='mb-3'>Employee: {invoice.employee.name}</Card.Title>
+               <Button onClick={handleClick} variant="info">See More Details</Button>
+               <CustomModal
+                   show={modalShow}
+                   onHide={handleClick}
+                   invoiceData={invoice}
+               />
+           </Card.Body>
+       </Card>
    return (
       <>
-    <div>
-       {/* <Card>
-            <p>Employee: {invoice.employee.name}</p>
-            <p>Product: {invoice.product.name}</p>
-            <p>Client: {invoice.client.name}</p>
-            <p>Charge: ${invoice.charge}</p>
-       </Card> */}
+    <div className='p-4'>
        {tailwindInvoiceCard}
     </div>
     </>
