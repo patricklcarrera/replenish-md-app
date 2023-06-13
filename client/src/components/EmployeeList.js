@@ -1,19 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Employee from './Employee'
 import Header from './Header';
-import Invoice from './Invoice';
+export default function EmployeeList(){
+    const [invoiceList, setInvoiceList] = useState([]);
+    const [employeeList, setEmployeeList] = useState([]);
 
+    useEffect(() => {
+        // Fetch the invoice list from the API
+        fetch('/invoices')
+            .then((response) => response.json())
+            .then((data) => {
+                setInvoiceList(data); // Update the state with the fetched data
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        // Fetch the employee list from the API
+        fetch('/employees')
+            .then((response) => response.json())
+            .then((data) => {
+                setEmployeeList(data); // Update the state with the fetched data
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
-
-export default function EmployeeList({employeeList,invoiceList}){
-
+    }, []); // Empty dependency array to run the effect only once
     return(
         <div>
             <Header/>
-            <br/>
-            <div class="row row-cols-3 g-5">
+            <div className="mt-3 mx-1 row row-cols-4 g-3">
                 {employeeList.map(employee=>(
-                    //filter through invoice list by employee id and pass down
                     <Employee employee={employee}
                     invoiceList={invoiceList}/>
                 ))}

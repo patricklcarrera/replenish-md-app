@@ -13,6 +13,9 @@ import MyProfile from "./components/MyProfile";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AddProduct from "./components/AddProduct";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 function App() {
@@ -69,7 +72,7 @@ function App() {
     .then(data => {
       setProductList(data)
     })
-  }, [])
+  }, []);
 
   const addProduct = (newProduct) => {
     const updatedProducts = [...productList, newProduct];
@@ -105,7 +108,7 @@ function App() {
        <Route path='/addproduct'
       element={<AddProduct addProduct={addProduct}/>}/>
       <Route path='/employees'
-      element={<EmployeeList employeeList={employeeList} invoiceList={invoiceList}/>}/>
+      element={<EmployeeList/>}/>
       <Route path='/invoicelist'
       element={<InvoiceList invoiceList={invoiceList}/>}/>
       <Route path='/products'
@@ -123,6 +126,7 @@ function App() {
       element={<MyProfile />}/>
       
     </Routes>
+    <ToastContainer position='top-center'/>
   </BrowserRouter>
  </div>
   );
