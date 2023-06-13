@@ -81,14 +81,17 @@ export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
      <p className="text-blue-700">Product Type: {product.product_type}</p>
      <p className="text-blue-700">Cost Price: ${product.cost_price}</p>
      <p className="text-blue-700">Retail Price: ${product.retail_price}</p>
-      {isAdmin?.is_admin && (
-          <div>
-     <button onClick={handleDelete} className="bg-blue-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-4">Remove Product</button>
+      {isAdmin && isAdmin ? (
+          <div >
+     <button onClick={handleDelete} className="bg-blue-500 hover:bg-red-400 text-white  py-2 px-4 rounded mt-2">Remove Product</button>
      <OverlayTrigger trigger="click" placement="right" overlay={updatePopover}>
-     <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">Update Product</button>
+     <button className="bg-blue-500 hover:bg-red-400 text-white  py-2 px-4 rounded mt-2">Update Product</button>
      </OverlayTrigger>
           </div>
-)}
+)
+          :
+          (<></>)
+      }
 </div>
   
    return (
