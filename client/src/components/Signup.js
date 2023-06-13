@@ -11,7 +11,7 @@ const formInitialState = {
     is_admin: false
 };
 
-export default function SignUp() {
+export default function SignUp({userProfile}) {
     const [formData, setFormData] = useState(formInitialState);
     const { name, email, password, is_admin } = formData;
 
@@ -36,8 +36,6 @@ export default function SignUp() {
                         body: JSON.stringify(employee)
                     }).then((res) => {
                         if (res.ok) {
-                            console.log(formData);
-                            console.log(employee)
                             setFormData(formInitialState);
                             toast.success('User created successfully');
                         } else {
@@ -90,7 +88,7 @@ export default function SignUp() {
 
     return (
         <>
-            <Header />
+            <Header  userProfile={userProfile}/>
             <h3 className="text-center text-3xl font-semibold my-3">Create an account</h3>
             <form
                 onSubmit={onSubmit}

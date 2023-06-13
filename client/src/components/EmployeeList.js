@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Employee from './Employee'
 import Header from './Header';
-export default function EmployeeList(){
+export default function EmployeeList({userProfile}){
     const [invoiceList, setInvoiceList] = useState([]);
     const [employeeList, setEmployeeList] = useState([]);
 
@@ -28,8 +28,8 @@ export default function EmployeeList(){
     }, []); // Empty dependency array to run the effect only once
     return(
         <div>
-            <Header/>
-            <div className="mt-3 mx-1 row row-cols-4 g-3">
+            <Header userProfile={userProfile}/>
+            <div className="mt-3 mb-3 mx-1 row row-cols-4 g-3">
                 {employeeList.map(employee=>(
                     <Employee employee={employee}
                     invoiceList={invoiceList}/>

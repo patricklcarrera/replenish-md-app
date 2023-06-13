@@ -3,13 +3,15 @@ import {Button , Card, Form} from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 
-export default function Employee({product, onDeleteProduct, onSave}){
+export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
    const {id} = product
 
    const [name, setName] = useState(product.name);
    const [productType, setProductType] = useState(product.product_type);
    const [costPrice, setCostPrice] = useState(product.cost_price);
    const [retailPrice, setRetailPrice] = useState(product.retail_price);
+
+    const [userProfile, setUserProfile] = useState(null);
 
 
    const handleSave = async () => {
@@ -79,10 +81,14 @@ export default function Employee({product, onDeleteProduct, onSave}){
      <p className="text-blue-700">Product Type: {product.product_type}</p>
      <p className="text-blue-700">Cost Price: ${product.cost_price}</p>
      <p className="text-blue-700">Retail Price: ${product.retail_price}</p>
+      {isAdmin?.is_admin && (
+          <div>
      <button onClick={handleDelete} className="bg-blue-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-4">Remove Product</button>
      <OverlayTrigger trigger="click" placement="right" overlay={updatePopover}>
      <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">Update Product</button>
      </OverlayTrigger>
+          </div>
+)}
 </div>
   
    return (

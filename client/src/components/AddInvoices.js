@@ -19,7 +19,7 @@ const initialFormState = {
     retailProducts:[],
     //Client States
     client:{name:"", id:null},
-    }
+}
 export default function AddInvoices(props) {
     const { productList, clientsList, userProfile } = props
     const [formData, setFormData] = useState(initialFormState);
@@ -166,7 +166,7 @@ export default function AddInvoices(props) {
         if (selectedProduct) {
             setCurrentProduct({ name: '', price: 0, quantity: 1 });
             let productToBeAdded =
-            {...selectedProduct, quantity: currentProduct.quantity,}
+                {...selectedProduct, quantity: currentProduct.quantity,}
             console.log("productToBeAdded",productToBeAdded)
             setSelectedProduct(null);
             setFormData((prevFormData) => ({
@@ -279,11 +279,11 @@ export default function AddInvoices(props) {
         setCurrentClient({name:""});
         setSelectedClient({name:""});
         setMatchingClients([]);
-        };
+    };
 
     return (
         <div>
-            <Header/>
+            <Header userProfile={userProfile}/>
             <div className="bg-blue-200 min-h-screen flex items-center justify-center p-4">
                 <form className="max-w-4xl mx-auto bg-white p-4 rounded-md" onSubmit={handleSubmit}>
                     <div className="border rounded-sm p-2 mb-4 flex justify-content-around">
@@ -327,7 +327,7 @@ export default function AddInvoices(props) {
                         </label>
                     </div>
                     <div
-                         style={{display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px'}}>
+                        style={{display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px'}}>
                         <div>
                             <div className="border rounded-sm p-2 mb-4 w-100">
                                 <label className="mb-2 block">

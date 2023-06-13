@@ -2,7 +2,7 @@ import React, { useEffect, useState} from 'react';
 import Header from './Header';
 import Invoice from './Invoice';
 
-export default function InvoiceList(){
+export default function InvoiceList({userProfile}){
 
     const [invoiceList, setInvoiceList] = useState([]);
 
@@ -20,9 +20,9 @@ export default function InvoiceList(){
 
     return(
         <div >
-            <Header/>
+            <Header userProfile={userProfile}/>
             <br/>
-            <div className="row row-cols-4 g-3" >
+            <div className="row row-cols-4 g-0" >
                 {invoiceList.map(invoice=>(
                     <Invoice invoice={invoice}/>
                 ))}

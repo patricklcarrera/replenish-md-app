@@ -7,24 +7,55 @@ import Form from "react-bootstrap/Form";
 import Search from './Search'
 
 
-export default function ProductList({filteredProducts, productList, onDeleteProduct, changeSearch, searchTerm ,onSave}){
+export default function ProductList({filteredProducts, onDeleteProduct, changeSearch, searchTerm ,onSave, userProfile}){
 
+    const [productList, setProductList] = useState([]);
+    // const [userProfile, setUserProfile] = useState(null);
+
+    useEffect(() => {
+        // Fetch the invoice list from the API
+        fetch('/products')
+            .then((response) => response.json())
+            .then((data) => {
+                setProductList(data); // Update the state with the fetched data
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []); // Empty dependency array to run the effect only once
+    //
+    // useEffect(() => {
+    //     fetch(`/employees/myprofile`).then((res) => {
+    //         if (res.ok) {
+    //             res.json().then((userProfile) => setUserProfile(userProfile));
+    //         } else {
+    //             setUserProfile(null)
+    //         }
+    //     });
+    // }, []);
+
+    // console.log('current user logged in', userProfile);
 
     return(
         <div >
-            <Header/>
+            <Header userProfile={userProfile}/>
             <br/>
             {/* <Search
                 searchTerm = {searchTerm}
                 changeSearch= {changeSearch}/> */}
                 <br/>
             <div class="col-md-12 text-center">
-            <a href='/addproduct'type="button" class="btn btn-primary">Add product</a>
+            {/*<a href='/addproduct'type="button" class="btn btn-primary">Add product</a>*/}
+                {userProfile?.is_admin && (
+                    <div class="col-md-12 text-center">
+                        <a href='/addproduct' type="button" class="btn btn-primary">Add product</a>
+                    </div>
+                )}
         </div>
         <br></br>
             <div class="row row-cols-4 g-5" >
                 {productList.map(product=>(
-                    <Product product={product} onSave={onSave}onDeleteProduct={onDeleteProduct}/>
+                    <Product isAdmin={userProfile?.is_admin} product={product} onSave={onSave}onDeleteProduct={onDeleteProduct}/>
                 ))}
                 
             </div>

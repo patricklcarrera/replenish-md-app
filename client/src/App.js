@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter, Switch , Route, Routes } from "react-router-dom";
+import {useState, useEffect} from "react";
+import {BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
 import Login from './components/Login';
 import AddInvoice from './components/AddInvoice';
 import AddInvoices from './components/AddInvoices';
@@ -13,123 +13,149 @@ import MyProfile from "./components/MyProfile";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AddProduct from "./components/AddProduct";
 
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-
 function App() {
-  const [employeeList, setEmployeeList] = useState();
-  const [invoiceList, setInvoiceList] = useState();
-  const [productList, setProductList] = useState();
-  const [searchTerm, setSearch] = useState("")
-  const [userProfile, setUserProfile] = useState(null);
-  const [clientsList, setClientsList] = useState();
+    const [employeeList, setEmployeeList] = useState();
+    const [invoiceList, setInvoiceList] = useState();
+    const [productList, setProductList] = useState();
+    const [searchTerm, setSearch] = useState("")
+    const [userProfile, setUserProfile] = useState(null);
+    const [clientsList, setClientsList] = useState();
 
-  useEffect(()=> {
-    fetch("/employees")
-    .then(r => r.json())
-    .then(data => {
-      setEmployeeList(data)
-    })
-  }, [])
+    useEffect(() => {
+        fetch("/employees")
+            .then(r => r.json())
+            .then(data => {
+                setEmployeeList(data)
+            })
+    }, [])
 
+    useEffect(() => {
+        fetch("/invoices")
+            .then(r => r.json())
+            .then(data => {
+                setInvoiceList(data)
+            })
+    }, [])
 
-  // console.log(employeeList)
-  
-  useEffect(()=> {
-    fetch("/invoices")
-    .then(r => r.json())
-    .then(data => {
-      setInvoiceList(data)
-    })
-  }, [])
+    useEffect(() => {
+        fetch("/clients")
+            .then(r => r.json())
+            .then(data => {
+                setClientsList(data)
+            })
+    }, [])
 
-  useEffect(()=> {
-    fetch("/clients")
-        .then(r => r.json())
-        .then(data => {
-          setClientsList(data)
-        })
-  }, [])
+    useEffect(() => {
+        fetch(`/employees/myprofile`).then((res) => {
+            if (res.ok) {
+                res.json().then((userProfile) => setUserProfile(userProfile));
+            } else {
+                setUserProfile(null)
+            }
+        });
+    }, []);
+    const updateEmployee = (employee) => setUserProfile(employee)
 
-  const [errors, setErrors] = useState(null)
+    useEffect(() => {
+        fetch("/products")
+            .then(r => r.json())
+            .then(data => {
+                setProductList(data)
+            })
+    }, []);
 
-  useEffect(() => {
-    fetch(`/employees/myprofile`).then((res) => {
-      if (res.ok) {
-        res.json().then((userProfile) => setUserProfile(userProfile));
-      } else {
-        setUserProfile(null)
-      }
-    });
-  }, []);
-  const updateEmployee = (employee) => setUserProfile(employee)
+    const addProduct = (newProduct) => {
+        const updatedProducts = [...productList, newProduct];
+        setProductList(updatedProducts)
+    }
+    const addInvoice = (newInvoice) => {
+        const updatedInvoice = [...invoiceList, newInvoice];
+        setInvoiceList(updatedInvoice)
+    }
 
-  useEffect(()=> {
-    fetch("/products")
-    .then(r => r.json())
-    .then(data => {
-      setProductList(data)
-    })
-  }, []);
+    const onDeleteProduct = (id) => {
+        const updatedProductsList = productList.filter((product) => product.id !== id)
+        setProductList(updatedProductsList)
+    }
 
-  const addProduct = (newProduct) => {
-    const updatedProducts = [...productList, newProduct];
-    setProductList(updatedProducts)
-  }
-  const addInvoice = (newInvoice) => {
-    const updatedInvoice = [...invoiceList, newInvoice];
-    setInvoiceList(updatedInvoice)
-  }
+    const changeSearch = (value) => {
+        setSearch(value)
+    }
+    const handleProductSave = (updatedProduct) => {
+        const updatedProducts = productList.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
+        setProductList(updatedProducts);
+    };
+    return (
+        <div>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/'
+                           element={<Login updateEmployee={updateEmployee}/>}/>
+                    {userProfile && userProfile.is_admin? (
+                        <>
 
-  const onDeleteProduct = (id) => {
-    const updatedProductsList = productList.filter((product) => product.id !== id)
-    setProductList(updatedProductsList)
-  }
+                        <Route path='/addproduct'
+                               element={<AddProduct addProduct={addProduct} userProfile={userProfile}/>}/>
+                        <Route path='/employees'
+                        element={<EmployeeList userProfile={userProfile}/>}/>
+                <Route path='/invoicelist'
+                       element={<InvoiceList invoiceList={invoiceList} userProfile={userProfile}/>}/>
+                <Route path='/products'
+                       element={<ProductList onSave={handleProductSave}
+                                             productList={productList}
+                                             onDeleteProduct={onDeleteProduct}
+                                             searchTerm={searchTerm}
+                                             changeSearch={changeSearch}
+                                             userProfile={userProfile}
+                       />
+                }/>
+                <Route path='/addinvoice'
+                       element={<AddInvoices
+                           productList={productList} clientsList={clientsList} userProfile={userProfile}/>}/>
+                <Route path='/signup'
+                       element={<Signup userProfile={userProfile}/>}/>
+                <Route path='/myprofile'
+                       element={<MyProfile userProfile={userProfile}/>}/>
+                            <Route path='*'
+                                   element={<MyProfile userProfile={userProfile}/>}/>
+                        </>
+                    ) : (
 
-  const changeSearch = (value) => {
-    setSearch(value)
-  }
-  const handleProductSave = (updatedProduct) => {
-    const updatedProducts = productList.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
-    setProductList(updatedProducts);
-  };
+                        <>
 
-  // const filteredProducts = productList.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                        <Route path='/myprofile'
+                               element={<MyProfile userProfile={userProfile}/>}/>
+                            <Route path='/products'
+                                   element={<ProductList onSave={handleProductSave}
+                                                         productList={productList}
+                                                         onDeleteProduct={onDeleteProduct}
+                                                         searchTerm={searchTerm}
+                                                         changeSearch={changeSearch}
+                                                         userProfile={userProfile}
+                                   />}/>
+                            <Route path='/addinvoice'
+                                   element={<AddInvoices
+                                       productList={productList} clientsList={clientsList} userProfile={userProfile}/>}/>
+                        <Route path='*'
+                        element={<MyProfile
+                            userProfile={userProfile}
+                        />}/>
+                        </>
 
+                    )
 
-  return (
- <div>
-  <BrowserRouter>
-    <Routes>
-      <Route path='/'
-      element={<Login updateEmployee={updateEmployee}/>}/>
-       <Route path='/addproduct'
-      element={<AddProduct addProduct={addProduct}/>}/>
-      <Route path='/employees'
-      element={<EmployeeList/>}/>
-      <Route path='/invoicelist'
-      element={<InvoiceList invoiceList={invoiceList}/>}/>
-      <Route path='/products'
-      element={<ProductList onSave={handleProductSave}
-      productList={productList}
-      onDeleteProduct={onDeleteProduct}
-      searchTerm={searchTerm}
-      changeSearch={changeSearch}/>}/>
-      <Route path='/addinvoice'
-      element={<AddInvoices
-      productList={productList} clientsList = {clientsList} userProfile = {userProfile}/>}/>
-      <Route path='/signup'
-      element={<Signup/>}/>
-       <Route path='/myprofile'
-      element={<MyProfile />}/>
-      
-    </Routes>
-    <ToastContainer position='top-center'/>
-  </BrowserRouter>
- </div>
-  );
+                    }
+
+                </Routes>
+              <ToastContainer position='top-center'/>
+            </BrowserRouter>
+</div>
+)
+    ;
 }
 
 export default App;

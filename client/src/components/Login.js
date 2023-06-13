@@ -1,8 +1,7 @@
 import React, {useDebugValue, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
-
-
+import {toast} from "react-toastify";
 function Login({updateEmployee}) {
   const loginState = {
     email: '',
@@ -10,7 +9,7 @@ function Login({updateEmployee}) {
 };
     const [errors, setErrors] = useState([])
     const [formData, setFormData] = useState(loginState);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
   
     const handleSubmit = (e) => {
       e.preventDefault()
@@ -22,11 +21,14 @@ function Login({updateEmployee}) {
       .then(res => {
           if(res.ok){
               res.json().then(user => {
-                  updateEmployee(user)
+                  updateEmployee(user);
+                  toast.success('Successfully Logged In');
                   navigate('/myprofile')
               })
           } else {
               res.json().then(json => setErrors(json.errors))
+              toast.error('Failed to Log In');
+              setFormData(loginState)
           }
       })
   }
@@ -39,12 +41,12 @@ function Login({updateEmployee}) {
   <Form onSubmit={handleSubmit}>
   <Form.Group >
       <Form.Label>Email</Form.Label>
-      <Form.Control name="email" type="text" placeholder="Enter your email" onChange={handleChange}/>
+      <Form.Control name="email" type="text" required value={formData.email} placeholder="Enter your email" onChange={handleChange}/>
   </Form.Group>
   <br />
   <Form.Group>
       <Form.Label>Password</Form.Label>
-      <Form.Control name="password" type="password" placeholder="Enter password" onChange={handleChange}/>
+      <Form.Control name="password" type="password" required value={formData.password} placeholder="Enter password" onChange={handleChange}/>
   </Form.Group>
   <br />
   <Form.Group >
@@ -61,8 +63,6 @@ function Login({updateEmployee}) {
         {loginForm}
           </div>
           </div>
-
-         
     )
 }
 

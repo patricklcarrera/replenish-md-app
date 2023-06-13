@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useParams} from 'react-router-dom'
 import Header from './Header'
-function UserPage(){
+import {Button, Card} from "react-bootstrap";
+function UserPage({userProfile}){
     const [employee, setEmployee] = useState()
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState(false)
@@ -26,31 +27,30 @@ function UserPage(){
     if(loading) return <Header></Header>
     if(errors) return <h1>{errors}</h1>
 
-
-
     return (
         <div>
-            <Header/>
+            <Header userProfile={userProfile}/>
             <br/>
             <h1 className="text-4xl font-bold text-center text-blue-600">{employee.name}</h1>
             <br/>
             <h2 className="text-4xl font-bold text-center text-blue-400">My invoices</h2>
             <br/>
-            <ul>
-                {employee.invoices.map(invoice => (
-                <div className="bg-blue-100 p-4 rounded-lg shadow-lg">
-                <h2 className="text-blue-800 text-xl font-bold mb-2">Invoice ID: {invoice.id}</h2>
-                
-                
-                {/* <p className="text-blue-700">Client name: {invoice.employee.name}</p>
-                <p className="text-blue-700">Product: {invoice.product_id}</p> */}
-                <p className="text-blue-700">Charge: {invoice.charge}</p>
-                <p className="text-blue-700">Product name: {invoice.product_name}</p>
-                <p className="text-blue-700">Client name: {invoice.client_name}</p>
-            
+            <ul className=" mx-1 mb-3 row row-cols-4 g-3">
+                {employee.invoices.map(invoice => {
+                    return <li>
+                    <Card className='text-center' border="info" style={{ width: '18rem' }}>
+                        <Card.Header as="h5">Invoice ID {invoice.id}</Card.Header>
+                        <Card.Body className=''>
+                            <Card.Title className='mb-2'>Client name: {invoice.client_name}</Card.Title>
+                            <Card.Title className='mb-2'>Product name: {invoice.product_name}</Card.Title>
+                            <Card.Title className='mb-2'>Charge: {invoice.charge}</Card.Title>
 
-           </div>
-                ))}
+                        </Card.Body>
+                    </Card>
+                    </li>
+                    }
+                )
+                }
             </ul>
         </div>
     )
