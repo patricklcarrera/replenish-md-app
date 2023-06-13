@@ -3,7 +3,7 @@ import Header from './Header';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-export default function AddProduct({addProduct}){
+export default function AddProduct({addProduct, userProfile}){
     const initialFormData = {
         name: '',
         product_type: '',
@@ -120,7 +120,7 @@ export default function AddProduct({addProduct}){
     </div> 
     return(
         <div>
-            <Header/>
+            <Header userProfile={userProfile}/>
        {tailwindForm}
         </div>
     

@@ -1,7 +1,7 @@
 import Header from './Header';
 
-export default function Homepage(){
+export default function Homepage({userProfile}){
     return(
-        <Header/>
+        <Header userProfile={userProfile}/>
     )
 }

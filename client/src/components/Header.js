@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -7,7 +7,8 @@ import {LinkContainer} from 'react-router-bootstrap'
 import Image from 'react-bootstrap/Image'
 import { Link } from 'react-router-dom';
 
-export default function Header() {
+export default function Header({userProfile}) {
+  // const [userProfile, setUserProfile] = useState(null);
 
   const navigate = useNavigate()
 
@@ -21,6 +22,17 @@ export default function Header() {
       }
     })
   }
+  // useEffect(() => {
+  //   fetch(`/employees/myprofile`).then((res) => {
+  //     if (res.ok) {
+  //       res.json().then((userProfile) => setUserProfile(userProfile));
+  //     } else {
+  //       setUserProfile(null)
+  //     }
+  //   });
+  // }, []);
+  //
+  // console.log("userProfilefromheader:",userProfile)
 
   
 const adminHeader =     <nav className="bg-blue-400">
@@ -59,8 +71,7 @@ const adminHeader =     <nav className="bg-blue-400">
 </div>
 </nav>
 
-
-const employeeHeader =     <nav className="bg-blue-400">
+const employeeHeader = <nav className="bg-blue-400">
 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
   <div className="flex items-center justify-between h-26">
     <div className="flex-shrink-0">
@@ -69,20 +80,10 @@ const employeeHeader =     <nav className="bg-blue-400">
     <div className="hidden md:block">
       <div className="ml-10 flex items-baseline space-x-4">
         <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-sm font-medium text-gray-700">
-        <LinkContainer to="/addinvoice"><Nav.Link>Submit invoice</Nav.Link></LinkContainer> 
+        <LinkContainer to="/addinvoice"><Nav.Link>Submit invoice</Nav.Link></LinkContainer>
         </button>
-        <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-sm font-medium text-gray-700">
-        <LinkContainer to="/invoicelist"><Nav.Link >Invoice List</Nav.Link></LinkContainer> 
-        </button>
-        <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-sm font-medium text-gray-700">
-        <LinkContainer to="/signup"><Nav.Link >Create a new user</Nav.Link></LinkContainer> 
-        </button>
-        
         <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-sm font-medium text-gray-700">
         <LinkContainer to="/products"><Nav.Link >Product List</Nav.Link></LinkContainer> 
-        </button>
-        <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-sm font-medium text-gray-700">
-        <LinkContainer to="/employees"><Nav.Link >All Employees</Nav.Link></LinkContainer> 
         </button>
         <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-sm font-medium text-gray-700">
         <LinkContainer to="/myprofile"><Nav.Link >My Profile</Nav.Link></LinkContainer> 
@@ -98,8 +99,7 @@ const employeeHeader =     <nav className="bg-blue-400">
 
   return (
     <div>
-      {/* is_admin? {adminHeader} : {employeeHeader} */}
-      {adminHeader}
+      {userProfile && userProfile.is_admin ? adminHeader : employeeHeader }
     </div>
   );
 }
