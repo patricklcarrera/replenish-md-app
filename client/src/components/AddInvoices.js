@@ -149,7 +149,7 @@ export default function AddInvoices(props) {
             (product) => product.name === selectedProductName
         );
         if (selectedProduct) {
-            setCurrentProduct({ name: selectedProduct.name, price: selectedProduct.cost_price, quantity: 1 });
+            setCurrentProduct({ name: selectedProduct.name, price: selectedProduct.retail_price, quantity: 1 });
             setSelectedProduct(selectedProduct);
             setMatchingProducts([]);
         } else {

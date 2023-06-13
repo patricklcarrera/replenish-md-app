@@ -138,7 +138,7 @@ export default function SignUp({userProfile}) {
 
                 <div className="mb-4">
                     <label htmlFor="is_admin" className="text-base me-3 font-medium text-blue-800">
-                        Do you want to be an Admin ?
+                        Admin
                     </label>
                     <input
                         type="checkbox"
