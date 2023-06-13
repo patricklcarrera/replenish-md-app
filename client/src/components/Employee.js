@@ -1,50 +1,42 @@
-import React, { useState} from 'react';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import { Form, Popover, Button, Card } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, Card} from "react-bootstrap";
+import CustomEmployeeModel from "./CustomEmployeeModel";
 
 export default function Employee({employee,invoiceList}){
 
+    const [employeeInvoices, setEmployeeInvoices] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
 
-
-
-
-
-
-   //move 14-16 to a component then map over the new filtered invoice list
-   const showInvoicePopover = (
-      <Popover id="popover-basic">
-        <Popover.Header as="h3">Invoices</Popover.Header>
-        <Popover.Body>
-            <Card.Body>Employee: {invoiceList[0].employee.name}</Card.Body>
-            <Card.Body>Client name: {invoiceList[0].client.name}</Card.Body>
-            <Card.Body>Charge: {invoiceList[0].charge}</Card.Body>
-        </Popover.Body>
-      </Popover>
-    );
-
+    useEffect(() => {
+        const filteredInvoices = invoiceList.filter(
+            (invoice) => invoice.employee.id === employee.id
+        );
+        setEmployeeInvoices(filteredInvoices);
+    }, [invoiceList, employee]);
+    console.log("employeeInvoices",employeeInvoices)
         
-  const tailWindEmployeeCard =  
-  <div className="bg-blue-100 p-4 rounded-lg shadow-lg">
-     <h2 className="text-blue-800 text-xl font-bold mb-2">Employee: {employee.name}</h2>
-     <p className="text-blue-700">Email: {employee.email}</p>
-     <OverlayTrigger trigger="click" placement="right" overlay={showInvoicePopover}>
-      <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">Show invoices</button>
-     </OverlayTrigger>
-</div>
+  const tailWindEmployeeCard =
+       <Card className='text-center' border="info" style={{ width: '18rem' }}>
+        <Card.Header as="h5">Employee Id {employee.id}</Card.Header>
+        <Card.Body className=''>
+            <Card.Title className='mb-3'>Employee: {employee.name}</Card.Title>
+            {employeeInvoices.length >0 ? <Button onClick={handleClick} variant="info">Show Invoices</Button> : <p>No Invoices</p>}
+            {employeeInvoices.length >0 ?
+            <CustomEmployeeModel
+                show={modalShow}
+                onHide={handleClick}
+                employeeInvoices={employeeInvoices}
+                EmployeeId = {employee.id}
+            /> : <></>}
 
-
-
-
+        </Card.Body>
+    </Card>
+    function handleClick () {
+        setModalShow(!modalShow)
+    }
    return (
     <div>
-       {/* <Card>
-            <h2>Name: {employee.name}</h2>
-            <h3>Email: {employee.email}</h3>
-            <OverlayTrigger trigger="click" placement="right" overlay={showInvoicePopover}>
-    <Button variant="success">Show invoices</Button>
-    </OverlayTrigger>
-       </Card> */}
-       {tailWindEmployeeCard}
+        {employeeInvoices ? tailWindEmployeeCard : <div>Loading</div>}
     </div>
    )
 }

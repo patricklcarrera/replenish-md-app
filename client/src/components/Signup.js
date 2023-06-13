@@ -8,7 +8,7 @@ const formInitialState = {
     name: '',
     email: '',
     password: '',
-    is_admin: true
+    is_admin: false
 };
 
 export default function SignUp() {
@@ -21,7 +21,7 @@ export default function SignUp() {
             name,
             email,
             password,
-            is_admin: true
+            is_admin
         };
 
         fetch('/employees')
@@ -54,17 +54,36 @@ export default function SignUp() {
             console.error('Error:', error);
             toast.error('Error fetching employees data');
         });
-
+        setFormData(formInitialState);
     }
-
     const isDuplicateEmail = (email, employees) => {
         return employees.some((employee) => employee.email === email);
     };
-
     const handleChange = (e) => {
-        const { name, value, checked } = e.target;
-        const updatedValue = name === 'is_admin' ? checked : value;
-        setFormData({ ...formData, [name]: updatedValue });
+        const { name, value, type, checked } = e.target;
+        if (type === 'checkbox') {
+            if (name === 'is_admin') {
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    [name]: checked,
+                }));
+            }
+        } else if (name === 'name') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));
+        } else if (name === 'email') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));
+        } else if (name === 'password') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));
+        }
 
     };
 

@@ -1,31 +1,32 @@
 import React, {useState} from 'react';
 import Header from "./Header";
+import {toast} from "react-toastify";
 
 const initialFormState = {
     dateOfService: "",
-    paidByClientCash: 0,
-    paidByClientCredit: 0,
+    paidByClientCash:null,
+    paidByClientCredit: null,
     comments: "",
-    personalDiscount: 0,
-    tip: 0,
+    personalDiscount: null,
+    tip: null,
     conciergeFeePaid: false,
     gfe: false,
     overheadFeeType:'percentage',
-    overheadFeeValue: 0,
+    overheadFeeValue: null,
     //Product States
     products:[],
     //Retail Product States
     retailProducts:[],
     //Client States
-    client:{name:"", id:0},
+    client:{name:"", id:null},
     }
 export default function AddInvoices(props) {
     const { productList, clientsList, userProfile } = props
     const [formData, setFormData] = useState(initialFormState);
-    const [currentProduct, setCurrentProduct] = useState( {name: '', price: 0, quantity: 1})
+    const [currentProduct, setCurrentProduct] = useState( {name: '', price: null, quantity: 1})
     const [selectedProduct, setSelectedProduct] =   useState(null);
     const [matchingProducts, setMatchingProducts] = useState([])
-    const [currentRetailProduct, setCurrentRetailProduct] = useState( {name: '', price: 0, quantity: 1})
+    const [currentRetailProduct, setCurrentRetailProduct] = useState( {name: '', price: null, quantity: 1})
     const [selectedRetailProduct, setSelectedRetailProduct] =   useState(null);
     const [matchingRetailProducts, setMatchingRetailProducts] = useState([]);
     const [currentClient, setCurrentClient] = useState({name:""});
@@ -258,7 +259,18 @@ export default function AddInvoices(props) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(invoice),
-        }).then(response => response.json())
+        }).then((res) => {
+            if (res.ok) {
+                toast.success('Invoice created successfully');
+            } else {
+                res.json().then((json) => {
+                    toast.error('Failed to create Invoice');
+                });
+            }
+        }).catch((error) => {
+            console.error('Error:', error);
+            toast.error('An error occured.');
+        });
 
         setFormData(initialFormState);
         setCurrentProduct( {name: '', price: 0, quantity: 1})
@@ -287,6 +299,7 @@ export default function AddInvoices(props) {
                                 value={currentClient.name}
                                 onChange={handleClientNameChange}
                                 className="w-full mt-1 p-1 border-gray-300 border rounded-md"
+                                required
                             />
                             {matchingClients.length > 0 && (
                                 <div className="absolute bg-white w-sm max-h-40 overflow-y-auto rounded-md mt-1 shadow-md">
@@ -300,9 +313,7 @@ export default function AddInvoices(props) {
                                     ))}
                                 </div>
                             )}
-                            {/*{showError && (*/}
-                            {/*    <p className="text-red-500 mt-1">Please select the correct client name.</p>*/}
-                            {/*)}*/}
+
                         </label>
                         <label className="mb-2 block">
                             Date of Service:
@@ -515,6 +526,7 @@ export default function AddInvoices(props) {
                                                 value={currentRetailProduct.name}
                                                 onChange={handleRetailProductNameChange}
                                                 className="w-full p-1 border-gray-500 border rounded-md"
+                                                // required
                                             />
                                             {matchingRetailProducts?.length > 0 && (
                                                 <div className="absolute bg-white w-sm max-h-40 overflow-y-auto rounded-md mt-1 shadow-md">
