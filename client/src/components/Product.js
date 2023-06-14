@@ -22,17 +22,20 @@ export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
         cost_price: costPrice,
         retail_price: retailPrice,
       };
-      const response = await fetch(`/updateproduct/${product.id}`, {
+
+      const response = await fetch("/updateproduct/"+product.id+"", {
          method: 'PATCH',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify(updatedProduct),
        });
    
-       if (!response.ok) {
-         const errorMessage = `Failed to update product  `;
+       if (response.ok){
+        window.location.reload();
+       } else {
+         const errorMessage = 'Failed to update product';
          console.error(errorMessage);
          return;
-       }
+       };
    
        onSave(updatedProduct);
      };
@@ -67,9 +70,9 @@ export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
     );
    
     const handleDelete = () => {
-      console.log("deleted")
+      console.log("deleted");
       
-      fetch(`/products}`,
+      fetch("/products/"+product.id+"",
       { method: 'DELETE' })
       .then(() => onDeleteProduct(id))
       // .catch(err => alert(err))
@@ -84,7 +87,7 @@ export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
       {isAdmin && isAdmin ? (
           <div >
      <button onClick={handleDelete} className="bg-blue-500 hover:bg-red-400 text-white  py-2 px-4 rounded mt-2">Remove Product</button>
-     <OverlayTrigger trigger="click" placement="right" overlay={updatePopover}>
+     <OverlayTrigger trigger="click" rootClose placement="right" overlay={updatePopover}>
      <button className="bg-blue-500 hover:bg-red-400 text-white  py-2 px-4 rounded mt-2">Update Product</button>
      </OverlayTrigger>
           </div>
@@ -96,18 +99,7 @@ export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
   
    return (
     <div>
-     
-       {/* <Card>
-            <p>Product: {product.name}</p>
-            <p>Type: {product.product_type}</p>
-            <p>Cost Price: ${product.cost_price}</p>
-            <p>Retail Price: ${product.retail_price}</p>
-            <Button onClick={handleDelete}>Remove Product</Button>
-            <OverlayTrigger trigger="click" placement="right" overlay={updatePopover}>
-    <Button variant="success">Update Product</Button>
-  </OverlayTrigger>
-       </Card> */}
-       {tailwindProductCard}
+        {tailwindProductCard}
     </div>
    )
 }

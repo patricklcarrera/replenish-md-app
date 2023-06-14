@@ -110,7 +110,6 @@ const handleConsolelog = () => {
   const [tipAmount, setTipAmount] = useState(0);
   const [personalDiscount, setPersonalDiscount] = useState(0);
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -141,7 +140,7 @@ const handleConsolelog = () => {
   const testForm = 
   <>
   <Header/>
-  <form onSubmit={handleSubmit} className="bg-blue-100 p-8   rounded-lg shadow-md">
+  <form onSubmit={handleSubmit} className="bg-blue-100 p-8 rounded-lg shadow-md">
       <div className="flex flex-col w-80">
         <div className="mb-2">
           <label htmlFor="clientName" className="text-base font-medium text-blue-800">
