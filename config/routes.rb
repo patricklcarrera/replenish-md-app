@@ -17,5 +17,5 @@ Rails.application.routes.draw do
   post '/employees/new', to: 'employees#create'
   post '/login', to: 'sessions#create'
   get '/clients', to: 'clients#index'
-  delete '/products', to: 'product#destroy'
+  delete '/products', to: 'products#destroy'
 end

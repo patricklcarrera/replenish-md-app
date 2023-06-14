@@ -260,8 +260,8 @@ export default function AddInvoices(props) {
             client_id: selectedClient?selectedClient.id : 0,
             charge:getTotal(),
         }
-        console.log("invoice:",invoice)
-        fetch("/invoices/new", {
+        console.log("invoice:", invoice)
+        fetch("/invoices/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -269,7 +269,7 @@ export default function AddInvoices(props) {
             body: JSON.stringify(invoice),
         }).then((res) => {
             if (res.ok) {
-                toast.success('Invoice created successfully');
+                toast.success('Invoice created successfully and the mail has been sent on the email id');
             } else {
                 res.json().then((json) => {
                     toast.error('Failed to create Invoice');

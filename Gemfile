@@ -46,6 +46,7 @@ group :development do
   # gem "spring"
 end
 
+gem "prawn-rails" # To generate the PDF while the form is saved.
 
 gem "active_model_serializers", "~> 0.10.13"
 

@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function CustomModal(props) {
+function CustomInvoiceModal(props) {
     var invoiceData = props.invoiceData
     var invoiceID = invoiceData.id
     var employeeName =  invoiceData.employee_name
@@ -33,5 +33,4 @@ function CustomModal(props) {
     );
 }
 
-
-export default CustomModal;
+export default CustomInvoiceModal;

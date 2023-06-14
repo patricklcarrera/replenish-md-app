@@ -2,10 +2,16 @@ import React, { useEffect, useState } from 'react'
 import {useParams} from 'react-router-dom'
 import Header from './Header'
 import {Button, Card} from "react-bootstrap";
+import CustomInvoiceModal from "./CustomInvoiceModal.js";
+
 function UserPage({userProfile}){
     const [employee, setEmployee] = useState()
     const [loading, setLoading] = useState(true)
     const [errors, setErrors] = useState(false)
+    const [modalShow, setModalShow] = useState(false);
+    function handleClick () {
+      setModalShow(!modalShow)
+    }
     
     const params = useParams()
     const {id} = params
@@ -20,9 +26,8 @@ function UserPage({userProfile}){
             }else {
                 res.json().then(data => setErrors(data.error))
             }
-        })
-       
-    },[])
+        })       
+    })
 
     if(loading) return <Header></Header>
     if(errors) return <h1>{errors}</h1>
@@ -41,10 +46,12 @@ function UserPage({userProfile}){
                     <Card className='text-center' border="info" style={{ width: '18rem' }}>
                         <Card.Header as="h5">Invoice ID {invoice.id}</Card.Header>
                         <Card.Body className=''>
-                            <Card.Title className='mb-2'>Client name: {invoice.client_name}</Card.Title>
-                            <Card.Title className='mb-2'>Product name: {invoice.product_name}</Card.Title>
-                            <Card.Title className='mb-2'>Charge: {invoice.charge}</Card.Title>
-
+                        <Button onClick={handleClick} variant="info">See More Details</Button>
+                        <CustomInvoiceModal
+                           show={modalShow}
+                           onHide={handleClick}
+                           invoiceData={invoice}
+                        />
                         </Card.Body>
                     </Card>
                     </li>
@@ -56,4 +63,4 @@ function UserPage({userProfile}){
     )
 }
 
-export default UserPage
+export default UserPage;
