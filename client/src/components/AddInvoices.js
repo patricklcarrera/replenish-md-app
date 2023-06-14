@@ -98,6 +98,14 @@ export default function AddInvoices(props) {
             ["products"]: updatedProducts,
         }));
     };
+    const removeRetailProduct = (index) => {
+        const updatedProducts = [...formData.retailProducts];
+        updatedProducts.splice(index, 1);
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            ["retailProducts"]: updatedProducts,
+        }));
+    };
     const getTotalPaidByClient = () => {
         let totalPaid = formData.paidByClientCash + formData.paidByClientCredit;
         return totalPaid;
@@ -593,7 +601,7 @@ export default function AddInvoices(props) {
                                             <td>
                                                 <button
                                                     type="button"
-                                                    onClick={() => removeProduct(index)}
+                                                    onClick={() => removeRetailProduct(index)}
                                                     className="text-red-500   border-2 border-red-500 px-2"
                                                 >
                                                     &#10005;
