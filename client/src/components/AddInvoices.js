@@ -18,7 +18,7 @@ const initialFormState = {
     //Retail Product States
     retailProducts:[],
     //Client States
-    client:{name:"", id:null},
+    client: { name: "", id: null},
 }
 export default function AddInvoices(props) {
     const { productList, clientsList, userProfile } = props
@@ -29,9 +29,9 @@ export default function AddInvoices(props) {
     const [currentRetailProduct, setCurrentRetailProduct] = useState( {name: '', price: null, quantity: 1})
     const [selectedRetailProduct, setSelectedRetailProduct] =   useState(null);
     const [matchingRetailProducts, setMatchingRetailProducts] = useState([]);
-    const [currentClient, setCurrentClient] = useState({name:""});
-    const [selectedClient, setSelectedClient] = useState({name:""});
-    const [matchingClients,setMatchingClients] = useState([]);
+    // const [currentClient, setCurrentClient] = useState({name:""});
+    // const [selectedClient, setSelectedClient] = useState({name:""});
+    // const [matchingClients,setMatchingClients] = useState([]);
     const handleInputChange = (event, index) => {
         const {name, value, type, checked} = event.target;
         if (type === 'checkbox') {
@@ -224,40 +224,40 @@ export default function AddInvoices(props) {
         }
     };
     //Client Name functions
-    const handleClientNameChange = (e) => {
-        const input = e.target.value;
-        setCurrentClient({ name: input});
-        const matchedClients = clientsList?.filter(
-            (client) => client.name.toLowerCase().includes(input.toLowerCase())
-        );
-        setMatchingClients(matchedClients);
-    };
-    const handleClientSelection = (selectedClientName) => {
-        const selectedClient = clientsList?.find(
-            (client) => client.name === selectedClientName
-        );
-        if (selectedClient) {
-            setCurrentClient({ name: selectedClient.name});
-            setSelectedClient(selectedClient);
-            setMatchingClients([]);
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                ['client']: [selectedClient]
-            }));
-            // setShowError(false);
-        } else {
-            setCurrentClient({ name: selectedClientName});
-            setSelectedClient(null);
-            setMatchingClients([]);
-            // setShowError(true);
-        }
-    };
+    // const handleClientNameChange = (e) => {
+    //     const input = e.target.value;
+    //     setCurrentClient({ name: input});
+    //     const matchedClients = clientsList?.filter(
+    //         (client) => client.name.toLowerCase().includes(input.toLowerCase())
+    //     );
+    //     setMatchingClients(matchedClients);
+    // };
+    // const handleClientSelection = (selectedClientName) => {
+    //     const selectedClient = clientsList?.find(
+    //         (client) => client.name === selectedClientName
+    //     );
+    //     if (selectedClient) {
+    //         setCurrentClient({ name: selectedClient.name});
+    //         setSelectedClient(selectedClient);
+    //         setMatchingClients([]);
+    //         setFormData((prevFormData) => ({
+    //             ...prevFormData,
+    //             ['client']: [selectedClient]
+    //         }));
+    //         // setShowError(false);
+    //     } else {
+    //         setCurrentClient({ name: selectedClientName});
+    //         setSelectedClient(null);
+    //         setMatchingClients([]);
+    //         // setShowError(true);
+    //     }
+    // };
     const handleSubmit = (event) => {
         event.preventDefault();
         let invoice = {
             employee_id: userProfile.id,
             product_id: formData.products?formData.products[0].id : 0,
-            client_id: selectedClient?selectedClient.id : 0,
+            client_name: '',
             charge:getTotal(),
         }
         console.log("invoice:", invoice)
@@ -284,9 +284,9 @@ export default function AddInvoices(props) {
         setCurrentProduct( {name: '', price: 0, quantity: 1})
         setSelectedProduct(null);
         setMatchingProducts([]);
-        setCurrentClient({name:""});
-        setSelectedClient({name:""});
-        setMatchingClients([]);
+        // setCurrentClient({name:""});
+        // setSelectedClient({name:""});
+        // setMatchingClients([]);
     };
 
     return (
@@ -304,24 +304,10 @@ export default function AddInvoices(props) {
                             <input
                                 type="text"
                                 name="clientName"
-                                value={currentClient.name}
-                                onChange={handleClientNameChange}
+                                autoComplete="off"
                                 className="w-full mt-1 p-1 border-gray-300 border rounded-md"
                                 required
                             />
-                            {matchingClients.length > 0 && (
-                                <div className="absolute bg-white w-sm max-h-40 overflow-y-auto rounded-md mt-1 shadow-md">
-                                    {matchingClients.map((client) => (
-                                        <p  key={client.id}
-                                            className="p-2 cursor-pointer hover:bg-gray-100"
-                                            onClick={() => handleClientSelection(client.name)}
-                                        >
-                                            {client.name}
-                                        </p>
-                                    ))}
-                                </div>
-                            )}
-
                         </label>
                         <label className="mb-2 block">
                             Date of Service:
@@ -434,6 +420,7 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="text"
                                                 name="productName"
+                                                autoComplete="off"
                                                 value={currentProduct.name}
                                                 onChange={handleProductNameChange}
                                                 className="w-full p-1 border-gray-500 border rounded-md"
@@ -466,6 +453,7 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="string"
                                                 name="productPrice"
+                                                autoComplete="off"
                                                 value={currentProduct.price}
                                                 className="w-full p-1 border-gray-300 border rounded-md"
                                             />
@@ -531,6 +519,7 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="text"
                                                 name="productName"
+                                                autoComplete="off"
                                                 value={currentRetailProduct.name}
                                                 onChange={handleRetailProductNameChange}
                                                 className="w-full p-1 border-gray-500 border rounded-md"
@@ -564,6 +553,7 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="string"
                                                 name="productPrice"
+                                                autoComplete="off"
                                                 value={currentRetailProduct.price}
                                                 className="w-full p-1 border-gray-300 border rounded-md"
                                             />
