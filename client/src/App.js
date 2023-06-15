@@ -115,7 +115,7 @@ function App() {
                 }/>
                 <Route path='/addinvoice'
                        element={<AddInvoices
-                           productList={productList} clientsList={clientsList} userProfile={userProfile}/>}/>
+                           productList={productList} userProfile={userProfile}/>}/>
                 <Route path='/signup'
                        element={<Signup userProfile={userProfile}/>}/>
                 <Route path='/myprofile'

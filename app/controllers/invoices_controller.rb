@@ -1,5 +1,6 @@
 class InvoicesController < ApplicationController
   skip_before_action :authorized_employee
+  before_action :initialize_client, only: :create
 
   def index
     invoices = Invoice.all 
@@ -12,17 +13,31 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @invoice = Invoice.new(invoice_params)
-    if @invoice.save!
-      @invoice.send_pdf_mail
-      render json: @invoice, status: :created
+    if @client
+      @invoice = @client.invoices.new(invoice_params)
+
+      if @invoice.save
+        @invoice.send_pdf_mail
+        render json: @invoice, status: :created
+      else
+        render json: {'error' => @invoice.errors}, status: :bad_request
+      end
     else
-      render json: {'error' => @invoice.errors}, status: :bad_request
+      render json: {'error' => "Please provide a client."}, status: :not_found
     end
   end
 
   private
+
   def invoice_params
     params.require(:invoice).permit(:employee_id, :client_id, :product_id, :charge)
+  end
+
+  def initialize_client
+    @employee = Employee.find_by(id: params[:employee_id])
+
+    @client = if params[:client_name] && !params[:client_name].empty?
+      @employee.clients.find_or_create_by(name: params[:client_name])
+    end
   end
 end
