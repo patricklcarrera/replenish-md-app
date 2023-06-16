@@ -13,6 +13,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
+    binding.irb
     if @client
       @invoice = @client.invoices.new(invoice_params)
 
@@ -30,7 +31,7 @@ class InvoicesController < ApplicationController
   private
 
   def invoice_params
-    params.require(:invoice).permit(:employee_id, :client_id, :product_id, :charge)
+    params.require(:invoice).permit(:employee_id, :client_id, :charge, :is_finalized, :created_at, :updated_at, :date_of_service, :paid_by_client_cash, :paid_by_client_credit, :comments, :personal_discount, :tip, :concierge_fee_paid, :gfe, :overhead_fee_type, :overhead_fee_value)
   end
 
   def initialize_client

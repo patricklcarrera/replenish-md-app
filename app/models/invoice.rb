@@ -1,7 +1,8 @@
 class Invoice < ApplicationRecord
   belongs_to :employee
   belongs_to :client
-  belongs_to :product
+  has_many :products_invoices, class_name: 'ProductInvoice'
+  has_many :products, through: :products_invoices
 
   def send_pdf_mail
     pdf_file = Prawn::Document.generate("Invoice-#{self.employee.name}.pdf") do |pdf|
