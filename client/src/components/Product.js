@@ -2,6 +2,8 @@ import React, { useState} from 'react';
 import {Button , Card, Form} from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
    const {id} = product
@@ -72,30 +74,41 @@ export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
     const handleDelete = () => {
       console.log("deleted");
       
-      fetch("/products/"+product.id+"",
-      { method: 'DELETE' })
-      .then(() => onDeleteProduct(id))
-      // .catch(err => alert(err))
+      confirmAlert({
+        title: 'Confirm to submit',
+        message: 'Are you sure to do this.',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => {fetch("/products/"+product.id+"",
+                            { method: 'DELETE' })
+                            .then(() => window.location.reload())
+                          }
+          },
+          {
+            label: 'No',
+            onClick: () => console.log('Click No')
+          }
+        ]
+      });
   }
     
   const tailwindProductCard =  
-  <div className="bg-blue-100 p-4 rounded-lg shadow-lg">
-     <h2 className="text-blue-800 text-xl font-bold mb-2">{product.name}</h2>
-     <p className="text-blue-700">Product Type: {product.product_type}</p>
-     <p className="text-blue-700">Cost Price: ${product.cost_price}</p>
-     <p className="text-blue-700">Retail Price: ${product.retail_price}</p>
-      {isAdmin && isAdmin ? (
-          <div >
-     <button onClick={handleDelete} className="bg-blue-500 hover:bg-red-400 text-white  py-2 px-4 rounded mt-2">Remove Product</button>
-     <OverlayTrigger trigger="click" rootClose placement="right" overlay={updatePopover}>
-     <button className="bg-blue-500 hover:bg-red-400 text-white  py-2 px-4 rounded mt-2">Update Product</button>
-     </OverlayTrigger>
-          </div>
-)
-          :
-          (<></>)
-      }
-</div>
+      <div className="bg-blue-100 p-4 rounded-lg shadow-lg">
+         <h2 className="text-blue-800 text-xl font-bold mb-2">{product.name}</h2>
+         <p className="text-blue-700">Product Type: {product.product_type}</p>
+         <p className="text-blue-700">Cost Price: ${product.cost_price}</p>
+         <p className="text-blue-700">Retail Price: ${product.retail_price}</p>
+          {isAdmin && isAdmin ? (
+              <div >
+         <button onClick={handleDelete} className="bg-blue-500 hover:bg-red-400 text-white  py-2 px-4 rounded mt-2">Remove Product</button>
+         <OverlayTrigger trigger="click" rootClose placement="right" overlay={updatePopover}>
+         <button className="bg-blue-500 hover:bg-red-400 text-white  py-2 px-4 rounded mt-2">Update Product</button>
+         </OverlayTrigger>
+              </div>
+        ) : (<></>)
+          }
+    </div>
   
    return (
     <div>
