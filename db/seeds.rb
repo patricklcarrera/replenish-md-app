@@ -569,8 +569,7 @@ end
 40.times do
     Invoice.create!(
         employee_id: Employee.all.sample.id,
-        product_id: Product.all.sample.id, 
         client_id: Client.all.sample.id,
         charge: Product.all.sample.retail_price 
     )
-    end
+end
