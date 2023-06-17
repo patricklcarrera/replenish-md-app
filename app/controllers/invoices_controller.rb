@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
   skip_before_action :authorized_employee
-  before_action :initialize_client, only: :create
+  before_action :initialize_objects, only: :create
 
   def index
     invoices = Invoice.all 
@@ -13,12 +13,11 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    binding.irb
     if @client
       @invoice = @client.invoices.new(invoice_params)
 
       if @invoice.save
-        @invoice.send_pdf_mail
+        @invoice.send_pdf_mail(@products, @retail_products)
         render json: @invoice, status: :created
       else
         render json: {'error' => @invoice.errors}, status: :bad_request
@@ -34,11 +33,13 @@ class InvoicesController < ApplicationController
     params.require(:invoice).permit(:employee_id, :client_id, :charge, :is_finalized, :created_at, :updated_at, :date_of_service, :paid_by_client_cash, :paid_by_client_credit, :comments, :personal_discount, :tip, :concierge_fee_paid, :gfe, :overhead_fee_type, :overhead_fee_value)
   end
 
-  def initialize_client
+  def initialize_objects
     @employee = Employee.find_by(id: params[:employee_id])
-
     @client = if params[:client_name] && !params[:client_name].empty?
       @employee.clients.find_or_create_by(name: params[:client_name])
     end
+
+    @products = params[:products].pluck("name", "quantity", "price")
+    @retail_products = params[:retail_products].pluck("name", "quantity", "price")
   end
 end

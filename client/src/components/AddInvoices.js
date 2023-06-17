@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 
 const initialFormState = {
     dateOfService: "",
-    paidByClientCash:null,
+    paidByClientCash: null,
     paidByClientCredit: null,
     comments: "",
     personalDiscount: null,
@@ -233,12 +233,36 @@ export default function AddInvoices(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        // const products = ''
+        // const retail_products = ''
+
+        // [...document.querySelectorAll('.products-used table tbody tr')].map(x => x.innerHTML);
+        // [...document.querySelectorAll('.retail-products table tbody tr')].map(x => retail_products = x.innerHTML);
+
+        const retail_products = document.querySelectorAll('.retail-products table tbody tr');
+        // let retail_products = $('.retail-products table tbody tr').each(function(index, tr){
+        //             if (index==0){
+        //                 tr;
+        //             }
+        //         });
+        // event.target.elements.product_name.value;
         let invoice = {
             employee_id: userProfile.id,
-            product_id: formData.products ? formData.products[0].id : 0,
             client_name: event.target.clientName.value,
+            date_of_service: event.target.dateOfService.value,
+            concierge_fee_paid: event.target.conciergeFeePaid.value=="on",
+            gfe: event.target.gfe.value=="on",
+            paid_by_client_cash: event.target.paidByClientCash.value,
+            paid_by_client_credit: event.target.paidByClientCredit.value,
+            personal_discount: event.target.personalDiscount.value,
+            tip: event.target.tip.value,
+            comments: event.target.comments.value,
+            products: formData.products,
+            retail_products: formData.retailProducts,
             charge:getTotal(),
         }
+
         console.log("invoice:", invoice)
         fetch("/invoices/", {
             method: "POST",
@@ -319,6 +343,16 @@ export default function AddInvoices(props) {
                                         className="ml-1"
                                     />
                                 </label>
+                                <label className="block">
+                                    GFE:
+                                    <input
+                                        type="checkbox"
+                                        name="gfe"
+                                        checked={formData.gfe}
+                                        onChange={(event)=>handleInputChange(event)}
+                                        className="ml-2"
+                                    />
+                                </label>
                                 <label className="mb-2 block">
                                     Paid by Client Cash:
                                     <input
@@ -388,7 +422,7 @@ export default function AddInvoices(props) {
                             </div>
                         </div>
                         <div>
-                            <div className="border rounded-sm p-2 mb-4">
+                            <div className="border rounded-sm p-2 mb-4 products-used">
                                 <table className="w-full">
                                     <thead>
                                     <tr>
@@ -405,6 +439,7 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="text"
                                                 name="productName"
+                                                id="product_name"
                                                 autoComplete="off"
                                                 value={currentProduct.name}
                                                 onChange={handleProductNameChange}
@@ -487,7 +522,7 @@ export default function AddInvoices(props) {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="border rounded-sm p-2 mb-4">
+                            <div className="border rounded-sm p-2 mb-4 retail-products">
                                 <table className="w-full">
                                     <thead>
                                     <tr>
@@ -504,6 +539,7 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="text"
                                                 name="productName"
+                                                id="retail_product_name"
                                                 autoComplete="off"
                                                 value={currentRetailProduct.name}
                                                 onChange={handleRetailProductNameChange}
@@ -588,16 +624,6 @@ export default function AddInvoices(props) {
                                 </table>
                             </div>
                             <div className="border rounded-sm p-2 mb-4">
-                                <label className="block">
-                                    GFE:
-                                    <input
-                                        type="checkbox"
-                                        name="gfe"
-                                        checked={formData.gfe}
-                                        onChange={(event)=>handleInputChange(event)}
-                                        className="ml-2"
-                                    />
-                                </label>
                                 <label className="block">
                                     Overhead Fee Type:
                                     <select

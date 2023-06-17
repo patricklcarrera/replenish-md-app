@@ -6,6 +6,7 @@ export default function Invoice({invoice}){
     function handleClick () {
         setModalShow(!modalShow)
     }
+
    const tailwindInvoiceCard =
        <Card className='text-center' border="info" style={{ width: '18rem' }}>
            <Card.Header as="h5">Invoice Id {invoice.id}</Card.Header>
