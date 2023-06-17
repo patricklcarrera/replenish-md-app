@@ -47,10 +47,10 @@ group :development do
   gem 'letter_opener'
 end
 
-gem "prawn-rails" # To generate the PDF while the form is saved.
-gem "prawn-html" # To generate the PDF while the form is saved.
-# gem 'wicked_pdf'
-# gem 'wkhtmltopdf-binary', '~> 0.12.6.5'
+# html to pdf:
+gem "prawn-rails"
+gem "prawn-html"
+
 gem "active_model_serializers", "~> 0.10.13"
 
 gem "faker"

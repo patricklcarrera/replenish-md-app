@@ -39,7 +39,7 @@ class InvoicesController < ApplicationController
       @employee.clients.find_or_create_by(name: params[:client_name])
     end
 
-    @products = params[:products].pluck("name", "quantity", "price")
-    @retail_products = params[:retail_products].pluck("name", "quantity", "price")
+    @products = params[:products].pluck("name", "quantity", "retail_price")
+    @retail_products = params[:retail_products].pluck("name", "quantity", "retail_price")
   end
 end

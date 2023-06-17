@@ -9,26 +9,12 @@ class Invoice < ApplicationRecord
 
   def send_pdf_mail(products, retail_products)
     products_str = products&.map do |product|
-      "<div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
-          <h3>Products:</h5>
-            <div class='border rounded-sm p-2 mb-4 products-used'>
-                <table class='w-full'>
-                    <thead>
+                    "<tbody>
                       <tr>
-                        <th>Products Used        </th>
-                        <th>Product Quantity        </th>
-                        <th>Price        </th>
-                        <th>Total Price        </th>
-                      </tr>
-                    </thead>
-                    <br>
-                    <tbody>
-                      <tr>
-                        <td>#{product&.first}        </td>
+                        <td>#{product&.first}       </td>
                         <td>#{product&.second}        </td>
                         <td>#{product&.third}        </td>
-                        <td>#{product.present? ? (product.third) : 0}        </td>
-                      </tr>
+                        <td>#{product.present? ? (product.second.to_i * product.third.to_i) : 0}        </td>
                       </tr>
                     </tbody>
                 </table>
@@ -39,25 +25,12 @@ class Invoice < ApplicationRecord
     end.inject(:+) || ""
 
     retail_products_str = retail_products&.map do |product|
-      "<div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
-          <h3>Products:</h5>
-            <div class='border rounded-sm p-2 mb-4 products-used'>
-                <table class='w-full'>
-                    <thead>
-                      <tr>
-                        <th>Products Used        </th>
-                        <th>Product Quantity        </th>
-                        <th>Price        </th>
-                        <th>Total Price        </th>
-                      </tr>
-                    </thead>
-                    <br>
-                    <tbody>
+                    "<tbody>
                       <tr>
                         <td>#{product&.first}        </td>
                         <td>#{product&.second}        </td>
                         <td>#{product&.third}        </td>
-                        <td>#{product.present? ? (product.third) : 0}        </td>
+                        <td>#{product.present? ? (product.second.to_i * product.third.to_i) : 0}        </td>
                       </tr>
                       </tr>
                     </tbody>
@@ -95,6 +68,10 @@ class Invoice < ApplicationRecord
 
     phtml.append(css: css)
     phtml.append(html: "
+                        <h2>Invoice: #{id}</h2>
+                        <br>
+                        <h3>Total: #{charge}</h3>
+                        <br>
                         <form class='max-w-4xl mx-auto bg-white p-4 rounded-md'>
                           <div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
                             <div>
@@ -160,7 +137,34 @@ class Invoice < ApplicationRecord
                             </div>
                           </div>
 
-                          <br>" + products_str + retail_products_str +
+                          <br>
+                          <div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
+                            <h3>Products:</h5>
+                              <div class='border rounded-sm p-2 mb-4 products-used'>
+                                  <table class='w-full'>
+                                      <thead>
+                                        <tr>
+                                          <th>Products Used  </th>
+                                          <th>Quantity        </th>
+                                          <th>Price        </th>
+                                          <th>Total Price        </th>
+                                        </tr>
+                                      </thead>
+                                      <br>" + products_str + 
+
+                            "<div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
+                              <h3>Retail Products:</h5>
+                                <div class='border rounded-sm p-2 mb-4 products-used'>
+                                    <table class='w-full'>
+                                        <thead>
+                                          <tr>
+                                            <th>Products Used  </th>
+                                            <th>Quantity        </th>
+                                            <th>Price        </th>
+                                            <th>Total Price        </th>
+                                          </tr>
+                                        </thead>
+                                        <br>" + retail_products_str +
 
                           "<div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
                             <div>

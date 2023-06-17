@@ -247,6 +247,7 @@ export default function AddInvoices(props) {
         //             }
         //         });
         // event.target.elements.product_name.value;
+
         let invoice = {
             employee_id: userProfile.id,
             client_name: event.target.clientName.value,
@@ -258,9 +259,12 @@ export default function AddInvoices(props) {
             personal_discount: event.target.personalDiscount.value,
             tip: event.target.tip.value,
             comments: event.target.comments.value,
+            overhead_fee_type: event.target.overheadFeeType.value,
+            overhead_fee_value: event.target.overheadFeeValue.value,
+            comments: event.target.comments.value,
             products: formData.products,
             retail_products: formData.retailProducts,
-            charge:getTotal(),
+            charge: getTotal(),
         }
 
         console.log("invoice:", invoice)
