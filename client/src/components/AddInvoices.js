@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 
 const initialFormState = {
     dateOfService: "",
-    paidByClientCash:null,
+    paidByClientCash: null,
     paidByClientCredit: null,
     comments: "",
     personalDiscount: null,
@@ -18,10 +18,11 @@ const initialFormState = {
     //Retail Product States
     retailProducts:[],
     //Client States
-    client:{name:"", id:null},
+    client: { name: "" },
 }
+
 export default function AddInvoices(props) {
-    const { productList, clientsList, userProfile } = props
+    const { productList, userProfile } = props
     const [formData, setFormData] = useState(initialFormState);
     const [currentProduct, setCurrentProduct] = useState( {name: '', price: null, quantity: 1})
     const [selectedProduct, setSelectedProduct] =   useState(null);
@@ -30,8 +31,8 @@ export default function AddInvoices(props) {
     const [selectedRetailProduct, setSelectedRetailProduct] =   useState(null);
     const [matchingRetailProducts, setMatchingRetailProducts] = useState([]);
     const [currentClient, setCurrentClient] = useState({name:""});
-    const [selectedClient, setSelectedClient] = useState({name:""});
-    const [matchingClients,setMatchingClients] = useState([]);
+    const [clientName, setClientName] = useState('');
+
     const handleInputChange = (event, index) => {
         const {name, value, type, checked} = event.target;
         if (type === 'checkbox') {
@@ -90,6 +91,7 @@ export default function AddInvoices(props) {
             }));
         }
     };
+
     const removeProduct = (index) => {
         const updatedProducts = [...formData.products];
         updatedProducts.splice(index, 1);
@@ -98,6 +100,7 @@ export default function AddInvoices(props) {
             ["products"]: updatedProducts,
         }));
     };
+
     const removeRetailProduct = (index) => {
         const updatedProducts = [...formData.retailProducts];
         updatedProducts.splice(index, 1);
@@ -136,6 +139,7 @@ export default function AddInvoices(props) {
         }
         return total;
     };
+
     const getOverheadFeeAmount = () => {
         if (formData.overheadFeeType === 'percentage') {
             return getTotalProductPriceSum() * (formData.overheadFeeValue / 100);
@@ -143,6 +147,7 @@ export default function AddInvoices(props) {
             return formData.overheadFeeValue;
         }
     };
+
     /// Product selection functions
     const handleProductNameChange = (e) => {
         const input = e.target.value;
@@ -207,10 +212,12 @@ export default function AddInvoices(props) {
             setMatchingRetailProducts([]);
         }
     };
+
     const handleRetailQuantityChange = (e) => {
         const quantity = parseInt(e.target.value);
         setCurrentRetailProduct({ ...currentRetailProduct, quantity });
     };
+
     const handleAddRetailProduct = () => {
         if (selectedRetailProduct) {
             setCurrentRetailProduct({ name: '', price: 0, quantity: 1 });
@@ -223,43 +230,39 @@ export default function AddInvoices(props) {
             }));
         }
     };
-    //Client Name functions
-    const handleClientNameChange = (e) => {
-        const input = e.target.value;
-        setCurrentClient({ name: input});
-        const matchedClients = clientsList?.filter(
-            (client) => client.name.toLowerCase().includes(input.toLowerCase())
-        );
-        setMatchingClients(matchedClients);
-    };
-    const handleClientSelection = (selectedClientName) => {
-        const selectedClient = clientsList?.find(
-            (client) => client.name === selectedClientName
-        );
-        if (selectedClient) {
-            setCurrentClient({ name: selectedClient.name});
-            setSelectedClient(selectedClient);
-            setMatchingClients([]);
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                ['client']: [selectedClient]
-            }));
-            // setShowError(false);
-        } else {
-            setCurrentClient({ name: selectedClientName});
-            setSelectedClient(null);
-            setMatchingClients([]);
-            // setShowError(true);
-        }
-    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        // const products = ''
+        // const retail_products = ''
+
+        // [...document.querySelectorAll('.products-used table tbody tr')].map(x => x.innerHTML);
+        // [...document.querySelectorAll('.retail-products table tbody tr')].map(x => retail_products = x.innerHTML);
+
+        const retail_products = document.querySelectorAll('.retail-products table tbody tr');
+        // let retail_products = $('.retail-products table tbody tr').each(function(index, tr){
+        //             if (index==0){
+        //                 tr;
+        //             }
+        //         });
+        // event.target.elements.product_name.value;
         let invoice = {
             employee_id: userProfile.id,
-            product_id: formData.products?formData.products[0].id : 0,
-            client_id: selectedClient?selectedClient.id : 0,
+            client_name: event.target.clientName.value,
+            date_of_service: event.target.dateOfService.value,
+            concierge_fee_paid: event.target.conciergeFeePaid.value=="on",
+            gfe: event.target.gfe.value=="on",
+            paid_by_client_cash: event.target.paidByClientCash.value,
+            paid_by_client_credit: event.target.paidByClientCredit.value,
+            personal_discount: event.target.personalDiscount.value,
+            tip: event.target.tip.value,
+            comments: event.target.comments.value,
+            products: formData.products,
+            retail_products: formData.retailProducts,
             charge:getTotal(),
         }
+
         console.log("invoice:", invoice)
         fetch("/invoices/", {
             method: "POST",
@@ -270,7 +273,12 @@ export default function AddInvoices(props) {
         }).then((res) => {
             if (res.ok) {
                 toast.success('Invoice created successfully and the mail has been sent on the email id');
-            } else {
+            } else if (res.status == 404) {
+                res.json().then((json) => {
+                    toast.error('Please provide a client.');
+                });
+            }  
+            else {
                 res.json().then((json) => {
                     toast.error('Failed to create Invoice');
                 });
@@ -284,9 +292,6 @@ export default function AddInvoices(props) {
         setCurrentProduct( {name: '', price: 0, quantity: 1})
         setSelectedProduct(null);
         setMatchingProducts([]);
-        setCurrentClient({name:""});
-        setSelectedClient({name:""});
-        setMatchingClients([]);
     };
 
     return (
@@ -304,24 +309,14 @@ export default function AddInvoices(props) {
                             <input
                                 type="text"
                                 name="clientName"
-                                value={currentClient.name}
-                                onChange={handleClientNameChange}
+                                id="clientName"
+                                onChange={(event) =>
+                                  setClientName(event.target.value)
+                                }
+                                autoComplete="off"
                                 className="w-full mt-1 p-1 border-gray-300 border rounded-md"
                                 required
                             />
-                            {matchingClients.length > 0 && (
-                                <div className="absolute bg-white w-sm max-h-40 overflow-y-auto rounded-md mt-1 shadow-md">
-                                    {matchingClients.map((client) => (
-                                        <p  key={client.id}
-                                            className="p-2 cursor-pointer hover:bg-gray-100"
-                                            onClick={() => handleClientSelection(client.name)}
-                                        >
-                                            {client.name}
-                                        </p>
-                                    ))}
-                                </div>
-                            )}
-
                         </label>
                         <label className="mb-2 block">
                             Date of Service:
@@ -346,6 +341,16 @@ export default function AddInvoices(props) {
                                         checked={formData.conciergeFeePaid}
                                         onChange={(event)=>handleInputChange(event)}
                                         className="ml-1"
+                                    />
+                                </label>
+                                <label className="block">
+                                    GFE:
+                                    <input
+                                        type="checkbox"
+                                        name="gfe"
+                                        checked={formData.gfe}
+                                        onChange={(event)=>handleInputChange(event)}
+                                        className="ml-2"
                                     />
                                 </label>
                                 <label className="mb-2 block">
@@ -417,7 +422,7 @@ export default function AddInvoices(props) {
                             </div>
                         </div>
                         <div>
-                            <div className="border rounded-sm p-2 mb-4">
+                            <div className="border rounded-sm p-2 mb-4 products-used">
                                 <table className="w-full">
                                     <thead>
                                     <tr>
@@ -434,6 +439,8 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="text"
                                                 name="productName"
+                                                id="product_name"
+                                                autoComplete="off"
                                                 value={currentProduct.name}
                                                 onChange={handleProductNameChange}
                                                 className="w-full p-1 border-gray-500 border rounded-md"
@@ -466,6 +473,7 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="string"
                                                 name="productPrice"
+                                                autoComplete="off"
                                                 value={currentProduct.price}
                                                 className="w-full p-1 border-gray-300 border rounded-md"
                                             />
@@ -514,7 +522,7 @@ export default function AddInvoices(props) {
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="border rounded-sm p-2 mb-4">
+                            <div className="border rounded-sm p-2 mb-4 retail-products">
                                 <table className="w-full">
                                     <thead>
                                     <tr>
@@ -531,6 +539,8 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="text"
                                                 name="productName"
+                                                id="retail_product_name"
+                                                autoComplete="off"
                                                 value={currentRetailProduct.name}
                                                 onChange={handleRetailProductNameChange}
                                                 className="w-full p-1 border-gray-500 border rounded-md"
@@ -564,6 +574,7 @@ export default function AddInvoices(props) {
                                             <input
                                                 type="string"
                                                 name="productPrice"
+                                                autoComplete="off"
                                                 value={currentRetailProduct.price}
                                                 className="w-full p-1 border-gray-300 border rounded-md"
                                             />
@@ -613,16 +624,6 @@ export default function AddInvoices(props) {
                                 </table>
                             </div>
                             <div className="border rounded-sm p-2 mb-4">
-                                <label className="block">
-                                    GFE:
-                                    <input
-                                        type="checkbox"
-                                        name="gfe"
-                                        checked={formData.gfe}
-                                        onChange={(event)=>handleInputChange(event)}
-                                        className="ml-2"
-                                    />
-                                </label>
                                 <label className="block">
                                     Overhead Fee Type:
                                     <select

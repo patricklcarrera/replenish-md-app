@@ -7,7 +7,6 @@ Rails.application.routes.draw do
   get '/hello', to: 'application#hello_world'
   get '/employees', to: 'employee#index'
   get '/myprofile', to: 'employee#show'
-  get '/invoices', to: 'invoice#index'
   get '/products', to: 'product#index'
   get '/greeting/:name', to: 'employees#name'
   delete '/logout', to: 'sessions#destroy'

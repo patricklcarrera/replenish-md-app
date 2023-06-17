@@ -16,7 +16,6 @@ import AddProduct from "./components/AddProduct";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 function App() {
     const [employeeList, setEmployeeList] = useState();
     const [invoiceList, setInvoiceList] = useState();
@@ -115,7 +114,7 @@ function App() {
                 }/>
                 <Route path='/addinvoice'
                        element={<AddInvoices
-                           productList={productList} clientsList={clientsList} userProfile={userProfile}/>}/>
+                           productList={productList} userProfile={userProfile}/>}/>
                 <Route path='/signup'
                        element={<Signup userProfile={userProfile}/>}/>
                 <Route path='/myprofile'

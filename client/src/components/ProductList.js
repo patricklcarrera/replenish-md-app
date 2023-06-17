@@ -8,9 +8,7 @@ import Search from './Search'
 
 
 export default function ProductList({filteredProducts, onDeleteProduct, changeSearch, searchTerm ,onSave, userProfile}){
-
     const [productList, setProductList] = useState([]);
-    // const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
         // Fetch the invoice list from the API
@@ -23,18 +21,6 @@ export default function ProductList({filteredProducts, onDeleteProduct, changeSe
                 console.log(error);
             });
     }, []); // Empty dependency array to run the effect only once
-    //
-    // useEffect(() => {
-    //     fetch(`/employees/myprofile`).then((res) => {
-    //         if (res.ok) {
-    //             res.json().then((userProfile) => setUserProfile(userProfile));
-    //         } else {
-    //             setUserProfile(null)
-    //         }
-    //     });
-    // }, []);
-
-    // console.log('current user logged in', userProfile);
 
     return(
         <div >

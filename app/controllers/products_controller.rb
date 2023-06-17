@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   skip_before_action :authorized_employee
   before_action :set_access_control_headers
 
-  def index 
+  def index
     products = Product.all 
     render json: products, status: :ok
   end
