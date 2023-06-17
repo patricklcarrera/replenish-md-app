@@ -44,10 +44,13 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'letter_opener'
 end
 
 gem "prawn-rails" # To generate the PDF while the form is saved.
-
+gem "prawn-html" # To generate the PDF while the form is saved.
+# gem 'wicked_pdf'
+# gem 'wkhtmltopdf-binary', '~> 0.12.6.5'
 gem "active_model_serializers", "~> 0.10.13"
 
 gem "faker"
