@@ -16,7 +16,6 @@ import AddProduct from "./components/AddProduct";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 function App() {
     const [employeeList, setEmployeeList] = useState();
     const [invoiceList, setInvoiceList] = useState();
