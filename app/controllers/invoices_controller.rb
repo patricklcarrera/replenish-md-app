@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 class InvoicesController < ApplicationController
   skip_before_action :authorized_employee
   before_action :initialize_objects, only: :create
+  before_action :find_invoice, only: :finalize
 
   def index
-    invoices = Invoice.all 
+    invoices = Invoice.all
     render json: invoices, status: :ok
   end
 
@@ -17,13 +20,22 @@ class InvoicesController < ApplicationController
       @invoice = @client.invoices.new(invoice_params)
 
       if @invoice.save
-        @invoice.send_pdf_mail(@products, @retail_products)
+        @invoice.save_pdf(@products, @retail_products)
         render json: @invoice, status: :created
       else
         render json: {'error' => @invoice.errors}, status: :bad_request
       end
     else
       render json: {'error' => "Please provide a client."}, status: :not_found
+    end
+  end
+
+  def finalize
+    if @invoice
+      @invoice.finalize_and_send_pdf_mail
+      render json: {'message' => 'Invoice FInalized'}, status: :ok 
+    else
+      render json: {'error' => 'Invoice not found'}, status: :not_found
     end
   end
 
@@ -39,7 +51,11 @@ class InvoicesController < ApplicationController
       @employee.clients.find_or_create_by(name: params[:client_name])
     end
 
-    @products = params[:products].pluck("name", "quantity", "price")
-    @retail_products = params[:retail_products].pluck("name", "quantity", "price")
+    @products = params[:products].pluck("name", "quantity", "retail_price")
+    @retail_products = params[:retail_products].pluck("name", "quantity", "retail_price")
+  end
+
+  def find_invoice
+    @invoice = Invoice.find_by(id: params[:id])
   end
 end

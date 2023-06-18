@@ -1,17 +1,27 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Invoice from './Invoice';
 
 export default function InvoiceList({userProfile}){
-
-    const [invoiceList, setInvoiceList] = useState([]);
+    const [finalizedInvoiceList, setFinalizedInvoiceList] = useState([]);
+    const [nonFinalizedInvoiceList, setNonFinalizedInvoiceList] = useState([]);
 
     useEffect(() => {
+        const fiInvoiceList = [];
+        const nonFiInvoiceList = [];
         // Fetch the invoice list from the API
         fetch('/invoices')
             .then((response) => response.json())
             .then((data) => {
-                setInvoiceList(data); // Update the state with the fetched data
+                data.forEach(invoice=>{
+                    if (invoice.is_finalized == true) {
+                        fiInvoiceList.push(invoice);
+                    } else {
+                        nonFiInvoiceList.push(invoice);
+                    }
+                });
+                setFinalizedInvoiceList(fiInvoiceList);
+                setNonFinalizedInvoiceList(nonFiInvoiceList);
             })
             .catch((error) => {
                 console.log(error);
@@ -22,12 +32,26 @@ export default function InvoiceList({userProfile}){
         <div >
             <Header userProfile={userProfile}/>
             <br/>
-            <div className="row row-cols-4 g-0" >
-                {invoiceList.map(invoice=>(
-                    <Invoice invoice={invoice}/>
-                ))}
+            <div>
+                <h2 className='text-center'>Finalized Invoices:</h2>
+                <hr/>
+                <div className="row row-cols-4 g-0" >
+                    {finalizedInvoiceList.map(invoice=>(
+                        <Invoice invoice={invoice}/>
+                    ))}
 
+                </div>
+            </div>
+            <br/>
+            <div>
+                <h2 className='text-center'>Non Finalized Invoices:</h2>
+                <hr/>
+                <div className="row row-cols-4 g-0" >
+                    {nonFinalizedInvoiceList.map(invoice=>(
+                        <Invoice invoice={invoice}/>
+                    ))}
+                </div>
             </div>
         </div>
-    )
+    );
 }

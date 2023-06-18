@@ -30,7 +30,6 @@ export default function AddInvoices(props) {
     const [currentRetailProduct, setCurrentRetailProduct] = useState( {name: '', price: null, quantity: 1})
     const [selectedRetailProduct, setSelectedRetailProduct] =   useState(null);
     const [matchingRetailProducts, setMatchingRetailProducts] = useState([]);
-    const [currentClient, setCurrentClient] = useState({name:""});
     const [clientName, setClientName] = useState('');
 
     const handleInputChange = (event, index) => {
@@ -126,6 +125,8 @@ export default function AddInvoices(props) {
         });
         return sum;
     };
+
+    // TODO: change this code for the calculations:
     const getTotal = () => {
         const totalProductPriceSum = getTotalProductPriceSum();
         const totalPaidByClient = getTotalPaidByClient();
@@ -247,6 +248,7 @@ export default function AddInvoices(props) {
         //             }
         //         });
         // event.target.elements.product_name.value;
+
         let invoice = {
             employee_id: userProfile.id,
             client_name: event.target.clientName.value,
@@ -258,9 +260,12 @@ export default function AddInvoices(props) {
             personal_discount: event.target.personalDiscount.value,
             tip: event.target.tip.value,
             comments: event.target.comments.value,
+            overhead_fee_type: event.target.overheadFeeType.value,
+            overhead_fee_value: event.target.overheadFeeValue.value,
+            comments: event.target.comments.value,
             products: formData.products,
             retail_products: formData.retailProducts,
-            charge:getTotal(),
+            charge: getTotal(),
         }
 
         console.log("invoice:", invoice)
@@ -272,7 +277,7 @@ export default function AddInvoices(props) {
             body: JSON.stringify(invoice),
         }).then((res) => {
             if (res.ok) {
-                toast.success('Invoice created successfully and the mail has been sent on the email id');
+                toast.success('Invoice created successfully.');
             } else if (res.status == 404) {
                 res.json().then((json) => {
                     toast.error('Please provide a client.');

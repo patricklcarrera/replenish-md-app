@@ -5,30 +5,19 @@ class Invoice < ApplicationRecord
   belongs_to :client
   has_many :products_invoices, class_name: 'ProductInvoice'
   has_many :products, through: :products_invoices
-  has_one_attached :pdf, dependent: :purge
+  has_one_attached :document, dependent: :purge
 
-  def send_pdf_mail(products, retail_products)
+  scope :finalized, -> { where(is_finalized: true) }
+  scope :non_finalized, -> { where(is_finalized: false) }
+
+  def save_pdf(products, retail_products)
     products_str = products&.map do |product|
-      "<div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
-          <h3>Products:</h5>
-            <div class='border rounded-sm p-2 mb-4 products-used'>
-                <table class='w-full'>
-                    <thead>
+                    "<tbody>
                       <tr>
-                        <th>Products Used        </th>
-                        <th>Product Quantity        </th>
-                        <th>Price        </th>
-                        <th>Total Price        </th>
-                      </tr>
-                    </thead>
-                    <br>
-                    <tbody>
-                      <tr>
-                        <td>#{product&.first}        </td>
+                        <td>#{product&.first}       </td>
                         <td>#{product&.second}        </td>
                         <td>#{product&.third}        </td>
-                        <td>#{product.present? ? (product.third) : 0}        </td>
-                      </tr>
+                        <td>#{product.present? ? (product.second.to_i * product.third.to_i) : 0}        </td>
                       </tr>
                     </tbody>
                 </table>
@@ -39,25 +28,12 @@ class Invoice < ApplicationRecord
     end.inject(:+) || ""
 
     retail_products_str = retail_products&.map do |product|
-      "<div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
-          <h3>Products:</h5>
-            <div class='border rounded-sm p-2 mb-4 products-used'>
-                <table class='w-full'>
-                    <thead>
-                      <tr>
-                        <th>Products Used        </th>
-                        <th>Product Quantity        </th>
-                        <th>Price        </th>
-                        <th>Total Price        </th>
-                      </tr>
-                    </thead>
-                    <br>
-                    <tbody>
+                    "<tbody>
                       <tr>
                         <td>#{product&.first}        </td>
                         <td>#{product&.second}        </td>
                         <td>#{product&.third}        </td>
-                        <td>#{product.present? ? (product.third) : 0}        </td>
+                        <td>#{product.present? ? (product.second.to_i * product.third.to_i) : 0}        </td>
                       </tr>
                       </tr>
                     </tbody>
@@ -95,6 +71,10 @@ class Invoice < ApplicationRecord
 
     phtml.append(css: css)
     phtml.append(html: "
+                        <h2>Invoice: #{id}</h2>
+                        <br>
+                        <h3>Total: #{charge}</h3>
+                        <br>
                         <form class='max-w-4xl mx-auto bg-white p-4 rounded-md'>
                           <div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
                             <div>
@@ -160,7 +140,34 @@ class Invoice < ApplicationRecord
                             </div>
                           </div>
 
-                          <br>" + products_str + retail_products_str +
+                          <br>
+                          <div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
+                            <h3>Products:</h5>
+                              <div class='border rounded-sm p-2 mb-4 products-used'>
+                                  <table class='w-full'>
+                                      <thead>
+                                        <tr>
+                                          <th>Products Used  </th>
+                                          <th>Quantity        </th>
+                                          <th>Price        </th>
+                                          <th>Total Price        </th>
+                                        </tr>
+                                      </thead>
+                                      <br>" + products_str + 
+
+                            "<div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
+                              <h3>Retail Products:</h5>
+                                <div class='border rounded-sm p-2 mb-4 products-used'>
+                                    <table class='w-full'>
+                                        <thead>
+                                          <tr>
+                                            <th>Products Used  </th>
+                                            <th>Quantity        </th>
+                                            <th>Price        </th>
+                                            <th>Total Price        </th>
+                                          </tr>
+                                        </thead>
+                                        <br>" + retail_products_str +
 
                           "<div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
                             <div>
@@ -178,8 +185,13 @@ class Invoice < ApplicationRecord
                             </div>
                           </div>
                         </form>")
-
     pdf_file = pdf.render_file("public/#{employee.name}-Invoice-#{id}.pdf")
+    document.attach(io: File.open("public/#{employee.name}-Invoice-#{id}.pdf"), filename: "#{employee.name}-Invoice-#{id}.pdf", content_type: "application/pdf")
+    save!
+  end
+
+  def finalize_and_send_pdf_mail
+    update!(is_finalized: true)
     SendPdfToInvoiceMailer.with(invoice: self).send_mail.deliver
   end
 end

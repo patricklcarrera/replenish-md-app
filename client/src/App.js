@@ -12,6 +12,7 @@ import Homepage from "./components/Homepage"
 import MyProfile from "./components/MyProfile";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AddProduct from "./components/AddProduct";
+import ResetPassword from "./components/ResetPassword";
 
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -57,6 +58,7 @@ function App() {
             }
         });
     }, []);
+
     const updateEmployee = (employee) => setUserProfile(employee)
 
     useEffect(() => {
@@ -96,7 +98,8 @@ function App() {
                            element={<Login updateEmployee={updateEmployee}/>}/>
                     {userProfile && userProfile.is_admin? (
                         <>
-
+                        <Route path='/resetPassword'
+                               element={<ResetPassword updateEmployee={updateEmployee}/>}/>
                         <Route path='/addproduct'
                                element={<AddProduct addProduct={addProduct} userProfile={userProfile}/>}/>
                         <Route path='/employees'
