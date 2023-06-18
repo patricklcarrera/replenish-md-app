@@ -453,7 +453,6 @@ Product.create(
     product_type: "(Xeo) Laser Hair Removal",
     cost_price: 520,
     retail_price: 520
-
 )
 
 Product.create(
@@ -461,103 +460,7 @@ Product.create(
     product_type: "(Xeo) Laser Hair Removal",
     cost_price: 300,
     retail_price: 300
-
 )
-# Product.create(
-#     name: "Botox",
-#     product_type: "Neurotoxins",
-#     cost_price: 7,
-#     retail_price: 13
-
-# )
-
-
-# Product.create(
-#     name: "Kybella",
-#     product_type: "Fat Dissolvers",
-#     cost_price: 600,
-#     retail_price: 1200
-
-# )
-
-# Product.create(
-#     name: "Juvederm Ultra XC",
-#     product_type: "Juvederm",
-#     cost_price: 350,
-#     retail_price: 700
-
-# )
-
-# Product.create(
-#     name: "Juvederm Ultra Plus XC",
-#     product_type: "Juvederm",
-#     cost_price: 350,
-#     retail_price: 700
-
-# )
-
-# Product.create(
-#     name: "Voluma",
-#     product_type: "Juvederm",
-#     cost_price: 416,
-#     retail_price: 800
-
-# )
-
-# Product.create(
-#     name: "RHA2",
-#     product_type: "Revance",
-#     cost_price: 300,
-#     retail_price: 650
-
-# )
-
-# Product.create(
-#     name: "RHA3",
-#     product_type: "Revance",
-#     cost_price: 300,
-#     retail_price: 650
-
-# )
-# Product.create(
-#     name: "Redensity",
-#     product_type: "Revance",
-#     cost_price: 300,
-#     retail_price: 650
-
-# )
-
-# Product.create(
-#     name: "Versa",
-#     product_type: "Prollenium",
-#     cost_price: 250,
-#     retail_price: 600
-
-# )
-
-# Product.create(
-#     name: "Revenesse Lips",
-#     product_type: "Prollenium",
-#     cost_price: 250,
-#     retail_price: 600
-
-# )
-
-# Product.create(
-#     name: "Vit C 1500mg",
-#     product_type: "IV Boosters",
-#     cost_price: 3,
-#     retail_price: 25
-
-# )
-
-# Product.create(
-#     name: "Vit C 10000mg",
-#     product_type: "IV Boosters",
-#     cost_price: 21,
-#     retail_price: 75
-
-# )
 
 15.times do
     Client.create(

@@ -66,8 +66,6 @@ const handleConsolelog = () => {
     setSelectedDate(event.target.value);
   };
 
-  
-
   const tailwindForm = 
   <>
   <Header/>

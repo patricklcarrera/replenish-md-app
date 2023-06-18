@@ -75,8 +75,8 @@ export default function Employee({product, onDeleteProduct, onSave, isAdmin}){
       console.log("deleted");
       
       confirmAlert({
-        title: 'Confirm to submit',
-        message: 'Are you sure to do this.',
+        title: 'Confirm to delete',
+        message: 'Are you sure you want to delete this product',
         buttons: [
           {
             label: 'Yes',

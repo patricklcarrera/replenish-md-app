@@ -21,97 +21,96 @@ function CustomInvoiceModal(props) {
     var overheadFeeType = invoiceData.overheadFeeType
     var overheadFeeValue = invoiceData.overheadFeeValue
 
+    debugger
     return (
-        <Modal
-            {...props}
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
+            <Modal
+                {...props}
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
             <div className='my-invoice-modal'>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
                         InvoiceID: {invoiceID}
+                        <hr/>
+                        Total: {charge}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='text-center'>
-                    <form class='max-w-4xl mx-auto bg-white p-4 rounded-md'>
-                      <div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
+                    <form className='max-w-4xl mx-auto bg-white p-4 rounded-md'>
+                      <div className=' border rounded-sm p-2 mb-4 flex justify-content-around'>
                         <div>
-                          <h4>Provider:</h4>
+                          <h9>Provider:</h9>
                           <div>{employeeName}</div>
                         </div>
                         
                         <div>
-                          <h4>Client Name:</h4>
+                          <h9>Client Name:</h9>
                           <div>{clientName}</div>
                         </div>
                 
                         <div>
-                          <h4>Date of Service:</h4>
+                          <h9>Date of Service:</h9>
                           <div>{dateOfService}</div>
                         </div>
                       </div>
                       
-
-                      <div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
+                      <div className='border rounded-sm p-2 mb-4 flex justify-content-around'>
                         <div>
-                          <h4>Concierge Fee Paid:</h4>
+                          <h9>Concierge Fee Paid:</h9>
                           <div>{conciergeFeePaid ? 'Yes' : 'No'}</div>
                         </div>
                         
                         <div>
-                          <h4>GFE:</h4>
+                          <h9>GFE:</h9>
                           <div>{gfe ? 'Yes' : 'No'}</div>
                         </div>
                         
                         <div>
-                          <h4>Paid By Client Cash:</h4>
+                          <h9>Paid By Client Cash:</h9>
                           <div>{paidByClientCash}</div>
                         </div>
                         
                         <div>
-                          <h4>Paid By Client Credit:</h4>
+                          <h9>Paid By Client Credit:</h9>
                           <div>{paidByClientCredit}</div>
                         </div>
                         
                         <div>
-                          <h4>Total Paid by Credit:</h4>
+                          <h9>Total Paid by Client:</h9>
                           <div>{paidByClientCredit + paidByClientCash}</div>
                         </div>
                       </div>
 
-                      
-
-                      <div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
+                      <div className=' border rounded-sm p-2 mb-4 flex justify-content-around'>
                         <div>
-                          <h4>Personal Discount:</h4>
+                          <h9>Personal Discount:</h9>
                           <div>{personalDiscount}</div>
                         </div>
                         
                         <div>
-                          <h4>Tip:</h4>
+                          <h9>Tip:</h9>
                           <div>{tip}</div>
                         </div>
                         
                         <div>
-                          <h4>Comments:</h4>
+                          <h9>Comments:</h9>
                           <div>{comments}</div>
                         </div>
                       </div>
-
                       
-                      <div class=' border rounded-sm p-2 mb-4 flex justify-content-around'>
+                      <div className=' border rounded-sm p-2 mb-4 flex justify-content-around'>
                         <div>
-                          <h4>Overhead:</h4>
+                          <h9>Overhead:</h9>
                         </div>
                         
                         <div>
-                          <h4>Fee Type:</h4>
+                          <h9>Fee Type:</h9>
                           <div>{overheadFeeType}</div>
                         </div>
                         
                         <div>
-                          <h4>Fee Value:</h4>
+                          <h9>Fee Value:</h9>
                           <div>{overheadFeeValue}</div>
                         </div>
                       </div>

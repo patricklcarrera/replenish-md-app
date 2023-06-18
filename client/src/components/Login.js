@@ -25,6 +25,12 @@ function Login({updateEmployee}) {
                   toast.success('Successfully Logged In');
                   navigate('/myprofile')
               })
+          } else if(res.status == 302)  {
+            res.json().then(user => {
+              navigate('/resetPassword',{
+                employee: user
+              })
+            })
           } else {
               res.json().then(json => setErrors(json.errors))
               toast.error('Failed to Log In');
@@ -38,31 +44,31 @@ function Login({updateEmployee}) {
   }
 
   const loginForm = 
-  <Form onSubmit={handleSubmit}>
-  <Form.Group >
-      <Form.Label>Email</Form.Label>
-      <Form.Control name="email" type="text" required value={formData.email} placeholder="Enter your email" onChange={handleChange}/>
-  </Form.Group>
-  <br />
-  <Form.Group>
-      <Form.Label>Password</Form.Label>
-      <Form.Control name="password" type="password" required value={formData.password} placeholder="Enter password" onChange={handleChange}/>
-  </Form.Group>
-  <br />
-  <Form.Group >
-      <Button type="submit">Login</Button>
-  </Form.Group>
-</Form>
+    <Form onSubmit={handleSubmit}>
+    <Form.Group >
+        <Form.Label>Email</Form.Label>
+        <Form.Control name="email" type="text" required value={formData.email} placeholder="Enter your email" onChange={handleChange}/>
+    </Form.Group>
+    <br />
+    <Form.Group>
+        <Form.Label>Password</Form.Label>
+        <Form.Control name="password" type="password" required value={formData.password} placeholder="Enter password" onChange={handleChange}/>
+    </Form.Group>
+    <br />
+    <Form.Group >
+        <Button type="submit">Login</Button>
+    </Form.Group>
+  </Form>
   
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white shadow-lg rounded-lg">
-        <div>
-          <h2 className="text-center text-3xl font-extrabold text-gray-900">Sign in to ReplenishMD</h2>
+        <div className="max-w-md w-full space-y-8 p-8 bg-white shadow-lg rounded-lg">
+          <div>
+            <h2 className="text-center text-3xl font-extrabold text-gray-900">Sign in to ReplenishMD</h2>
+            {loginForm}
+          </div>
         </div>
-        {loginForm}
-          </div>
-          </div>
+      </div>
     )
 }
 
