@@ -22,8 +22,8 @@ function ResetPassword () {
     .then(res => {
       if(res.ok){
         res.json().then(user => {
-            toast.success('Successfully Logged In with new password.');
-            navigate('/myprofile')
+          toast.success('Successfully Logged In with new password.');
+          navigate('/myprofile')
         })
       } else if(res.status == 302)  {
         toast.error('Passwords do not match, please try again.');
@@ -42,12 +42,12 @@ function ResetPassword () {
         <Form.Label>Password</Form.Label>
         <Form.Control name="password" type="password" required value={formData.password} placeholder="Enter new password" onChange={handleChange}/>
       </Form.Group>
-      <br />
+      <br/>
       <Form.Group>
         <Form.Label>Confirm Password</Form.Label>
         <Form.Control name="confirmPassword" type="password" required value={formData.confirmPassword} placeholder="Confirm new password" onChange={handleChange}/>
       </Form.Group>
-      <br />
+      <br/>
       <Form.Group >
         <Button type="submit">Save Password and Login</Button>
       </Form.Group>
