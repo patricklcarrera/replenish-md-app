@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
       session[:employee_id] = @employee.id
       render json: @employee, status: :ok
     elsif trying_with_temp_password?
+      session[:employee_id] = @employee.id
       render json: @employee, status: 302
     else
       render json: { error: "Invalid email or password" }, status: 401

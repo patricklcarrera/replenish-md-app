@@ -3,10 +3,11 @@ import {useNavigate} from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import {toast} from "react-toastify";
 function Login({updateEmployee}) {
-  const loginState = {
-    email: '',
-    password: ''
-};
+    const loginState = {
+      email: '',
+      password: ''
+    };
+
     const [errors, setErrors] = useState([])
     const [formData, setFormData] = useState(loginState);
     const navigate = useNavigate();
@@ -27,9 +28,7 @@ function Login({updateEmployee}) {
               })
           } else if(res.status == 302)  {
             res.json().then(user => {
-              navigate('/resetPassword',{
-                employee: user
-              })
+              navigate('/resetPassword')
             })
           } else {
               res.json().then(json => setErrors(json.errors))

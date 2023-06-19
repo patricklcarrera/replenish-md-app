@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post '/invoices/:id/finalize', to: 'invoices#finalize'
   post '/employees/new', to: 'employees#create'
   get '/employees/:id/send_reset_password_link', to: 'employees#send_reset_password_link'
+  post '/employees/reset_password', to: 'employees#reset_password'
   post '/login', to: 'sessions#create'
   get '/clients', to: 'clients#index'
   delete '/products', to: 'products#destroy'

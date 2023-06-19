@@ -30,7 +30,7 @@ export default function Employee({employee, invoiceList}){
                 employeeInvoices={employeeInvoices}
                 EmployeeId = {employee.id}
             /> : <></>}
-            <Button onClick={sendResetPasswordLink} variant="info">Send Reset Password Link</Button>
+            <Button onClick={sendResetPasswordLink} variant="info" style={{width: "100px", height: "30px"}}>Send Reset Password Link</Button>
         </Card.Body>
     </Card>
 

@@ -2,6 +2,7 @@
   "dependencies": {
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
-    "react-confirm-alert": "^3.0.6"
+    "react-confirm-alert": "^3.0.6",
+    "react-navigation-stack": "^2.10.4"
   }
 }
