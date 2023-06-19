@@ -4,32 +4,33 @@ import {useNavigate, useParams} from 'react-router-dom'
 import {toast} from "react-toastify";
 
 function ResetPassword () {
-    const resetPasswordState = {
-      password: '',
-      confirmPassword: '',
-    };
-    const [errors, setErrors] = useState([])
-    const [formData, setFormData] = useState(resetPasswordState);
-    const navigate = useNavigate();
+  const resetPasswordState = {
+    password: '',
+    confirmPassword: '',
+  };
+  const [errors, setErrors] = useState([])
+  const [formData, setFormData] = useState(resetPasswordState);
+  const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-      e.preventDefault()
-      fetch("/employees/reset_password", {
-        method: 'POST',
-        headers:{'Content-Type': 'application/json'},
-        body:JSON.stringify(formData)
-      })
-      .then(res => {
-        if(res.ok){
-            res.json().then(user => {
-                toast.success('Successfully Logged In with new password.');
-                navigate('/myprofile')
-            })
-        } else if(res.status == 302)  {
-          toast.error('Passwords do not match, please try again.');
-        }
-      })
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    fetch("/employees/reset_password", {
+      method: 'POST',
+      headers:{'Content-Type': 'application/json'},
+      body:JSON.stringify(formData)
+    })
+    .then(res => {
+      if(res.ok){
+        res.json().then(user => {
+            toast.success('Successfully Logged In with new password.');
+            navigate('/myprofile')
+        })
+      } else if(res.status == 302)  {
+        toast.error('Passwords do not match, please try again.');
+      }
+    })
   }
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
@@ -56,7 +57,7 @@ function ResetPassword () {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full space-y-8 p-8 bg-white shadow-lg rounded-lg">
         <div>
-          <h2 className="text-center text-3xl font-extrabold text-gray-900">Sign in to ReplenishMD</h2>
+          <h2 className="text-center text-3xl font-extrabold text-gray-900">Enter new password</h2>
           {loginForm}
         </div>
       </div>
