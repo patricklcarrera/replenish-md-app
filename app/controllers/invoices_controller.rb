@@ -20,7 +20,7 @@ class InvoicesController < ApplicationController
       @invoice = @client.invoices.new(invoice_params)
 
       if @invoice.save
-        @invoice.save_pdf(@products, @retail_products)
+        @invoice.save_pdf_and_send_mail(@products, @retail_products)
         render json: @invoice, status: :created
       else
         render json: {'error' => @invoice.errors}, status: :bad_request

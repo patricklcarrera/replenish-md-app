@@ -10,7 +10,7 @@ class Invoice < ApplicationRecord
   scope :finalized, -> { where(is_finalized: true) }
   scope :non_finalized, -> { where(is_finalized: false) }
 
-  def save_pdf(products, retail_products)
+  def save_pdf_and_send_mail(products, retail_products)
     products_str = products&.map do |product|
                     "<tbody>
                       <tr>
@@ -188,6 +188,8 @@ class Invoice < ApplicationRecord
     pdf_file = pdf.render_file("public/#{employee.name}-Invoice-#{id}.pdf")
     document.attach(io: File.open("public/#{employee.name}-Invoice-#{id}.pdf"), filename: "#{employee.name}-Invoice-#{id}.pdf", content_type: "application/pdf")
     save!
+
+    SendNotificationPdfToAdminsMailer.with(invoice: self).send_mail.deliver
   end
 
   def finalize_and_send_pdf_mail

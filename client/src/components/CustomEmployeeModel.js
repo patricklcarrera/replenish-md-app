@@ -17,7 +17,6 @@ function CustomEmployeeModal(props) {
             </Modal.Header>
             <Modal.Body className='text-center'>
                 {employeeInvoices.map(data =>{
-                    debugger
                         return <p key={data.id}>Invoice ID: {data.id} </p>
                     })
                 }

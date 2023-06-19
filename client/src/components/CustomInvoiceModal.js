@@ -21,7 +21,6 @@ function CustomInvoiceModal(props) {
     var overheadFeeType = invoiceData.overheadFeeType
     var overheadFeeValue = invoiceData.overheadFeeValue
 
-    debugger
     return (
             <Modal
                 {...props}

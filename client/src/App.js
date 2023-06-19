@@ -95,11 +95,11 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path='/'
-                           element={<Login updateEmployee={updateEmployee}/>}/>
+                        element={<Login updateEmployee={updateEmployee}/>}/>
                     {userProfile && userProfile.is_admin? (
                         <>
                         <Route path='/resetPassword'
-                               element={<ResetPassword updateEmployee={updateEmployee}/>}/>
+                               element={<ResetPassword/>}/>
                         <Route path='/addproduct'
                                element={<AddProduct addProduct={addProduct} userProfile={userProfile}/>}/>
                         <Route path='/employees'
