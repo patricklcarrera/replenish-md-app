@@ -145,6 +145,148 @@ Product.create(
     retail_price: 700
 
 )
+
+
+Product.create(
+    name: "AlphaRet Overnight 30 ml",
+    product_type: "Retail Skin Care",
+    cost_price: 135,
+    retail_price: 135
+
+)
+
+Product.create(
+    name: "AlphaRet Overnight 50 ml",
+    product_type: "Retail Skin Care",
+    cost_price: 195,
+    retail_price: 195
+
+)
+
+Product.create(
+    name: "AlphaRet Clearing Serum 30 ml",
+    product_type: "Retail Skin Care",
+    cost_price: 135,
+    retail_price: 135
+
+)
+Product.create(
+    name: "Even Tone Correcting Serum 50 ml",
+    product_type: "Retail Skin Care",
+    cost_price: 155,
+    retail_price: 155
+
+)
+
+Product.create(
+    name: "Eyemax AlphaRet",
+    product_type: "Retail Skin Care",
+    cost_price: 120,
+    retail_price: 120
+
+)
+
+Product.create(
+    name: "Alto Advanced Defense and Serum",
+    product_type: "Retail Skin Care",
+    cost_price: 190,
+    retail_price: 190
+
+)
+
+Product.create(
+    name: "Oxygen Infusio Wash",
+    product_type: "Retail Skin Care",
+    cost_price: 48,
+    retail_price: 48
+
+)
+
+Product.create(
+    name: "A-Team Duo Kit (Alto 15ml + Alpharet 15ml)",
+    product_type: "Retail Skin Care",
+    cost_price: 155,
+    retail_price: 155
+
+)
+
+Product.create(
+    name: "Cleansing Gel (Sensitive Cleaner)",
+    product_type: "Retail Skin Care",
+    cost_price: 48,
+    retail_price: 48
+
+)
+
+Product.create(
+    name: "Sunbetter Tone Smart SPF 50ml",
+    product_type: "Retail Skin Care",
+    cost_price: 75,
+    retail_price: 75
+
+)
+
+Product.create(
+    name: "Sunbetter Sheer SPF 50ml",
+    product_type: "Retail Skin Care",
+    cost_price: 75,
+    retail_price: 75
+
+)
+
+Product.create(
+    name: "UV Clear SPF 46",
+    product_type: "Retail Skin Care",
+    cost_price: 39,
+    retail_price: 39
+
+)
+Product.create(
+    name: "Foaming Facial Cleanser",
+    product_type: "Retail Skin Care",
+    cost_price: 30.5 ,
+    retail_price: 30.5
+
+)
+
+Product.create(
+    name: "Antimicrobial Cleanser",
+    product_type: "Retail Skin Care",
+    cost_price: 60 ,
+    retail_price: 60
+
+)
+Product.create(
+    name: "Renewing HA Serum",
+    product_type: "Retail Skin Care",
+    cost_price: 140,
+    retail_price: 140
+
+)
+
+Product.create(
+    name: "Restoring HA Serum",
+    product_type: "Retail Skin Care",
+    cost_price: 120,
+    retail_price: 120
+
+)
+
+Product.create(
+    name: "Renew Kit(Serum+Cleanser)",
+    product_type: "Retail Skin Care",
+    cost_price: 180,
+    retail_price: 180
+
+)
+
+Product.create(
+    name: "Restore Kit (Serum+Cleanser)",
+    product_type: "Retail Skin Care",
+    cost_price: 160 ,
+    retail_price: 160
+
+)
 Product.create(
     name: "Lyft",
     product_type: "Restylane",

@@ -71,6 +71,10 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.4)
+      public_suffix (>= 2.0.2, < 6.0)
+    ansi (1.5.0)
+    ast (2.4.2)
     bcrypt (3.1.18)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -94,6 +98,10 @@ GEM
     irb (1.6.3)
       reline (>= 0.3.0)
     jsonapi-renderer (0.2.2)
+    launchy (2.5.2)
+      addressable (~> 2.8)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -119,7 +127,24 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.14.2-x86_64-linux)
       racc (~> 1.4)
+    oga (3.4)
+      ast
+      ruby-ll (~> 2.1)
+    pdf-core (0.9.0)
     pg (1.4.6)
+    prawn (2.4.0)
+      pdf-core (~> 0.9.0)
+      ttfunk (~> 1.7)
+    prawn-html (0.7.1)
+      oga (~> 3.3)
+      prawn (~> 2.4)
+    prawn-rails (1.4.2)
+      actionview (>= 3.1.0)
+      prawn
+      prawn-table
+    prawn-table (0.2.2)
+      prawn (>= 1.3.0, < 3.0.0)
+    public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.2)
@@ -155,8 +180,12 @@ GEM
     rake (13.0.6)
     reline (0.3.2)
       io-console (~> 0.5)
+    ruby-ll (2.1.3)
+      ansi
+      ast
     thor (1.2.1)
     timeout (0.3.2)
+    ttfunk (1.7.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     websocket-driver (0.7.5)
@@ -173,7 +202,10 @@ DEPENDENCIES
   bootsnap
   debug
   faker
+  letter_opener
   pg (~> 1.1)
+  prawn-html
+  prawn-rails
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.2)
   tzinfo-data
