@@ -8,12 +8,14 @@ const formInitialState = {
     name: '',
     email: '',
     password: '',
+    gfe: false,
+    percentage: 0,
     is_admin: false
 };
 
 export default function SignUp({userProfile}) {
     const [formData, setFormData] = useState(formInitialState);
-    const { name, email, password, is_admin } = formData;
+    const { name, email, password, is_admin, gfe, percentage } = formData;
 
     function onSubmit(e) {
         e.preventDefault();
@@ -21,6 +23,8 @@ export default function SignUp({userProfile}) {
             name,
             email,
             password,
+            gfe,
+            percentage,
             is_admin
         };
 
@@ -45,7 +49,7 @@ export default function SignUp({userProfile}) {
                         }
                     }).catch((error) => {
                         console.error('Error:', error);
-                        toast.error('An 1 error occurred');
+                        toast.error('An error occurred');
                     });
                 }
             }).catch((error) => {
@@ -59,8 +63,15 @@ export default function SignUp({userProfile}) {
     };
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
+
         if (type === 'checkbox') {
             if (name === 'is_admin') {
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    [name]: checked,
+                }));
+            }
+            if (name === 'gfe') {
                 setFormData((prevFormData) => ({
                     ...prevFormData,
                     [name]: checked,
@@ -76,15 +87,18 @@ export default function SignUp({userProfile}) {
                 ...prevFormData,
                 [name]: value,
             }));
+        } else if (name === 'percentage') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));
         } else if (name === 'password') {
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 [name]: value,
             }));
         }
-
     };
-
 
     return (
         <>
@@ -133,6 +147,32 @@ export default function SignUp({userProfile}) {
                         onChange={handleChange}
                         className="w-full p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         required
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="gfe" className="text-base me-3 font-medium text-blue-800">
+                        GFE
+                    </label>
+                    <input
+                        type="checkbox"
+                        name="gfe"
+                        value={formData.gfe}
+                        onChange={handleChange}
+                        className="p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="gfe" className="text-base me-3 font-medium text-blue-800">
+                        Percentage
+                    </label>
+                    <input
+                        type="number"
+                        name="percentage"
+                        value={formData.percentage}
+                        onChange={handleChange}
+                        className="p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
                 </div>
 

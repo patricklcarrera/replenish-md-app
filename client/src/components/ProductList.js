@@ -6,7 +6,6 @@ import Modal from 'react-bootstrap/Modal';
 import Form from "react-bootstrap/Form";
 import Search from './Search'
 
-
 export default function ProductList({filteredProducts, onDeleteProduct, changeSearch, searchTerm ,onSave, userProfile}){
     const [productList, setProductList] = useState([]);
 
