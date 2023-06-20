@@ -36,54 +36,71 @@ export default function AddInvoices(props) {
         const {name, value, type, checked} = event.target;
         if (type === 'checkbox') {
             if (name === 'conciergeFeePaid') {
-
                 setFormData((prevFormData) => ({
                     ...prevFormData,
                     [name]: checked,
                 }));
                 // setConciergeFeePaid(checked);
-            } else if (name === 'gfe') {
+            }
+
+            if (name === 'gfe') {
                 setFormData((prevFormData) => ({
                     ...prevFormData,
                     [name]: checked,
                 }));
             }
-        } else if (name === 'dateOfService') {
+        } 
+
+        if (name === 'dateOfService') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));  
+        } 
+
+        if (name === 'paidByClientCash') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: +value,
+            })); 
+        }
+
+        if (name === 'paidByClientCredit') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: +value,
+            }));
+        }
+
+        if (name === 'comments') {
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 [name]: value,
             }));
-        } else if (name === 'paidByClientCash') {
+        }
+
+        if (name === 'personalDiscount') {
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 [name]: +value,
             }));
-        } else if (name === 'paidByClientCredit') {
+        } 
+
+        if (name === 'tip') {
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 [name]: +value,
             }));
-        } else if (name === 'comments') {
+        } 
+
+        if (name ==='overheadFeeType'){
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 [name]: value,
             }));
-        } else if (name === 'personalDiscount') {
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                [name]: +value,
-            }));
-        } else if (name === 'tip') {
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                [name]: +value,
-            }));
-        } else if (name ==='overheadFeeType'){
-            setFormData((prevFormData) => ({
-                ...prevFormData,
-                [name]: value,
-            }));
-        }else if (name ==='overheadFeeValue'){
+        }
+
+        if (name ==='overheadFeeValue'){
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 [name]: +value,
@@ -153,9 +170,9 @@ export default function AddInvoices(props) {
     const handleProductNameChange = (e) => {
         const input = e.target.value;
         setCurrentProduct({ name: input, price: 0, quantity: 1 });
-        const matchedProducts = productList?.filter(
-            (product) => product.name.toLowerCase().includes(input.toLowerCase())
-        );
+        const matchedProducts = (input == "") ?  productList :
+            productList?.filter((product) => product.name.toLowerCase().includes(input.toLowerCase()))
+
         setMatchingProducts(matchedProducts);
     };
     const handleProductSelection = (selectedProductName) => {
@@ -194,9 +211,9 @@ export default function AddInvoices(props) {
     const handleRetailProductNameChange = (e) => {
         const input = e.target.value;
         setCurrentRetailProduct({ name: input, price: 0, quantity: 1 });
-        const matchedProducts = productList?.filter(
-            (product) => product.name.toLowerCase().includes(input.toLowerCase())
-        );
+        const matchedProducts = (input == "") ?  productList :
+            productList?.filter((product) => product.name.toLowerCase().includes(input.toLowerCase()))
+
         setMatchingRetailProducts(matchedProducts);
     };
     const handleRetailProductSelection = (selectedRetailProductName) => {
@@ -447,10 +464,11 @@ export default function AddInvoices(props) {
                                                 id="product_name"
                                                 autoComplete="off"
                                                 value={currentProduct.name}
+                                                onClick={handleProductNameChange}
                                                 onChange={handleProductNameChange}
                                                 className="w-full p-1 border-gray-500 border rounded-md"
                                             />
-                                            {matchingProducts?.length > 0 && (
+                                            {matchingProducts?.length >= 0 && (
                                                 <div className="absolute bg-white w-sm max-h-40 overflow-y-auto rounded-md mt-1 shadow-md">
                                                     {matchingProducts.map((product) => (
                                                         <p
@@ -547,6 +565,7 @@ export default function AddInvoices(props) {
                                                 id="retail_product_name"
                                                 autoComplete="off"
                                                 value={currentRetailProduct.name}
+                                                onClick={handleRetailProductNameChange}
                                                 onChange={handleRetailProductNameChange}
                                                 className="w-full p-1 border-gray-500 border rounded-md"
                                                 // required

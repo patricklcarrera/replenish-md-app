@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
   before_action :set_access_control_headers
 
   def index
-    products = Product.all 
+    products = Product.all
     render json: products, status: :ok
   end
 
