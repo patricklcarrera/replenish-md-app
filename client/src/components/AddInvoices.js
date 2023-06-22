@@ -32,6 +32,16 @@ export default function AddInvoices(props) {
     const [matchingRetailProducts, setMatchingRetailProducts] = useState([]);
     const [clientName, setClientName] = useState('');
 
+    {matchingProducts.map((product) => (
+                        <p
+                            key={product.id}
+                            className="p-2 cursor-pointer hover:bg-gray-100"
+                            onClick={() => handleProductSelection(product.name)}
+                        >
+                            {product.name}
+                        </p>
+                    ))}
+
     const handleInputChange = (event, index) => {
         const {name, value, type, checked} = event.target;
         if (type === 'checkbox') {
@@ -209,10 +219,20 @@ export default function AddInvoices(props) {
 
     ///Retail Product selection functions
     const handleRetailProductNameChange = (e) => {
+        const retailProductList = []
+        productList.forEach(product => {
+            if (product != undefined && product != null && product != "" && product.product_type != undefined){
+                console.log(product.product_type);
+                if (product.product_type.includes('Retail')) {
+                    retailProductList.push(product)
+                }
+            }
+        });
+
         const input = e.target.value;
         setCurrentRetailProduct({ name: input, price: 0, quantity: 1 });
-        const matchedProducts = (input == "") ?  productList :
-            productList?.filter((product) => product.name.toLowerCase().includes(input.toLowerCase()))
+        const matchedProducts = (input == "") ?  retailProductList :
+            retailProductList?.filter((product) => product.name.toLowerCase().includes(input.toLowerCase()))
 
         setMatchingRetailProducts(matchedProducts);
     };
@@ -252,19 +272,7 @@ export default function AddInvoices(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // const products = ''
-        // const retail_products = ''
-
-        // [...document.querySelectorAll('.products-used table tbody tr')].map(x => x.innerHTML);
-        // [...document.querySelectorAll('.retail-products table tbody tr')].map(x => retail_products = x.innerHTML);
-
         const retail_products = document.querySelectorAll('.retail-products table tbody tr');
-        // let retail_products = $('.retail-products table tbody tr').each(function(index, tr){
-        //             if (index==0){
-        //                 tr;
-        //             }
-        //         });
-        // event.target.elements.product_name.value;
 
         let invoice = {
             employee_id: userProfile.id,

@@ -17,7 +17,16 @@ code {
     monospace;
 }
 
-
 .textarea1 {
   resize: none;
+}
+
+@media screen and (min-width: 576px) {
+  .addwidth {
+    max-width: 600px !important;
+  }
+}
+
+.modal-header-padding {
+  margin-right: 1.5rem !important;
 }
