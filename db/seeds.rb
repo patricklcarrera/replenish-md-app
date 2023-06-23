@@ -18,7 +18,7 @@ Employee.create(
     name: "Allen Carrera",
     email: "allen@email.com",
     gfe: true,
-    percentage: 10,
+    percentage: 60,
     password: "test123",
     is_admin: true
 )

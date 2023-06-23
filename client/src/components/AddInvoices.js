@@ -140,41 +140,85 @@ export default function AddInvoices(props) {
         return totalPaid;
     };
     const getTotalProductPrice = (product) => {
-        return (+product.retail_price) * (+product.quantity);
+        return (+product.cost_price) * (+product.quantity);
     };
     const getTotalProductPriceSum = () => {
         let sum = 0;
         formData.products.forEach((product) => {
             sum += getTotalProductPrice(product);
         });
-        formData.retailProducts.forEach((product) => {
-            sum += getTotalProductPrice(product);
-        });
         return sum;
     };
 
+    const getTotalRetailProductPriceSum = () => {
+      let sum = 0;
+      formData.retailProducts.forEach((product) => {
+          sum += getTotalProductPrice(product);
+      });
+      return sum;
+  };
+
+    const calculateTax = (amountPaid) => {
+      let afterTaxprice = amountPaid - (amountPaid * 0.031);
+      return afterTaxprice;
+  };
+
+  const cashCalculations = (obj) => {
+    let cashRemaining = obj.cashRemaining;
+    if (cashRemaining >= obj.retailTotal && cashRemaining != 0)
+      cashRemaining -= obj.retailTotal;
+     else obj.retailTotal = calculateTax(obj.retailTotal);
+    if (cashRemaining > obj.discount  && cashRemaining != 0)
+      cashRemaining -= obj.retailTotal;
+      else obj.discount = calculateTax(obj.discount)
+    if (cashRemaining >= obj.Tip  && cashRemaining != 0)
+      cashRemaining -= obj.tip;
+      else obj.tip = calculateTax(obj.tip)
+    return;
+};
+
+const getOverheadFeeAmount = (total) => {
+  if (formData.overheadFeeType === 'percentage') {
+      return total * (formData.overheadFeeValue / 100);
+  } else {
+      return formData.overheadFeeValue;
+  }
+};
+
     // TODO: change this code for the calculations:
-    const getTotal = () => {
-        const totalProductPriceSum = getTotalProductPriceSum();
-        const totalPaidByClient = getTotalPaidByClient();
-        const overheadFeeAmount = getOverheadFeeAmount();
-        let total = (getTotalPaidByClient() - getTotalProductPriceSum() + overheadFeeAmount + formData.tip) - formData.personalDiscount;
-        if (formData.conciergeFeePaid) {
-            total -= total * 0.1; // Apply 10% discount
+    const getTotal = () => { 
+        let afterTax = {
+          cashRemaining: formData.paidByClientCash,
+          tip: formData.tip,
+          discount: formData.personalDiscount,
+          retailTotal: getTotalRetailProductPriceSum()
         }
+        let gfeFee = 0;
         if (formData.gfe) {
-            total -= total * 0.05; // Apply 5% discount
+          gfeFee = 30 // Apply 5% discount
         }
-        return total;
+        cashCalculations(afterTax);
+        const totalProductPriceSum = getTotalProductPriceSum();
+        const totalPaidByClientAT = formData.paidByClientCash + calculateTax(formData.paidByClientCredit);
+        let total = (totalPaidByClientAT + afterTax.discount - totalProductPriceSum - gfeFee - afterTax.retailTotal) * (userProfile.percentage/100); //(replace with injector percentage)
+        console.log ("gfe:" + userProfile.gfe);
+        if(userProfile.gfe) 
+          total += gfeFee;
+        total = total - afterTax.discount + afterTax.retailTotal*0.15;
+        // if (injector is provider) total += gfeFee
+        console.log (total);
+        if (formData.conciergeFeePaid) {
+            total = total - 50;
+        }
+        // console.log ("total before overhead fee:" + total);
+        const overheadFeeAmount = getOverheadFeeAmount(total);
+        // console.log ("Overhead fee" + overheadFeeAmount);
+        total = total - overheadFeeAmount;
+        // console.log ("total after overhead fee:" + total);
+        return total.toFixed(2);
     };
 
-    const getOverheadFeeAmount = () => {
-        if (formData.overheadFeeType === 'percentage') {
-            return getTotalProductPriceSum() * (formData.overheadFeeValue / 100);
-        } else {
-            return formData.overheadFeeValue;
-        }
-    };
+ 
 
     /// Product selection functions
     const handleProductNameChange = (e) => {
@@ -190,7 +234,7 @@ export default function AddInvoices(props) {
             (product) => product.name === selectedProductName
         );
         if (selectedProduct) {
-            setCurrentProduct({ name: selectedProduct.name, price: selectedProduct.retail_price, quantity: 1 });
+            setCurrentProduct({ name: selectedProduct.name, price: selectedProduct.cost_price, quantity: 1 });
             setSelectedProduct(selectedProduct);
             setMatchingProducts([]);
         } else {
@@ -241,7 +285,7 @@ export default function AddInvoices(props) {
             (product) => product.name === selectedRetailProductName
         );
         if (selectedProduct) {
-            setCurrentRetailProduct({ name: selectedProduct.name, price: selectedProduct.retail_price, quantity: 1 });
+            setCurrentRetailProduct({ name: selectedProduct.name, price: selectedProduct.cost_price, quantity: 1 });
             setSelectedRetailProduct(selectedProduct);
             setMatchingRetailProducts([]);
         } else {
@@ -292,7 +336,7 @@ export default function AddInvoices(props) {
             retail_products: formData.retailProducts,
             charge: getTotal(),
         }
-
+console.log(userProfile?.percentage)
         console.log("invoice:", invoice)
         fetch("/invoices/", {
             method: "POST",
@@ -396,7 +440,7 @@ export default function AddInvoices(props) {
                           <input
                             type="number"
                             name="paidByClientCash"
-                            value={formData.paidByClientCash}
+                            value={Number(formData.paidByClientCash).toString()}
                             min="0"
                             onChange={(event) => handleInputChange(event)}
                             className="w-full mt-1 p-1 border-gray-300 border rounded-md"
@@ -407,7 +451,7 @@ export default function AddInvoices(props) {
                           <input
                             type="number"
                             name="paidByClientCredit"
-                            value={formData.paidByClientCredit}
+                            value={Number(formData.paidByClientCredit).toString()}
                             min="0"
                             onChange={(event) => handleInputChange(event)}
                             className="w-full mt-1 p-1 border-gray-300 border rounded-md"
@@ -423,7 +467,7 @@ export default function AddInvoices(props) {
                           <input
                             type="number"
                             name="personalDiscount"
-                            value={formData.personalDiscount}
+                            value={Number(formData.personalDiscount).toString()}
                             min="0"
                             onChange={(event) => handleInputChange(event)}
                             className="w-full mt-1 p-1 border-gray-300 border rounded-md"
@@ -434,7 +478,7 @@ export default function AddInvoices(props) {
                           <input
                             type="number"
                             name="tip"
-                            value={formData.tip}
+                            value={Number(formData.tip).toString()}
                             min="0"
                             onChange={(event) => handleInputChange(event)}
                             className="w-full mt-1 p-1 border-gray-300 border rounded-md"
@@ -553,10 +597,10 @@ export default function AddInvoices(props) {
                                 </td>
                                 <td>
                                   <p className="w-full p-1 border-gray-500 border rounded-md my-1">
-                                    {product.retail_price}
+                                    {product.cost_price}
                                   </p>
                                 </td>
-                                <td>{product.quantity * product.retail_price}</td>
+                                <td>{product.quantity * product.cost_price}</td>
                                 <td>
                                   <button
                                     type="button"
@@ -664,10 +708,10 @@ export default function AddInvoices(props) {
                                 </td>
                                 <td>
                                   <p className="w-full p-1 border-gray-500 border rounded-md my-1">
-                                    {product.retail_price}
+                                    {product.cost_price}
                                   </p>
                                 </td>
-                                <td>{product.quantity * product.retail_price}</td>
+                                <td>{product.quantity * product.cost_price}</td>
                                 <td>
                                   <button
                                     type="button"
@@ -700,7 +744,7 @@ export default function AddInvoices(props) {
                           <input
                             type="number"
                             name="overheadFeeValue"
-                            value={formData.overheadFeeValue}
+                            value={Number(formData.overheadFeeValue).toString()}
                             min="0"
                             onChange={(event) => handleInputChange(event)}
                             className="w-full mt-1 p-1 border-gray-300 border rounded-md"
