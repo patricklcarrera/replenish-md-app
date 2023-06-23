@@ -45,20 +45,30 @@ export default function Invoice({invoice}){
     }
 
    const tailwindInvoiceCard =
-       <Card className='text-center' border="info" style={{ width: '18rem' }}>
-           <Card.Header as="h5">Invoice Id {invoice.id}</Card.Header>
-           <Card.Body className=''>
-                <Card.Title className='mb-3'>Employee: {invoice.employee.name}</Card.Title>
-                <Button onClick={handleClick} variant="info">See More Details</Button>
-                <br/>
-                <Button style={{ display: invoice.is_finalized ? "none" : "inline" }} onClick={finalizeInvoice} variant="info">Finalize Invoice</Button>
+        <Card className="text-center" border="info" style={{ width: "18rem" }}>
+            <Card.Header as="h5">Invoice Id {invoice.id}</Card.Header>
+            <Card.Body className="">
+                <Card.Title className="mb-3">
+                    Employee: {invoice.employee.name}
+                </Card.Title>
+                <Button onClick={handleClick} className="mb-3" variant="info">
+                    See More Details
+                </Button>
+                <br />
+                <Button
+                  style={{ display: invoice.is_finalized ? "none" : "inline" }}
+                  onClick={finalizeInvoice}
+                  variant="info"
+                >
+                    Finalize Invoice
+                </Button>
                 <CustomModal
-                   show={modalShow}
-                   onHide={handleClick}
-                   invoiceData={invoice}
+                  show={modalShow}
+                  onHide={handleClick}
+                  invoiceData={invoice}
                 />
-           </Card.Body>
-       </Card>
+            </Card.Body>
+        </Card>
 
    return (
       <>

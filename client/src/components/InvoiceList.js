@@ -31,22 +31,22 @@ export default function InvoiceList({userProfile}){
     return(
         <div >
             <Header userProfile={userProfile}/>
-            <br/>
+            <br />
             <div>
                 <h2 className='text-center'>Finalized Invoices:</h2>
-                <hr/>
-                <div className="row row-cols-4 g-0" >
+                <hr />
+                <div className="justify-center flex flex-wrap gap-3" >
                     {finalizedInvoiceList.map(invoice=>(
                         <Invoice invoice={invoice}/>
                     ))}
 
                 </div>
             </div>
-            <br/>
+            <br />
             <div>
                 <h2 className='text-center'>Non Finalized Invoices:</h2>
-                <hr/>
-                <div className="row row-cols-4 g-0" >
+                <hr />
+                <div className="justify-center flex flex-wrap gap-3" >
                     {nonFinalizedInvoiceList.map(invoice=>(
                         <Invoice invoice={invoice}/>
                     ))}
