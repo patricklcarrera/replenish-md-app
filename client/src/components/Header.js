@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -7,8 +7,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import Image from "react-bootstrap/Image";
 import { Link } from "react-router-dom";
 
-export default function Header({ userProfile }) {
-  // const [userProfile, setUserProfile] = useState(null);
+export default memo(function Header({ userProfile }) {
   const [isMenuShow, setisMenuShow] = useState(true);
   const navigate = useNavigate();
 
@@ -21,7 +20,7 @@ export default function Header({ userProfile }) {
       }
     });
   };
-  
+
   const adminHeader = (
     <nav className="bg-blue-400">
       <div className="max-w-7xl mx-auto lg:px-4 sm:pl-6 sm:pr-0 ">
@@ -120,7 +119,7 @@ export default function Header({ userProfile }) {
               </button>
               <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
                 <LinkContainer to="/products">
-                <Nav.Link>Product List</Nav.Link>
+                  <Nav.Link>Product List</Nav.Link>
                 </LinkContainer>
               </button>
               <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
@@ -146,4 +145,4 @@ export default function Header({ userProfile }) {
       {userProfile && userProfile.is_admin ? adminHeader : employeeHeader}
     </div>
   );
-}
+});

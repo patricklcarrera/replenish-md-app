@@ -13,6 +13,7 @@ export default function Employee({ employee, invoiceList }) {
   const [gfe, setGfe] = useState(employee?.gfe || false);
   const [percentage, setPercentage] = useState(employee?.percentage, 0);
   // console.log({ employee, invoiceList });
+
   useEffect(() => {
     const filteredInvoices = invoiceList.filter(
       (invoice) => invoice.employee.id === employee.id
@@ -119,6 +120,7 @@ export default function Employee({ employee, invoiceList }) {
           <CustomEmployeeModel
             show={modalShow}
             onHide={handleClick}
+            setModalShow={setModalShow}
             employeeInvoices={employeeInvoices}
             EmployeeId={employee.id}
           />
@@ -144,22 +146,7 @@ export default function Employee({ employee, invoiceList }) {
         </Button>
 
         {employee?.is_admin === false && (
-          // <Button
-          //   onClick={updateGfePercent}
-          //   variant="info"
-          //   onMouseEnter={() => setIisUpdateHover(true)}
-          //   onMouseLeave={() => setIisUpdateHover(false)}
-          //   style={{
-          //     width: isUpdateHover ? "150px" : "10px",
-          //     height: isUpdateHover ? "45px" : "10px",
-          //     marginLeft: "2%",
-          //     marginBottom: "2%",
-          //     fontSize: "12px",
-          //   }}
-          // >
-          //   {isUpdateHover ? "Update" : ""}
-          // </Button>
-
+          
           <OverlayTrigger
             trigger="click"
             rootClose

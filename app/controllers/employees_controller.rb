@@ -46,6 +46,11 @@ class EmployeesController < ApplicationController
   end
 
   def update
+    if @employee.update!(employee_params)
+      render json: @employee, status: :ok
+    else
+      render json: {'error' => 'Could not upload the employee'}, status: :bad_request
+    end
   end
 
   private
