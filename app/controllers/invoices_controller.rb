@@ -3,7 +3,7 @@
 class InvoicesController < ApplicationController
   skip_before_action :authorized_employee
   before_action :initialize_objects, only: :create
-  before_action :find_invoice, only: :finalize
+  before_action :find_invoice, only: [:finalize, :update, :send_reject_mail]
 
   def index
     invoices = Invoice.all
@@ -30,6 +30,14 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def update
+    if @invoice.update!(invoice_params)
+      render json: @invoice, status: :ok
+    else
+      render json: { 'error' => 'Failed to Update Invoice' }, status: :bad_request
+    end
+  end
+
   def finalize
     if @invoice
       @invoice.finalize_and_send_pdf_mail
@@ -37,6 +45,10 @@ class InvoicesController < ApplicationController
     else
       render json: {'error' => 'Invoice not found'}, status: :not_found
     end
+  end
+
+  def send_reject_mail
+    @invoice.send_reject_mail(params[:feedback])
   end
 
   private

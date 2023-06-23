@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post '/products/new', to: 'product#create'
   post '/invoices/new', to: 'invoices#create'
   post '/invoices/:id/finalize', to: 'invoices#finalize'
+  post '/invoices/:id/send_reject_mail', to: 'invoices#send_reject_mail'
+  patch '/invoices/:id/', to: 'invoices#update'
   post '/employees/new', to: 'employees#create'
   get '/employees/:id/send_reset_password_link', to: 'employees#send_reset_password_link'
   patch '/employees/:id', to: 'employees#update'

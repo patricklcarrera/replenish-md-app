@@ -113,10 +113,11 @@ const RejectInvoiceModal = ({
         </Modal.Header>
         <Modal.Body className="text-left">
           <div className="text-2xl text-gray-700">InvoiceID: {invoiceID}</div>
+          <br />
           {/* <form className="max-w-4xl mx-auto bg-white p-4 rounded-md"> */}
           <Form.Control
             as="textarea"
-            placeholder="Please give your feedback while this invoiuce is being rejected"
+            placeholder="Please give your feedback while this invoice is being rejected. This invoice will be deleted after you submit your feedback."
             className="h-[100px]"
             onChange={(e) => settextAreaInput(e.target.value)}
           />
@@ -133,10 +134,10 @@ const RejectInvoiceModal = ({
 };
 
 function CustomModal(props) {
+  console.log(props)
   var invoiceData = props.invoiceData;
   var invoiceID = invoiceData.id;
   var employeeName = invoiceData.employee_name;
-  // var productName = invoiceData.product_name;
   var clientName = invoiceData.client_name;
   var charge = invoiceData.charge;
   var dateOfService = invoiceData.date_of_service;
@@ -176,12 +177,12 @@ function CustomModal(props) {
   }
 
   const updateSubmit = () => {
-    fetch(`/invoices/${invoiceID}/update`, {
+    fetch(`/invoices/${invoiceID}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(nestedInputModal),
+      body: JSON.stringify({overhead_fee_type: nestedInputModal.overheadFeeType, overhead_fee_value: nestedInputModal.overheadFeeValue, charge: nestedInputModal.charge}),
     })
       .then((res) => {
         if (res.ok) {
