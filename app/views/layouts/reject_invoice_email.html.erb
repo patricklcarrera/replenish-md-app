@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>
+      Hi, <%= @invoice.employee.name.capitalize %>
+      Please find the feedback for the Invoice: <%= @invoice.id %>:
+
+      <%= @feedback %>
+    </p>
+  </body>
+</html>

@@ -196,4 +196,10 @@ class Invoice < ApplicationRecord
     update!(is_finalized: true)
     SendPdfToInvoiceMailer.with(invoice: self).send_mail.deliver
   end
+
+  def send_reject_mail(feedback)
+    if RejectInvoiceMailer.with(invoice: self, feedback: feedback).send_mail.deliver
+      destroy!
+    end
+  end
 end

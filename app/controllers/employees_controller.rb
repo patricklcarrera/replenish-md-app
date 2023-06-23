@@ -2,7 +2,7 @@
 
 class EmployeesController < ApplicationController
   skip_before_action :authorized_employee
-  before_action :find_employee, only: [:send_reset_password_link, :reset_password]
+  before_action :find_employee, only: [:send_reset_password_link, :reset_password, :update]
 
   def index
     employees = Employee.all 
@@ -42,6 +42,14 @@ class EmployeesController < ApplicationController
       render json: @employee, status: :ok
     else 
       render json: {'error' => 'Passwords do not match, please try again.'}, status: 302
+    end
+  end
+
+  def update
+    if @employee.update!(employee_params)
+      render json: @employee, status: :ok
+    else
+      render json: {'error' => 'Could not upload the employee'}, status: :bad_request
     end
   end
 

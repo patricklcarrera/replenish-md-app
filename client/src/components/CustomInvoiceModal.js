@@ -13,16 +13,11 @@ function CustomInvoiceModal(props) {
   var gfe = invoiceData.gfe;
   var paidByClientCash = invoiceData.paid_by_client_cash;
   var paidByClientCredit = invoiceData.paid_by_client_credit;
-  // var paidByClientCredit = invoiceData.paidByClientCredit;
-  // var paidByClientCash = invoiceData.paidByClientCash;
   var personalDiscount = invoiceData.personal_discount;
   var tip = invoiceData.tip;
   var comments = invoiceData.comments;
   var overheadFeeType = invoiceData.overhead_fee_type;
   var overheadFeeValue = invoiceData.overhead_fee_value;
-  console.log({
-    props,
-  });
   return (
     <Modal
       {...props}
@@ -33,7 +28,7 @@ function CustomInvoiceModal(props) {
       centered
     >
       <div className="my-invoice-modal">
-        <Modal.Header closeButton>
+        <Modal.Header className="modal-header-padding" closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
             InvoiceID: {invoiceID}
             <hr />
@@ -117,7 +112,9 @@ function CustomInvoiceModal(props) {
 
             <div className=" border rounded-sm p-2 mb-4 flex justify-content-around">
               <div>
-                <p className="text-sm md:text-base lg:text-lg">Overhead:</p>
+                <p className="text-sm md:text-base lg:text-lg font-semibold">
+                  Overhead:
+                </p>
               </div>
 
               <div>

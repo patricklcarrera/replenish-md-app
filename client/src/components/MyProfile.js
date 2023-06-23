@@ -58,7 +58,7 @@ function UserPage({ userProfile }) {
         My invoices
       </h2>
       <br />
-      <ul className=" mx-1 mb-3  flex flex-wrap gap-3 ">
+      <ul className=" mx-1 mb-3 justify-center flex flex-wrap gap-3 ">
         {employee.invoices.map((invoice) => {
           // console.log({ invoice });
           return (

@@ -28,11 +28,12 @@ export default function EmployeeList({userProfile}){
 
   return(
     <div>
-      <Header userProfile={userProfile}/>
-      <div className="mt-3 mb-3 mx-1 row row-cols-4 g-3">
-        {employeeList.map(employee=>(
-          <Employee employee={employee}
-          invoiceList={invoiceList}/>
+      <Header userProfile={userProfile} />
+      <div className="mt-3 mb-3 mx-1 flex justify-center flex-wrap gap-3">
+        {employeeList.map((employee) => (
+          <div key={employee.id} className=" ">
+            <Employee employee={employee} invoiceList={invoiceList} />
+          </div>
         ))}
       </div>
     </div>
