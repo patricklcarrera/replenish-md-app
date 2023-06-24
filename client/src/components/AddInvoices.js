@@ -11,8 +11,8 @@ const initialFormState = {
     tip: null,
     conciergeFeePaid: false,
     gfe: false,
-    overheadFeeType:'percentage',
-    overheadFeeValue: null,
+    // overheadFeeType:'percentage',
+    // overheadFeeValue: null,
     //Product States
     products:[],
     //Retail Product States
@@ -329,14 +329,13 @@ const getOverheadFeeAmount = (total) => {
             personal_discount: event.target.personalDiscount.value,
             tip: event.target.tip.value,
             comments: event.target.comments.value,
-            overhead_fee_type: event.target.overheadFeeType.value,
-            overhead_fee_value: event.target.overheadFeeValue.value,
+            // overhead_fee_type: event.target.overheadFeeType.value,
+            // overhead_fee_value: event.target.overheadFeeValue.value,
             comments: event.target.comments.value,
             products: formData.products,
             retail_products: formData.retailProducts,
             charge: getTotal(),
         }
-console.log(userProfile?.percentage)
         console.log("invoice:", invoice)
         fetch("/invoices/", {
             method: "POST",
@@ -727,7 +726,7 @@ console.log(userProfile?.percentage)
                         </table>
                       </div>
                       <div className="border rounded-sm p-2 mb-4">
-                        <label className="block">
+                        {/* <label className="block">
                           Overhead Fee Type:
                           <select
                             name="overheadFeeType"
@@ -749,7 +748,7 @@ console.log(userProfile?.percentage)
                             onChange={(event) => handleInputChange(event)}
                             className="w-full mt-1 p-1 border-gray-300 border rounded-md"
                           />
-                        </label>
+                        </label> */}
                         <label className="block">
                           Total Product Price Sum: {getTotalProductPriceSum()}
                         </label>
