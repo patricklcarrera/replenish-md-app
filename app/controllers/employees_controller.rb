@@ -15,12 +15,17 @@ class EmployeesController < ApplicationController
   end
 
   def name
-    render json:{greeting:"Hello #{params[:name]}"}, status: :ok
+    render json:{ greeting: "Hello #{params[:name]}" }, status: :ok
   end
 
   def create
-    employee = Employee.create!(employee_params)
-    render json: employee, status: :created
+    @employee = Employee.new(employee_params)
+    if @employee.save!
+      @employee.send_reset_password_mail
+      render json: @employee, status: :created
+    else
+      render json: { 'error': 'Employee could not be created.' }, status: :bad_request
+    end
   end
 
   def destroy
@@ -32,7 +37,7 @@ class EmployeesController < ApplicationController
     if @employee
       @employee.send_reset_password_mail
     else
-      render json: { 'error': 'Record Not found' }, status: :ok
+      render json: { 'error': 'Record Not found' }, status: :bad_request
     end
   end
 
@@ -56,7 +61,7 @@ class EmployeesController < ApplicationController
   private
 
   def employee_params
-    params.permit(:name, :email, :password, :gfe, :percentage, :is_admin)
+    params.permit(:name, :email, :password, :gfe, :percentage, :is_admin, :is_inv_manager)
   end
 
   def find_employee

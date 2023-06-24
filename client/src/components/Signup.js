@@ -10,12 +10,13 @@ const formInitialState = {
     password: '',
     gfe: false,
     percentage: 0,
+    is_inv_manager: false,
     is_admin: false
 };
 
 export default function SignUp({userProfile}) {
     const [formData, setFormData] = useState(formInitialState);
-    const { name, email, password, is_admin, gfe, percentage } = formData;
+    const { name, email, password, is_admin, gfe, percentage, is_inv_manager } = formData;
 
     function onSubmit(e) {
         e.preventDefault();
@@ -25,6 +26,7 @@ export default function SignUp({userProfile}) {
             password,
             gfe,
             percentage,
+            is_inv_manager,
             is_admin
         };
 
@@ -72,6 +74,13 @@ export default function SignUp({userProfile}) {
                 }));
             }
             if (name === 'gfe') {
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    [name]: checked,
+                }));
+            }
+
+            if (name === 'is_inv_manager') {
                 setFormData((prevFormData) => ({
                     ...prevFormData,
                     [name]: checked,
@@ -184,6 +193,19 @@ export default function SignUp({userProfile}) {
                         type="checkbox"
                         name="is_admin"
                         value={formData.is_admin}
+                        onChange={handleChange}
+                        className="p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="is_inv_manager" className="text-base me-3 font-medium text-blue-800">
+                        Inventory Manager
+                    </label>
+                    <input
+                        type="checkbox"
+                        name="is_inv_manager"
+                        value={formData.is_inv_manager}
                         onChange={handleChange}
                         className="p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
