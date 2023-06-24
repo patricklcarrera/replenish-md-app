@@ -24,5 +24,5 @@ Rails.application.routes.draw do
   get '/clients', to: 'clients#index'
   delete '/products', to: 'products#destroy'
   post '/inventories/assign', to: 'inventories#assign'
-  post '/inventories/:id/update', to: 'inventories#update'
+  post '/inventories/update', to: 'inventories#update'
 end

@@ -7,10 +7,18 @@ class Invoice < ApplicationRecord
   has_many :products, through: :products_invoices
   has_one_attached :document, dependent: :purge
 
+  before_save :revise_charge
+
   scope :finalized, -> { where(is_finalized: true) }
   scope :non_finalized, -> { where(is_finalized: false) }
 
   def save_pdf_and_send_mail(products, retail_products)
+    all_products = []
+    all_products << products
+    all_products << retail_products
+
+    products_quantities = all_products.map {|product| { Product.find_by(name: product.first[0]).id => product.first[1] } unless product.empty? }.compact
+
     products_str = products&.map do |product|
                     "<tbody>
                       <tr>
@@ -188,11 +196,16 @@ class Invoice < ApplicationRecord
     pdf_file = pdf.render_file("public/#{employee.name}-Invoice-#{id}.pdf")
     document.attach(io: File.open("public/#{employee.name}-Invoice-#{id}.pdf"), filename: "#{employee.name}-Invoice-#{id}.pdf", content_type: "application/pdf")
     save!
-
     SendNotificationPdfToAdminsMailer.with(invoice: self).send_mail.deliver
+    update(products_quantities: products_quantities)
   end
 
   def finalize_and_send_pdf_mail
+    products_quantities.each do |product_quantity|
+      emp_product_quantity = employee.products_quantities.where(product: Product.find(product_quantity.keys)).first
+      emp_product_quantity.update!(quantity: (emp_product_quantity.quantity-product_quantity.values.first.to_i))
+    end
+
     update!(is_finalized: true)
     SendPdfToInvoiceMailer.with(invoice: self).send_mail.deliver
   end
@@ -200,6 +213,18 @@ class Invoice < ApplicationRecord
   def send_reject_mail(feedback)
     if RejectInvoiceMailer.with(invoice: self, feedback: feedback).send_mail.deliver
       destroy!
+    end
+  end
+
+  private
+  def revise_charge
+    if overhead_fee_type && overhead_fee_value
+      self.charge -=  case overhead_fee_type
+                      when "percentage"
+                        (charge*overhead_fee_value/100)
+                      when "fixed"
+                        overhead_fee_value
+                      end
     end
   end
 end

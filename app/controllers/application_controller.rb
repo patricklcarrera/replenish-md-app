@@ -5,8 +5,7 @@ class ApplicationController < ActionController::API
   before_action :authorized_employee
 
   def current_employee
-    employee = Employee.find_by(id: session[:employee_id])
-    employee
+    @employee = Employee.find_by(id: session[:employee_id])
   end
 
   def authorized_employee

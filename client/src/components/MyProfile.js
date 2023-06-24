@@ -3,14 +3,22 @@ import { useParams, useLocation } from "react-router-dom";
 import Header from "./Header";
 import { Button, Card } from "react-bootstrap";
 import CustomInvoiceModal from "./CustomInvoiceModal.js";
+import Table from "react-bootstrap/Table";
+import AssignModal from "./AssignModal";
+import { toast } from "react-toastify";
 
-function UserPage({ userProfile }) {
+function UserPage({ userProfile, employeeList }) {
   const [employee, setEmployee] = useState();
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [invoiceData, setinvoiceData] = useState(null);
-  console.log(JSON.stringify(invoiceData, null, 2));
+  const [showAssignMadal, setShowAssignMadal] = useState(false);
+  const [assignProductData, setAssignProductData] = useState({});
+  const [assignInput, setAssignInput] = useState({
+    quantity: 0,
+  });
+  
   function handleClick(invoice) {
     // setinvoiceData();
     setModalShow(!modalShow);
@@ -23,6 +31,7 @@ function UserPage({ userProfile }) {
     fetch(`/employees/${id}`).then((res) => {
       if (res.ok) {
         res.json().then((employee) => {
+          // console.log({ employee });
           setEmployee(employee);
           setLoading(false);
         });
@@ -30,8 +39,46 @@ function UserPage({ userProfile }) {
         res.json().then((data) => setErrors(data.error));
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const assignSubmit = (e) => {
+    e.preventDefault();
+
+    const productData = {
+      ...assignInput,
+      product_id: assignProductData?.product.id,
+      product_name: assignProductData?.product.name,
+    };
+
+    fetch("/inventories/assign", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(productData),
+    })
+      .then((res) => {
+        if (res.ok) {
+          toast.success(
+            "Update  Product Quantity and Employee Name  Successfully."
+          );
+          window.location.reload();
+        } else if (res.status == 404) {
+          res.json().then((json) => {
+            toast.error("Please provide a client.");
+          });
+        } else {
+          res.json().then((json) => {
+            toast.error("Failed to Update  Product Quantity and Employee Name");
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toast.error("An error occured.");
+      });
+  };
 
   if (loading) return <Header></Header>;
   if (errors) return <h1>{errors}</h1>;
@@ -39,7 +86,18 @@ function UserPage({ userProfile }) {
   return (
     <div>
       <Header userProfile={userProfile} />
-
+      {/* showing the Assign Product modal once */}
+      <AssignModal
+        showAssignMadal={showAssignMadal}
+        setShowAssignMadal={setShowAssignMadal}
+        assignSubmit={assignSubmit}
+        assignProductData={assignProductData}
+        setAssignProductData={setAssignProductData}
+        employeeList={employeeList}
+        setAssignInput={setAssignInput}
+        assignInput={assignInput}
+        employee={employee}
+      />
       {/* showing the modal once */}
       {modalShow && (
         <CustomInvoiceModal
@@ -51,15 +109,68 @@ function UserPage({ userProfile }) {
       )}
       <br />
       <h1 className="text-4xl font-bold text-center text-blue-600">
-        {employee.name}
+        {employee?.name}
       </h1>
+      <br />
+
+      <div className=" container mx-auto my-3">
+        <h2 className="text-4xl font-bold text-center text-blue-400">
+          Products
+        </h2>
+        <Table bordered hover responsive className="w-full mt-4 text-center">
+          <thead>
+            <tr>
+              <th>Product </th>
+              <th>ProductType </th>
+              <th>Quantity</th>
+              <th>Assign</th>
+            </tr>
+          </thead>
+          <tbody>
+            {employee?.products_quantities?.map((data) => {
+              console.log(data);
+              return (
+                <tr key={data?.product.id}>
+                  <td className="align-middle">
+                    <div className="flex flex-col  gap-2">
+                      <span>{data?.product?.name} </span>
+                      {/* <span>Product Name: Product </span> */}
+                    </div>
+                  </td>
+                  <td className="align-middle">
+                    <div className="flex flex-col  gap-2">
+                      <span>{data?.product?.product_type} </span>
+                    </div>
+                  </td>
+                  <td className="align-middle">
+                    <div className="flex flex-col  gap-2">
+                      <span>{data?.quantity} </span>
+                    </div>
+                  </td>
+                  <td className="align-middle">
+                    <Button
+                      variant="info"
+                      onClick={() => {
+                        setAssignProductData(data);
+                        setShowAssignMadal(true);
+                      }}
+                    >
+                      Assign
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
       <br />
       <h2 className="text-4xl font-bold text-center text-blue-400">
         My invoices
       </h2>
       <br />
       <ul className=" mx-1 mb-3 justify-center flex flex-wrap gap-3 ">
-        {employee.invoices.map((invoice) => {
+        {employee?.invoices.map((invoice) => {
           // console.log({ invoice });
           return (
             <li key={invoice.id}>

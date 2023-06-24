@@ -72,7 +72,10 @@ export default function Employee({ employee, invoiceList }) {
       });
   }
 
- 
+  // console.log("employeeInvoices", employeeInvoices);
+  // const buttonColor = "#000C66";
+  // const buttonHoverColor = "red";
+
   const updatePopover = (
     <Popover id="popover-basic">
       <Popover.Header as="h3">Edit Employee</Popover.Header>
@@ -104,8 +107,10 @@ export default function Employee({ employee, invoiceList }) {
       </Popover.Body>
     </Popover>
   );
+
+  
   const tailWindEmployeeCard = (
-    <Card className="text-center" border="info" style={{ width: "18rem" }}>
+    <Card className="text-center w-[20rem] sm:w-[25rem]" border="info">
       <Card.Header as="h5">Employee Id {employee.id}</Card.Header>
       <Card.Body className="">
         <Card.Title className="mb-3">Employee: {employee.name}</Card.Title>
@@ -128,25 +133,16 @@ export default function Employee({ employee, invoiceList }) {
           <></>
         )}
       </Card.Body>
-      <div className="flex justify-between px-4">
-        <Button
-          onClick={sendResetPasswordLink}
-          variant="info"
-          onMouseEnter={() => setIsResetHover(true)}
-          onMouseLeave={() => setIsResetHover(false)}
-          style={{
-            width: isResetHover ? "150px" : "10px",
-            height: isResetHover ? "45px" : "10px",
-            marginLeft: "2%",
-            marginBottom: "2%",
-            fontSize: "12px",
-          }}
-        >
-          {isResetHover ? "Send Password Reset Link" : ""}
+      <div
+        className={`flex  ${
+          employee?.is_admin === false ? "justify-between" : "justify-center"
+        } px-2 mb-2 gap-2`}
+      >
+        <Button onClick={sendResetPasswordLink} variant="info">
+          Send Password Reset Link
         </Button>
 
         {employee?.is_admin === false && (
-          
           <OverlayTrigger
             trigger="click"
             rootClose
@@ -156,17 +152,8 @@ export default function Employee({ employee, invoiceList }) {
             <Button
               // onClick={updateGfePercent}
               variant="info"
-              onMouseEnter={() => setIisUpdateHover(true)}
-              onMouseLeave={() => setIisUpdateHover(false)}
-              style={{
-                width: isUpdateHover ? "150px" : "10px",
-                height: isUpdateHover ? "45px" : "10px",
-                marginLeft: "2%",
-                marginBottom: "2%",
-                fontSize: "12px",
-              }}
             >
-              {isUpdateHover ? "Update" : ""}
+              Update
             </Button>
           </OverlayTrigger>
         )}

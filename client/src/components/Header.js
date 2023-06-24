@@ -20,6 +20,16 @@ export default memo(function Header({ userProfile }) {
       }
     });
   };
+  // useEffect(() => {
+  //   fetch(`/employees/myprofile`).then((res) => {
+  //     if (res.ok) {
+  //       res.json().then((userProfile) => setUserProfile(userProfile));
+  //     } else {
+  //       setUserProfile(null)
+  //     }
+  //   });
+  // }, []);
+  //
 
   const adminHeader = (
     <nav className="bg-blue-400">
@@ -75,6 +85,15 @@ export default memo(function Header({ userProfile }) {
                   <Nav.Link>My Profile</Nav.Link>
                 </LinkContainer>
               </button>
+
+              {userProfile?.is_inv_manager === true && (
+                <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
+                  <LinkContainer to="/inventories">
+                    <Nav.Link>Inventories</Nav.Link>
+                  </LinkContainer>
+                </button>
+              )}
+
               <button
                 onClick={handleLogout}
                 className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700"
@@ -127,6 +146,15 @@ export default memo(function Header({ userProfile }) {
                   <Nav.Link>My Profile</Nav.Link>
                 </LinkContainer>
               </button>
+
+              {userProfile && userProfile?.is_inv_manager === true && (
+                <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
+                  <LinkContainer to="/inventories">
+                    <Nav.Link>Inventories</Nav.Link>
+                  </LinkContainer>
+                </button>
+              )}
+
               <button
                 onClick={handleLogout}
                 className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700"
