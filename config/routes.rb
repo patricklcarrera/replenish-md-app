@@ -23,4 +23,6 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   get '/clients', to: 'clients#index'
   delete '/products', to: 'products#destroy'
+  post '/inventories/assign', to: 'inventories#assign'
+  post '/inventories/update', to: 'inventories#update'
 end

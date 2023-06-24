@@ -18,7 +18,6 @@ class InvoicesController < ApplicationController
   def create
     if @client
       @invoice = @client.invoices.new(invoice_params)
-
       if @invoice.save
         @invoice.save_pdf_and_send_mail(@products, @retail_products)
         render json: @invoice, status: :created
@@ -59,6 +58,7 @@ class InvoicesController < ApplicationController
 
   def initialize_objects
     @employee = Employee.find_by(id: params[:employee_id])
+
     @client = if params[:client_name] && !params[:client_name].empty?
       @employee.clients.find_or_create_by(name: params[:client_name])
     end
