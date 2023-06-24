@@ -7,7 +7,7 @@ class Invoice < ApplicationRecord
   has_many :products, through: :products_invoices
   has_one_attached :document, dependent: :purge
 
-  before_save :revise_charge
+  before_update :revise_charge
 
   scope :finalized, -> { where(is_finalized: true) }
   scope :non_finalized, -> { where(is_finalized: false) }
