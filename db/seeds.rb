@@ -85,6 +85,8 @@ Product.create(
 
 )
 
+
+
 Product.create(
     name: "Dysport",
     product_type: "Neurotoxins",
@@ -106,7 +108,6 @@ Product.create(
     product_type: "PLLA Based Filler",
     cost_price: 422,
     retail_price: 850
-
 )
 
 Product.create(
@@ -114,7 +115,6 @@ Product.create(
     product_type: "Juvederm",
     cost_price: 350,
     retail_price: 700
-
 )
 
 
@@ -123,7 +123,6 @@ Product.create(
     product_type: "Juvederm",
     cost_price: 350,
     retail_price: 700
-
 )
 
 
@@ -132,7 +131,6 @@ Product.create(
     product_type: "Juvederm",
     cost_price: 376,
     retail_price: 750
-
 )
 
 
@@ -616,6 +614,10 @@ Product.create(
     cost_price: 300,
     retail_price: 300
 )
+
+Employee.all.each do |employee|
+    employee.products_quantities.create!(product: Product.all.sample, quantity: rand(1..100))
+end
 
 15.times do
     Client.create(
