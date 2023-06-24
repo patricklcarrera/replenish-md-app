@@ -3,6 +3,7 @@ import Header from "./Header";
 import { toast } from "react-toastify";
 
 const initialFormState = {
+
   dateOfService: "",
   paidByClientCash: null,
   paidByClientCredit: null,
@@ -18,6 +19,7 @@ const initialFormState = {
   //Client States
   client: { name: "" },
 };
+
 
 export default function AddInvoices(props) {
   const { productList, userProfile } = props;
@@ -354,6 +356,7 @@ export default function AddInvoices(props) {
     }
   };
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -376,6 +379,7 @@ export default function AddInvoices(props) {
       products: formData.products,
       retail_products: formData.retailProducts,
       charge: getTotal(),
+
     };
     console.log(userProfile?.percentage);
     console.log("invoice:", invoice);
@@ -698,6 +702,7 @@ export default function AddInvoices(props) {
                                 {product.name}
                               </p>
                             ))}
+
                           </div>
                         )}
                       </td>
@@ -776,6 +781,7 @@ export default function AddInvoices(props) {
                 <label className="block">
                   Total Product Price Sum: {getTotalProductPriceSum()}
                 </label>
+
               </div>
               <button
                 type="submit"
