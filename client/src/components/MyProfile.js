@@ -18,6 +18,8 @@ function UserPage({ userProfile, employeeList }) {
   const [assignInput, setAssignInput] = useState({
     quantity: 0,
   });
+
+  const otherEmployeesList = employeeList.filter((employee) => employee.id != userProfile.id);
   
   function handleClick(invoice) {
     // setinvoiceData();
@@ -93,7 +95,7 @@ function UserPage({ userProfile, employeeList }) {
         assignSubmit={assignSubmit}
         assignProductData={assignProductData}
         setAssignProductData={setAssignProductData}
-        employeeList={employeeList}
+        employeeList={otherEmployeesList}
         setAssignInput={setAssignInput}
         assignInput={assignInput}
         employee={employee}
