@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_20_022624) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_25_172303) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,12 +59,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_022624) do
     t.string "temp_password"
     t.boolean "gfe"
     t.integer "percentage"
+    t.boolean "is_inv_manager"
   end
 
   create_table "invoices", force: :cascade do |t|
     t.string "employee_id"
     t.integer "client_id"
-    t.integer "charge"
+    t.float "charge"
     t.boolean "is_finalized", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -76,8 +77,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_022624) do
     t.integer "tip"
     t.boolean "concierge_fee_paid"
     t.boolean "gfe"
-    t.string "overhead_fee_type"
+    t.string "overhead_fee_type", default: "fixed"
     t.integer "overhead_fee_value"
+    t.jsonb "products_quantities"
   end
 
   create_table "products", force: :cascade do |t|
@@ -92,6 +94,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_20_022624) do
   create_table "products_invoices", force: :cascade do |t|
     t.integer "invoice_id"
     t.integer "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products_quantities", force: :cascade do |t|
+    t.integer "employee_id"
+    t.integer "product_id"
+    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

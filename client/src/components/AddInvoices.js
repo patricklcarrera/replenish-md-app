@@ -182,17 +182,20 @@ export default function AddInvoices(props) {
     }
   };
 
-  // TODO: change this code for the calculations:
   const getTotal = () => {
     let afterTax = {
       cashRemaining: formData.paidByClientCash,
       tip: formData.tip,
       discount: formData.personalDiscount,
       retailTotal: getTotalRetailProductPriceSum(),
+      conciergeFee: 0
     };
     let gfeFee = 0;
     if (formData?.gfe) {
-      gfeFee = 30; // Apply 5% discount
+      gfeFee = 30;
+    }
+    if (formData?.conciergeFeePaid) {
+      afterTax.conciergeFee = 50; 
     }
     cashCalculations(afterTax);
     const totalProductPriceSum = getTotalProductPriceSum();
@@ -201,21 +204,20 @@ export default function AddInvoices(props) {
     let total =
       (totalPaidByClientAT +
         afterTax.discount -
+        afterTax.conciergeFee -
         totalProductPriceSum -
         gfeFee -
         afterTax.retailTotal) *
       (userProfile?.percentage / 100); //(replace with injector percentage)
     console.log("gfe:" + userProfile?.gfe);
     if (userProfile?.gfe) total += gfeFee;
-    total = total - afterTax.discount + afterTax.retailTotal * 0.15;
+    total = total - afterTax.discount + afterTax.retailTotal * 0.15 + afterTax.conciergeFee;
     console.log(total);
-    if (formData.conciergeFeePaid) {
-      total = total - 50;
-    }
     total = total
     // console.log ("total after overhead fee:" + total);
     return total.toFixed(2);
   };
+
 
   /// Product selection functions
   const handleProductNameChange = (e) => {
