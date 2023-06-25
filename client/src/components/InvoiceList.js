@@ -35,7 +35,7 @@ export default function InvoiceList({ userProfile }) {
         <h2 className="text-center">Finalized Invoices:</h2>
         <hr />
         <div className="justify-center flex flex-wrap gap-3">
-          {finalizedInvoiceList.map((invoice, i) => (
+          {finalizedInvoiceList?.map((invoice, i) => (
             <Invoice invoice={invoice} key={i} fiInvoiceList={true} />
           ))}
         </div>
@@ -45,7 +45,7 @@ export default function InvoiceList({ userProfile }) {
         <h2 className="text-center">Non Finalized Invoices:</h2>
         <hr />
         <div className="justify-center flex flex-wrap gap-3">
-          {nonFinalizedInvoiceList.map((invoice, i) => (
+          {nonFinalizedInvoiceList?.map((invoice, i) => (
             <Invoice
               userProfile={userProfile}
               invoice={invoice}

@@ -48,7 +48,7 @@ export default function ProductList({
       </div>
       <br></br>
       <div className="justify-center flex flex-wrap gap-3">
-        {productList.map((product) => (
+        {productList?.map((product) => (
           <Product
             key={product.id}
             isAdmin={userProfile?.is_admin}

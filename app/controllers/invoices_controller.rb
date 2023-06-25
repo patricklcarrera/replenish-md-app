@@ -40,9 +40,9 @@ class InvoicesController < ApplicationController
   def finalize
     if @invoice
       @invoice.finalize_and_send_pdf_mail
-      render json: {'message' => 'Invoice FInalized'}, status: :ok 
+      return render json: @invoice, status: :ok
     else
-      render json: {'error' => 'Invoice not found'}, status: :not_found
+      return render json: {'error' => 'Invoice not found'}, status: :not_found
     end
   end
 
