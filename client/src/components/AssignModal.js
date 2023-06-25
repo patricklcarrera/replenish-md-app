@@ -50,7 +50,7 @@ const AssignModal = ({
               required
             >
               <option>Select The Employee</option>
-              {employeeList.map((employee) => {
+              {employeeList?.map((employee) => {
                 return (
                   <option key={employee?.id} value={employee?.name}>
                     {employee?.name}

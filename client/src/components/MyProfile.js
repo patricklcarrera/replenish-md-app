@@ -19,7 +19,7 @@ function UserPage({ userProfile, employeeList }) {
     quantity: 0,
   });
 
-  const otherEmployeesList = employeeList.filter((employee) => employee.id != userProfile.id);
+  const otherEmployeesList = employeeList?.filter((employee) => employee.id != userProfile.id);
   
   function handleClick(invoice) {
     // setinvoiceData();

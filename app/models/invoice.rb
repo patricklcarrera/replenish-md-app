@@ -201,9 +201,11 @@ class Invoice < ApplicationRecord
   end
 
   def finalize_and_send_pdf_mail
-    products_quantities.each do |product_quantity|
-      emp_product_quantity = employee.products_quantities.where(product: Product.find(product_quantity.keys)).first
-      emp_product_quantity.update!(quantity: (emp_product_quantity.quantity-product_quantity.values.first.to_i))
+    if products_quantities && products_quantities.any?
+      products_quantities.each do |product_quantity|
+        emp_product_quantity = employee.products_quantities.where(product: Product.find(product_quantity.keys)).first
+        emp_product_quantity.update!(quantity: (emp_product_quantity.quantity-product_quantity.values.first.to_i))
+      end
     end
 
     update!(is_finalized: true)
