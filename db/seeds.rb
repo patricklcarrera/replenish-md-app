@@ -20,7 +20,8 @@ Employee.create(
     gfe: true,
     percentage: 60,
     password: "test123",
-    is_admin: true
+    is_admin: true,
+    is_inv_manager: true
 )
 
 Employee.create(
@@ -29,7 +30,8 @@ Employee.create(
     gfe: false,
     percentage: 15,
     password: "test12345",
-    is_admin: false
+    is_admin: false,
+    is_inv_manager: true
 )
 
 Employee.create(
@@ -38,7 +40,8 @@ Employee.create(
     gfe: true,
     percentage: 20,
     password: "justin123",
-    is_admin: false
+    is_admin: false,
+    is_inv_manager: true
 )
 
 Employee.create(
@@ -616,7 +619,11 @@ Product.create(
 )
 
 Employee.all.each do |employee|
-    employee.products_quantities.create!(product: Product.all.sample, quantity: rand(1..100))
+    employee.employees_inventories.create!(product: Product.all.reload.sample, quantity: rand(1..100))
+end
+
+Product.all.reload.each do |product|
+    product.create_inventory!(quantity: rand(1..100))
 end
 
 15.times do

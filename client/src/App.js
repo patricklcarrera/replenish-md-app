@@ -221,6 +221,10 @@ function App() {
                 }
               />
               <Route
+                path="/employees"
+                element={<EmployeeList userProfile={userProfile} />}
+              />
+              <Route
                 path="*"
                 element={<MyProfile userProfile={userProfile} />}
               />

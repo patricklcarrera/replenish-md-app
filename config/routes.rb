@@ -3,6 +3,22 @@ Rails.application.routes.draw do
   resources :employees, only: [:index, :show, :create, :destroy]
   resources :invoices
   resources :products
+
+  resources :inventories, only: [:index, :create, :update, :destroy] do
+    member do
+      post 'assign'
+    end
+  end
+
+  resources :inventory_prompts, only: [] do
+    member do
+      post 'accept'
+      post 'reject'
+    end
+  end
+
+  post 'employee_inventories/transfer', to: 'employee_inventories#transfer'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   get '/hello', to: 'application#hello_world'
   get '/employees', to: 'employee#index'
@@ -23,6 +39,4 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   get '/clients', to: 'clients#index'
   delete '/products', to: 'products#destroy'
-  post '/inventories/assign', to: 'inventories#assign'
-  post '/inventories/update', to: 'inventories#update'
 end
