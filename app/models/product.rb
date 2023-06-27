@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  validates_uniqueness_of :name  
   has_many :products_invoices, class_name: 'ProductInvoice'
   has_many :invoices, through: :products_invoices
   has_one  :inventory, class_name: 'Inventory'

@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Button, Card, Modal, Table, Form } from "react-bootstrap";
 import { confirmAlert } from "react-confirm-alert"; // Import
-import InventoryModal from "./InventoryModal";
 import AssignModal from "./AssignModal";
 
 const Inventory = ({ userProfile, employeeList }) => {
@@ -317,7 +316,7 @@ const Inventory = ({ userProfile, employeeList }) => {
           <thead>
             <tr>
               <th>Product </th>
-              <th>ProductType </th>
+              <th>Product Type </th>
               <th>Quantity</th>
               <th>Assign</th>
               <th className="flex justify-center items-center min-w-[11rem] md:w-auto"></th>
@@ -345,7 +344,7 @@ const Inventory = ({ userProfile, employeeList }) => {
                       </div>
                     </td>
                     <td className="align-middle">
-                      <div className="flex flex-col  gap-2">
+                      <div className="flex flex-col gap-2">
                         <span>{data?.quantity} </span>
                       </div>
                     </td>

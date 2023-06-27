@@ -157,7 +157,6 @@ Product.create(
     product_type: "Restylane",
     cost_price: 306,
     retail_price: 700
-
 )
 
 

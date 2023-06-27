@@ -10,13 +10,14 @@ class InventoriesController < ApplicationController
   end
 
   def create
-    @product = Product.find_or_create_by(name: params[:product_name])
-    @inventory = @product.inventory.new(inventory_params)
-
-    if @inventory.save
-      render json: @inventory, status: :ok
+    if @product = Product.create!(name: params[:product_name], product_type: params[:product_type])
+      if @product.create_inventory(inventory_params)
+        render json: @inventory, status: :ok
+      else
+        render json: { 'error' => 'Could not create Inventory' }, status: :bad_request
+      end
     else
-      render json: { 'error' => 'Could not create Inventory' }, status: :bad_request
+      render json: { 'error' => 'Could not create Product' }, status: :bad_request
     end
   end
 

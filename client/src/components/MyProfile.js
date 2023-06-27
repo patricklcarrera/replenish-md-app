@@ -78,7 +78,7 @@ function UserPage({ userProfile, employeeList }) {
           });
         } else {
           res.json().then((json) => {
-            toast.error("Failed to Update  Product Quantity and Employee Name");
+            toast.error("Failed to Transfer the inventory");
           });
         }
       })
@@ -319,14 +319,14 @@ function UserPage({ userProfile, employeeList }) {
           <thead>
             <tr>
               <th>Product </th>
-              <th>ProductType </th>
+              <th>Product Type</th>
               <th>Quantity</th>
               <th>Assign</th>
             </tr>
           </thead>
           <tbody>
             {employee?.employees_inventories?.map((data) => {
-              //console.log(data);
+              // console.log(data);
               return (
                 <tr key={data?.product.id}>
                   <td className="align-middle">
