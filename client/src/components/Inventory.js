@@ -33,7 +33,7 @@ const Inventory = ({ userProfile, employeeList }) => {
   const deleteSubmit = (product) => {
     confirmAlert({
       title: "Confirm to submit",
-      message: `Are you sure to delete Product id ${product.id} `,
+      message: `Are you sure to delete ${product.name} `,
       buttons: [
         {
           label: "Yes",
@@ -83,7 +83,7 @@ const Inventory = ({ userProfile, employeeList }) => {
 
     confirmAlert({
       title: "Confirm to submit",
-      message: `Are you sure to Update Product id ${productInfoInput.id} `,
+      message: `Are you sure to Update ${productInfoInput.name} `,
       buttons: [
         {
           label: "Yes",

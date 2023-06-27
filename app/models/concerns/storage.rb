@@ -5,7 +5,7 @@ module Storage
 
   included do
     after_save :destroy_if_not_present
-    
+
     belongs_to :product
 
     def destroy_if_not_present

@@ -236,9 +236,13 @@ function UserPage({ userProfile, employeeList }) {
       <h1 className="text-4xl font-bold text-center text-blue-600">
         {employee?.name}
       </h1>
+      {userProfile?.inventory_prompts?.length > 0} ?
+      (<h2 className="text-4xl font-bold text-center text-blue-400">
+              Inventory Assigned
+            </h2>) : <></>
       <br />
 
-      {userProfile?.inventory_prompts?.length > 0 && (
+      {userProfile?.inventory_prompts?.filter((inventory) => inventory.is_accepted === true ).length > 0 && (
         <Table bordered hover responsive className="w-full mt-4 text-center">
           <thead>
             <tr>
