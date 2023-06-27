@@ -3,7 +3,6 @@ import Header from "./Header";
 import { toast } from "react-toastify";
 
 const initialFormState = {
-
   dateOfService: "",
   paidByClientCash: null,
   paidByClientCredit: null,
@@ -226,8 +225,8 @@ export default function AddInvoices(props) {
     setCurrentProduct({ name: input, price: 0, quantity: 1 });
     const matchedProducts =
       input == ""
-        ? userProfile?.products_quantities
-        : userProfile?.products_quantities?.filter((product) =>
+        ? userProfile?.employees_inventories
+        : userProfile?.employees_inventories?.filter((product) =>
             product.product.name.toLowerCase().includes(input.toLowerCase())
           );
 
@@ -239,7 +238,7 @@ export default function AddInvoices(props) {
   };
   const handleProductSelection = (selectedProductName) => {
     // change to only user
-    const selectedProduct = userProfile?.products_quantities?.find(
+    const selectedProduct = userProfile?.employees_inventories?.find(
       (product) => product?.product.name === selectedProductName
     );
     console.log({ selectedProduct });
@@ -285,7 +284,7 @@ export default function AddInvoices(props) {
     const retailProductList = [];
     // change to only user
 
-    userProfile?.products_quantities.forEach((product) => {
+    userProfile?.employees_inventories.forEach((product) => {
       if (
         product?.product != undefined &&
         product?.product != null &&
@@ -312,7 +311,7 @@ export default function AddInvoices(props) {
     setMatchingRetailProducts(matchedProducts);
   };
   const handleRetailProductSelection = (selectedRetailProductName) => {
-    const selectedProduct = userProfile?.products_quantities?.find(
+    const selectedProduct = userProfile?.employees_inventories?.find(
       (product) => product?.product.name === selectedRetailProductName
     );
     if (selectedProduct) {

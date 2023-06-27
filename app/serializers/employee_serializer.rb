@@ -1,11 +1,19 @@
 class EmployeeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :email, :password, :is_admin, :is_inv_manager, :gfe, :percentage, :products_quantities
-  has_many :invoices
-  has_many :products_quantities, class_name: 'ProductQuantity'
+  attributes :id, :name, :email, :password, :is_admin, :is_inv_manager, :gfe, :percentage, :inventory_prompts, :employees_inventories
 
-  def products_quantities
-    object.products_quantities.map do |product_quantity|
-      ProductQuantitySerializer.new(product_quantity).attributes
+  has_many :invoices
+  has_many :inventory_prompts, class_name: 'InventoryPrompt'
+  has_many :employees_inventories, class_name: 'EmployeeInventory'
+
+  def employees_inventories
+    object.employees_inventories&.map do |employee_inventory|
+      EmployeeInventorySerializer.new(employee_inventory).attributes
+    end
+  end
+
+  def inventory_prompts
+    object.inventory_prompts&.map do |inventory_prompt|
+      InventoryPromptSerializer.new(inventory_prompt).attributes
     end
   end
 end

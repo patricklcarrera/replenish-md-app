@@ -1,8 +1,10 @@
 class Employee < ApplicationRecord
+  validates_uniqueness_of :name
   has_many :invoices
   has_many :products
   has_many :clients
-  has_many :products_quantities, class_name: 'ProductQuantity'
+  has_many :inventory_prompts, class_name: 'InventoryPrompt'
+  has_many :employees_inventories, class_name: 'EmployeeInventory'
 
   has_secure_password
 
@@ -17,18 +19,12 @@ class Employee < ApplicationRecord
     SendResetPasswordLinkMailer.with(employee: self).reset_password_mail.deliver_now
   end
 
-  def update_products_quantities(inventory)
-    inventory.each do |key, value|
-      product_quantity = products_quantities.find_or_initialize_by(product: Product.find(key))
-      product_quantity.update!(quantity: value.values.first)
-    end
-  end
+  def transfer_to_colleague(product, receiver_employee, quantity)
+    receiver_prompt = receiver_employee.inventory_prompts.find_or_create_by(product: product)
+    receiver_prompt.update(assigned_by: self.name, quantity: (receiver_prompt.quantity.to_i + quantity.to_i))
 
-  def transfer_products(receiver, product, quantity)
-    current_inventory = self.products_quantities.where(product: product).first
-    current_inventory.update!(quantity: (current_inventory.quantity - quantity.to_i))
-
-    receiver_inventory = receiver.products_quantities.find_or_initialize_by(product: product)
-    receiver_inventory.update!(quantity: (receiver_inventory.quantity.to_i + quantity.to_i))
+    current_inventory = self.employees_inventories.where(product: product).first
+    current_inventory.quantity -= quantity.to_i
+    current_inventory.save!
   end
 end

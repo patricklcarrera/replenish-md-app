@@ -20,16 +20,6 @@ export default memo(function Header({ userProfile }) {
       }
     });
   };
-  // useEffect(() => {
-  //   fetch(`/employees/myprofile`).then((res) => {
-  //     if (res.ok) {
-  //       res.json().then((userProfile) => setUserProfile(userProfile));
-  //     } else {
-  //       setUserProfile(null)
-  //     }
-  //   });
-  // }, []);
-  //
 
   const adminHeader = (
     <nav className="bg-blue-400">
