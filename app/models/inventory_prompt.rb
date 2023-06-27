@@ -9,7 +9,6 @@ class InventoryPrompt < ApplicationRecord
   end
 
   def reject!
-    update!(is_accepted: false)
     assignor =  case assigned_by
                 when "Inventory Manager"
                   Inventory
@@ -18,5 +17,7 @@ class InventoryPrompt < ApplicationRecord
                 end.find_or_create_by(product: product)
 
     assignor.update!(quantity: assignor.quantity.to_i + quantity.to_i)
+
+    destroy!
   end
 end

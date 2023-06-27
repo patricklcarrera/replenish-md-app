@@ -242,7 +242,7 @@ function UserPage({ userProfile, employeeList }) {
             </h2>) : <></>
       <br />
 
-      {userProfile?.inventory_prompts?.filter((inventory) => inventory.is_accepted === true ).length > 0 && (
+      {userProfile?.inventory_prompts?.length > 0 && (
         <Table bordered hover responsive className="w-full mt-4 text-center">
           <thead>
             <tr>
