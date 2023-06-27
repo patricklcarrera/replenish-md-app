@@ -45,7 +45,7 @@ const Inventory = ({ userProfile, employeeList }) => {
             })
               .then((res) => {
                 if (res.ok) {
-                  toast.success("Updates Product Quantity Successfully.");
+                  toast.success("Updated Product Quantity Successfully.");
                   window.location.reload();
                 } else if (res.status == 404) {
                   res.json().then((json) => {
@@ -268,6 +268,7 @@ const Inventory = ({ userProfile, employeeList }) => {
               </Form.Label>
               <Form.Control
                 type="text"
+                value={productInfoInput?.product_type}
                 placeholder={` Type Product Type`}
                 onChange={(e) =>
                   setproductInfoInput({
@@ -284,6 +285,7 @@ const Inventory = ({ userProfile, employeeList }) => {
               </Form.Label>
               <Form.Control
                 type="number"
+                value={productInfoInput?.quantity}
                 placeholder={` Type Quantity `}
                 onChange={(e) =>
                   setproductInfoInput({
@@ -344,7 +346,7 @@ const Inventory = ({ userProfile, employeeList }) => {
                       </div>
                     </td>
                     <td className="align-middle">
-                      <div className="flex flex-col gap-2">
+                      <div className="flex flex-col   gap-2">
                         <span>{data?.quantity} </span>
                       </div>
                     </td>
