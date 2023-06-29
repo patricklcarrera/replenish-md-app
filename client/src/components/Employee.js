@@ -4,15 +4,16 @@ import CustomEmployeeModel from "./CustomEmployeeModel";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { toast } from "react-toastify";
+import InventoryModal from "./InventoryModal";
 
-export default function Employee({ employee, invoiceList }) {
+export default function Employee({ employee, invoiceList, userProfile }) {
   const [employeeInvoices, setEmployeeInvoices] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [isResetHover, setIsResetHover] = useState(false);
-  const [isUpdateHover, setIisUpdateHover] = useState(false);
+  const [showInventories, setShowInventories] = useState(false);
   const [gfe, setGfe] = useState(employee?.gfe || false);
+  const [showModal, setShowModal] = useState(false);
   const [percentage, setPercentage] = useState(employee?.percentage, 0);
-  // console.log({ employee, invoiceList });
+  console.log(userProfile);
 
   useEffect(() => {
     const filteredInvoices = invoiceList.filter(
@@ -72,10 +73,6 @@ export default function Employee({ employee, invoiceList }) {
       });
   }
 
-  // console.log("employeeInvoices", employeeInvoices);
-  // const buttonColor = "#000C66";
-  // const buttonHoverColor = "red";
-
   const updatePopover = (
     <Popover id="popover-basic">
       <Popover.Header as="h3">Edit Employee</Popover.Header>
@@ -108,60 +105,89 @@ export default function Employee({ employee, invoiceList }) {
     </Popover>
   );
 
-  
   const tailWindEmployeeCard = (
     <Card className="text-center w-[20rem] sm:w-[25rem]" border="info">
       <Card.Header as="h5">Employee Id {employee.id}</Card.Header>
       <Card.Body className="">
         <Card.Title className="mb-3">Employee: {employee.name}</Card.Title>
-        {employeeInvoices.length > 0 ? (
-          <Button onClick={handleClick} variant="info">
-            Show Invoices
-          </Button>
+
+        {userProfile?.is_admin === true ? (
+          <>
+            <div className="flex justify-between gap-2">
+              {employeeInvoices.length > 0 ? (
+                <Button onClick={handleClick} variant="info">
+                  Show Invoices
+                </Button>
+              ) : (
+                <p>No Invoices</p>
+              )}
+              <Button onClick={() => setShowModal(true)} variant="info">
+                Show Inventories
+              </Button>
+            </div>
+            {employeeInvoices.length > 0 ? (
+              <CustomEmployeeModel
+                show={modalShow}
+                onHide={handleClick}
+                setModalShow={setModalShow}
+                employeeInvoices={employeeInvoices}
+                EmployeeId={employee.id}
+              />
+            ) : (
+              <></>
+            )}
+            <div
+              className={`flex  ${
+                employee?.is_admin === false
+                  ? "justify-between"
+                  : "justify-center"
+              } px-2 my-3 gap-2`}
+            >
+              <Button onClick={sendResetPasswordLink} variant="info">
+                Send Password Reset Link
+              </Button>
+
+              {employee?.is_admin === false && (
+                <OverlayTrigger
+                  trigger="click"
+                  rootClose
+                  placement="bottom"
+                  overlay={updatePopover}
+                >
+                  <Button
+                    // onClick={updateGfePercent}
+                    variant="info"
+                  >
+                    Update
+                  </Button>
+                </OverlayTrigger>
+              )}
+            </div>
+          </>
         ) : (
-          <p>No Invoices</p>
-        )}
-        {employeeInvoices.length > 0 ? (
-          <CustomEmployeeModel
-            show={modalShow}
-            onHide={handleClick}
-            setModalShow={setModalShow}
-            employeeInvoices={employeeInvoices}
-            EmployeeId={employee.id}
-          />
-        ) : (
-          <></>
+          userProfile?.is_inv_manager === true &&
+          userProfile?.is_admin === false && (
+            <Button onClick={() => setShowModal(true)} variant="info">
+              Show Inventories
+            </Button>
+          )
         )}
       </Card.Body>
-      <div
-        className={`flex  ${
-          employee?.is_admin === false ? "justify-between" : "justify-center"
-        } px-2 mb-2 gap-2`}
-      >
-        <Button onClick={sendResetPasswordLink} variant="info">
-          Send Password Reset Link
-        </Button>
-
-        {employee?.is_admin === false && (
-          <OverlayTrigger
-            trigger="click"
-            rootClose
-            placement="bottom"
-            overlay={updatePopover}
-          >
-            <Button
-              // onClick={updateGfePercent}
-              variant="info"
-            >
-              Update
-            </Button>
-          </OverlayTrigger>
-        )}
-      </div>
     </Card>
   );
 
   return (
-    <div>{employeeInvoices ? tailWindEmployeeCard : <div>Loading</div>}</div>
+    <div>
+      {employeeInvoices ? tailWindEmployeeCard : <div>Loading</div>}
+      <InventoryModal
+        inventoryList={employee}
+        showModal={showModal}
+        setshowModal={setShowModal}
+        // updateQtySubmit={updateQtySubmit}
+        // updateQtyInput={updateQtyInput}
+        // setUpdateQtyInput={setUpdateQtyInput}
+        isQtyUpdate={false}
+      />
+    </div>
   );
 }
