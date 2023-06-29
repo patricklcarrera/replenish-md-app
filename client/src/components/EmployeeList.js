@@ -32,7 +32,7 @@ export default function EmployeeList({userProfile}){
       <div className="mt-3 mb-3 mx-1 flex justify-center flex-wrap gap-3">
         {employeeList.map((employee) => (
           <div key={employee.id} className=" ">
-            <Employee employee={employee} invoiceList={invoiceList} />
+            <Employee employee={employee} invoiceList={invoiceList} userProfile={userProfile} />
           </div>
         ))}
       </div>

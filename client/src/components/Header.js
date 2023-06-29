@@ -70,11 +70,6 @@ export default memo(function Header({ userProfile }) {
                   <Nav.Link>All Employees</Nav.Link>
                 </LinkContainer>
               </button>
-              <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
-                <LinkContainer to="/myprofile">
-                  <Nav.Link>My Profile</Nav.Link>
-                </LinkContainer>
-              </button>
 
               {userProfile?.is_inv_manager === true && (
                 <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
@@ -83,6 +78,12 @@ export default memo(function Header({ userProfile }) {
                   </LinkContainer>
                 </button>
               )}
+
+              <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
+                <LinkContainer to="/myprofile">
+                  <Nav.Link>My Profile</Nav.Link>
+                </LinkContainer>
+              </button>
 
               <button
                 onClick={handleLogout}
@@ -131,19 +132,26 @@ export default memo(function Header({ userProfile }) {
                   <Nav.Link>Product List</Nav.Link>
                 </LinkContainer>
               </button>
+
               <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
-                <LinkContainer to="/myprofile">
-                  <Nav.Link>My Profile</Nav.Link>
+                <LinkContainer to="/employees">
+                  <Nav.Link>All Employees</Nav.Link>
                 </LinkContainer>
               </button>
-
-              {userProfile && userProfile?.is_inv_manager === true && (
+              
+              {userProfile?.is_inv_manager === true && (
                 <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
                   <LinkContainer to="/inventories">
                     <Nav.Link>Inventories</Nav.Link>
                   </LinkContainer>
                 </button>
               )}
+
+              <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
+                <LinkContainer to="/myprofile">
+                  <Nav.Link>My Profile</Nav.Link>
+                </LinkContainer>
+              </button>
 
               <button
                 onClick={handleLogout}

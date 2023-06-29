@@ -29,6 +29,11 @@ const Inventory = ({ userProfile, employeeList }) => {
       });
   }, []);
 
+  const unfiltereProductTypes = entireInventory?.map((inventory) => {
+    return inventory?.product.product_type
+  })
+  const productTypes = unfiltereProductTypes?.filter((item, index) => unfiltereProductTypes?.indexOf(item) === index);
+
   const deleteSubmit = (product) => {
     confirmAlert({
       title: "Confirm to submit",
@@ -96,7 +101,7 @@ const Inventory = ({ userProfile, employeeList }) => {
             })
               .then((res) => {
                 if (res.ok) {
-                  toast.success("Updates Product  Successfully.");
+                  toast.success("Product Updated Successfully.");
                   window.location.reload();
                 } else if (res.status == 404) {
                   res.json().then((json) => {
@@ -263,26 +268,35 @@ const Inventory = ({ userProfile, employeeList }) => {
                 defaultValue={productInfoInput?.product_name}
                 required
               />
+
               <Form.Label style={{ marginBottom: "-1rem" }}>
                 Product Type
               </Form.Label>
-              <Form.Control
-                type="text"
-                value={productInfoInput?.product_type}
-                placeholder={` Type Product Type`}
+
+              <Form.Select
+                aria-label="Default select example"
                 onChange={(e) =>
                   setproductInfoInput({
                     ...productInfoInput,
                     product_type: e.target.value,
                   })
                 }
-                defaultValue={productInfoInput?.product_type}
                 required
-                label="Product Name"
-              />
+              >
+                <option>Select Product Type</option>
+                {productTypes?.map((product_type) => {
+                  return (
+                    <option key={product_type} value={product_type}>
+                      {product_type}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+
               <Form.Label style={{ marginBottom: "-1rem" }}>
                 Product Quantity
               </Form.Label>
+
               <Form.Control
                 type="number"
                 value={productInfoInput?.quantity}
