@@ -231,7 +231,7 @@ export default function AddInvoices(props) {
       ) {
         // console.log(product.product_type);
         if (!inventory?.product.product_type.includes("Retail")) {
-          productList?.push(inventory?.product);
+          productList.push(inventory?.product);
         }
       }
       // change to only user
@@ -306,7 +306,7 @@ export default function AddInvoices(props) {
       ) {
         // console.log(product.product_type);
         if (inventory?.product.product_type.includes("Retail")) {
-          retailProductList?.push(inventory?.product);
+          retailProductList.push(inventory?.product);
         }
       }
       // change to only user

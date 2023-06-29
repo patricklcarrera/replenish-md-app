@@ -10,7 +10,7 @@ require "faker"
 puts "Seeding data"
 
 Employee.destroy_all
-Invoice.destroy_all
+# Invoice.destroy_all
 Client.destroy_all
 Product.destroy_all
 
@@ -632,10 +632,10 @@ end
     )
 end
 
-40.times do
-    Invoice.create!(
-        employee_id: Employee.all.sample.id,
-        client_id: Client.all.sample.id,
-        charge: Product.all.sample.retail_price 
-    )
-end
+# 40.times do
+#     Invoice.create!(
+#         employee_id: Employee.all.sample.id,
+#         client_id: Client.all.sample.id,
+#         charge: Product.all.sample.retail_price 
+#     )
+# end
