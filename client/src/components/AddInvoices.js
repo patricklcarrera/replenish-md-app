@@ -22,7 +22,6 @@ const initialFormState = {
 
 export default function AddInvoices(props) {
   const { productList, userProfile } = props;
-  // console.log(userProfile);
   const [formData, setFormData] = useState(initialFormState);
   const [currentProduct, setCurrentProduct] = useState({
     name: "",
@@ -220,20 +219,34 @@ export default function AddInvoices(props) {
 
   /// Product selection functions
   const handleProductNameChange = (e) => {
+    const productList = [];
     // change to only user
+
+    userProfile?.employees_inventories.forEach((inventory) => {
+      if (
+        inventory?.product != undefined &&
+        inventory?.product != null &&
+        inventory?.product != "" &&
+        inventory?.product?.product_type != undefined
+      ) {
+        // console.log(product.product_type);
+        if (!inventory?.product.product_type.includes("Retail")) {
+          productList?.push(inventory?.product);
+        }
+      }
+      // change to only user
+    });
+
     const input = e.target.value;
     setCurrentProduct({ name: input, price: 0, quantity: 1 });
     const matchedProducts =
       input == ""
-        ? userProfile?.employees_inventories
-        : userProfile?.employees_inventories?.filter((product) =>
-            product.product.name.toLowerCase().includes(input.toLowerCase())
+        ? productList
+        : productList?.filter((product) =>
+            product.name.toLowerCase().includes(input.toLowerCase())
           );
 
-    // change to only user
-
     // console.log({ matchedProducts });
-
     setMatchingProducts(matchedProducts);
   };
   const handleProductSelection = (selectedProductName) => {
@@ -284,16 +297,16 @@ export default function AddInvoices(props) {
     const retailProductList = [];
     // change to only user
 
-    userProfile?.employees_inventories.forEach((product) => {
+    userProfile?.employees_inventories.forEach((inventory) => {
       if (
-        product?.product != undefined &&
-        product?.product != null &&
-        product?.product != "" &&
-        product?.product.product_type != undefined
+        inventory?.product != undefined &&
+        inventory?.product != null &&
+        inventory?.product != "" &&
+        inventory?.product?.product_type != undefined
       ) {
         // console.log(product.product_type);
-        if (product.product.product_type.includes("Retail")) {
-          retailProductList.push(product.product);
+        if (inventory?.product.product_type.includes("Retail")) {
+          retailProductList?.push(inventory?.product);
         }
       }
       // change to only user
@@ -308,6 +321,7 @@ export default function AddInvoices(props) {
             product.name.toLowerCase().includes(input.toLowerCase())
           );
 
+    // console.log({ matchedProducts });
     setMatchingRetailProducts(matchedProducts);
   };
   const handleRetailProductSelection = (selectedRetailProductName) => {
@@ -584,13 +598,13 @@ export default function AddInvoices(props) {
                           <div className="absolute bg-white w-sm max-h-40 overflow-y-auto rounded-md mt-1 shadow-md">
                             {matchingProducts.map((product) => (
                               <p
-                                key={product.product.id}
+                                key={product.id}
                                 className="p-2 cursor-pointer hover:bg-gray-100"
                                 onClick={() =>
-                                  handleProductSelection(product.product.name)
+                                  handleProductSelection(product.name)
                                 }
                               >
-                                {product.product.name}
+                                {product.name}
                               </p>
                             ))}
                           </div>
