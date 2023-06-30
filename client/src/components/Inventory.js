@@ -30,7 +30,7 @@ const Inventory = ({ userProfile, employeeList }) => {
   }, []);
 
   const unfiltereProductTypes = entireInventory?.map((inventory) => {
-    return inventory?.product.product_type
+    return inventory?.product?.product_type
   })
   const productTypes = unfiltereProductTypes?.filter((item, index) => unfiltereProductTypes?.indexOf(item) === index);
 
@@ -226,7 +226,7 @@ const Inventory = ({ userProfile, employeeList }) => {
         assignSubmit={assignSubmit}
         assignProductData={assignProductData}
         setAssignProductData={setAssignProductData}
-        employeeList={employeeList.filter((employee) => employee.id != userProfile.id)}
+        employeeList={employeeList}
         setAssignInput={setAssignInput}
         assignInput={assignInput}
         employee={userProfile}
