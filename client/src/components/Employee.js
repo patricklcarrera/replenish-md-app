@@ -12,7 +12,8 @@ export default function Employee({ employee, invoiceList, userProfile }) {
   const [showInventories, setShowInventories] = useState(false);
   const [gfe, setGfe] = useState(employee?.gfe || false);
   const [showModal, setShowModal] = useState(false);
-  const [percentage, setPercentage] = useState(employee?.percentage, 0);
+  const [servicePercentage, setServicePercentage] = useState(employee?.service_percentage, 0);
+  const [retailPercentage, setRetailPercentage] = useState(employee?.retail_percentage, 0);
   console.log(userProfile);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ gfe, percentage, id: employee.id }),
+      body: JSON.stringify({ gfe, service_percentage: servicePercentage, retail_percentage: retailPercentage, id: employee.id }),
     })
       .then((res) => {
         if (res.ok) {
@@ -63,7 +64,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
           });
         } else {
           res.json().then((json) => {
-            toast.error("Failed to update  Employee");
+            toast.error("Failed to update Employee");
           });
         }
       })
@@ -73,9 +74,52 @@ export default function Employee({ employee, invoiceList, userProfile }) {
       });
   }
 
+
+  function deleteEmployee() {
+    confirmAlert({
+      title: "Confirm to submit",
+      message: `Are you sure you want to delete ${employee?.name}, you won't be able to revert this change.`,
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            fetch(`employees/${employee?.id}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+            .then((res) => {
+              if (res.ok) {
+                toast.success("Employee has been deleted successfully.");
+                window.location.reload();
+              } else if (res.status === 404) {
+                res.json().then((json) => {
+                  toast.error("Please provide a client.");
+                });
+              } else {
+                res.json().then((json) => {
+                  toast.error("Failed to delete the Employee");
+                });
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              toast.error("An error occured.");
+            });
+          },
+        },
+        {
+          label: "No",
+          onClick: () => console.log("Click No"),
+        },
+      ],
+    });
+  }
+
   const updatePopover = (
     <Popover id="popover-basic">
-      <Popover.Header as="h3">Edit Employee</Popover.Header>
+      <Popover.Header as="h3">Update Employee</Popover.Header>
       <Popover.Body>
         <Form.Group className="mb-3">
           <Form.Label>Name</Form.Label>
@@ -90,13 +134,20 @@ export default function Employee({ employee, invoiceList, userProfile }) {
             checked={gfe}
             onChange={(e) => setGfe(e.target.checked)}
           />
-          <Form.Label className="mt-2">Percentage</Form.Label>
+          <Form.Label className="mt-2">Service Percentage</Form.Label>
           <Form.Control
             type="number"
-            value={percentage}
-            onChange={(e) => setPercentage(parseFloat(e.target.value))}
+            defaultValue={employee?.service_percentage}
+            onChange={(e) => setServicePercentage(parseFloat(e.target.value))}
           />
-          <br></br>
+          <br />
+          <Form.Label className="mt-2">Retail Percentage</Form.Label>
+          <Form.Control
+            type="number"
+            defaultValue={employee?.retail_percentage}
+            onChange={(e) => setRetailPercentage(parseFloat(e.target.value))}
+          />
+          <br />
           <Button variant="primary" type="submit" onClick={updateGfePercent}>
             Submit
           </Button>
@@ -154,12 +205,23 @@ export default function Employee({ employee, invoiceList, userProfile }) {
                   placement="bottom"
                   overlay={updatePopover}
                 >
+                  <>  
                   <Button
                     // onClick={updateGfePercent}
                     variant="info"
                   >
                     Update
                   </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      deleteEmployee();
+                    }}
+                    title="Delete Employee"
+                  >
+                    Delete
+                  </Button>
+                  </>
                 </OverlayTrigger>
               )}
             </div>

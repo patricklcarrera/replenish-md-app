@@ -2,7 +2,7 @@
 
 class EmployeesController < ApplicationController
   skip_before_action :authorized_employee
-  before_action :find_employee, only: [:send_reset_password_link, :reset_password, :update]
+  before_action :find_employee, only: %i(update destroy send_reset_password_link reset_password)
 
   def index
     employees = Employee.all 
@@ -29,8 +29,11 @@ class EmployeesController < ApplicationController
   end
 
   def destroy
-    employee = Employee.find(params[:id])
-    employee.destroy
+    if @employee.destroy!
+      render json: {'message' => 'Employee deleted successfully!'}, status: :ok
+    else
+      render json: { 'error': 'Record Not found' }, status: :bad_request
+    end
   end
 
   def send_reset_password_link
@@ -61,7 +64,7 @@ class EmployeesController < ApplicationController
   private
 
   def employee_params
-    params.permit(:name, :email, :password, :gfe, :percentage, :is_admin, :is_inv_manager)
+    params.permit(:name, :email, :password, :gfe, :service_percentage, :retail_percentage, :is_admin, :is_inv_manager)
   end
 
   def find_employee
