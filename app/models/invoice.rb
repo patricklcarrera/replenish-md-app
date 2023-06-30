@@ -70,7 +70,7 @@ class Invoice < ApplicationRecord
 
     overhead_table_data = []
     overhead_table_data << ["Overhead:   "]
-    overhead_table_data <<["Fee Type: #{overhead_fee_type}", "Fee Value: #{overhead_fee_value}"]
+    overhead_table_data <<["Fee Type: #{overhead_fee_type.capitalize}", "Fee Value: #{overhead_fee_value}"]
 
     pdf.table(overhead_table_data, :cell_style => { inline_format: true }, position: :left, :column_widths => [200, 200])
 
@@ -89,13 +89,13 @@ class Invoice < ApplicationRecord
 
   private
   def revise_charge
-    if overhead_fee_type && overhead_fee_value
+    if (overhead_fee_type && overhead_fee_type_changed?) || (overhead_fee_value && overhead_fee_value_changed?)
       self.charge -=  case overhead_fee_type
                       when "percentage"
                         (charge*overhead_fee_value/100)
                       when "fixed"
                         overhead_fee_value
-                      end
+                      end.round(2)
     end
   end
 

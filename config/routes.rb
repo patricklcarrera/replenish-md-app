@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   get '/greeting/:name', to: 'employees#name'
   delete '/logout', to: 'sessions#destroy'
   patch '/updateproduct/:id', to: 'products#update'
-  post '/products/new', to: 'product#create'
+  post '/products/new', to: 'products#create'
   post '/invoices/new', to: 'invoices#create'
   post '/invoices/:id/finalize', to: 'invoices#finalize'
   post '/invoices/:id/send_reject_mail', to: 'invoices#send_reject_mail'
