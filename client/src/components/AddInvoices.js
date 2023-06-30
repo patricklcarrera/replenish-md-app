@@ -210,7 +210,7 @@ export default function AddInvoices(props) {
     console.log("gfe:" + userProfile?.gfe);
     if (userProfile?.gfe) total += gfeFee;
 
-    total = total - afterTax.discount + afterTax.retailTotal * (parseInt(userProfile?.retail_percentage) || 0) + afterTax.conciergeFee;
+    total = total - afterTax.discount + afterTax.retailTotal * (parseInt(userProfile?.retail_percentage) || 0)/100 + afterTax.conciergeFee;
     console.log(total);
     total = total
     // console.log ("total after overhead fee:" + total);
