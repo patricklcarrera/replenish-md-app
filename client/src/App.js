@@ -105,8 +105,9 @@ function App() {
             path="/inventories"
             element={
               <Inventory
-                employeeList={employeeList}
                 userProfile={userProfile}
+                employeeList={employeeList}
+                productList={productList}
               />
             }
           />
@@ -174,7 +175,13 @@ function App() {
               />
               <Route
                 path="/inventory"
-                element={<Inventory userProfile={userProfile} />}
+                element={
+                  <Inventory
+                    userProfile={userProfile}
+                    employeeList={employeeList}
+                    productList={productList}
+                  />
+                }
               />
               <Route
                 path="*"

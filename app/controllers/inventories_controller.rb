@@ -2,6 +2,7 @@
 
 class InventoriesController < ApplicationController
   before_action :find_inventory, only: %i(update destroy assign)
+  before_action :find_product, only: %i(create update)
   before_action :find_employee, only: :assign
 
   def index
@@ -10,24 +11,18 @@ class InventoriesController < ApplicationController
   end
 
   def create
-    if @product = Product.create!(name: params[:product_name], product_type: params[:product_type])
-      if @product.create_inventory(inventory_params)
-        render json: @inventory, status: :ok
-      else
-        render json: { 'error' => 'Could not create Inventory' }, status: :bad_request
-      end
-    else
-      render json: { 'error' => 'Could not create Product' }, status: :bad_request
-    end
+    create_or_update_inventory
   end
 
   def update
-    if @inventory
-      @inventory.product.update(name: params[:product_name], product_type: params[:product_type])
-      @inventory.update(inventory_params)
-      render json: @inventory, status: :ok
+    if @product
+      if @product.inventory.update(inventory_params)
+        render json: @inventory, status: :ok
+      else
+        render json: { 'error' => "Could not Update the Inventory" }, status: :bad_request
+      end
     else
-      render json: { 'error' => 'Could not find Inventory' }, status: :bad_request
+      render json: { 'error' => 'Could not find the Product' }, status: :not_found
     end
   end
 
@@ -51,12 +46,28 @@ class InventoriesController < ApplicationController
 
   private
 
+  def create_or_update_inventory
+    if @product
+      if @product.create_or_update_inventory(quantity: params[:quantity])
+        render json: @inventory, status: :ok
+      else
+        render json: { 'error' => "Could not Create Inventory" }, status: :bad_request
+      end
+    else
+      render json: { 'error' => 'Could not find the Product' }, status: :not_found
+    end
+  end
+
   def inventory_params
     params.require(:inventory).permit(:quantity)
   end
 
   def find_inventory
     @inventory = Inventory.find_by(id: params[:id])
+  end
+
+  def find_product
+    @product = Product.find_by(name: params[:product_name])
   end
 
   def find_employee

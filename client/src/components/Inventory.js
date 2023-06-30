@@ -6,7 +6,7 @@ import { Button, Card, Modal, Table, Form } from "react-bootstrap";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import AssignModal from "./AssignModal";
 
-const Inventory = ({ userProfile, employeeList }) => {
+const Inventory = ({ userProfile, employeeList, productList }) => {
   const navigate = useNavigate();
   const [showModal, setshowModal] = useState(false);
   const [productInfoInput, setproductInfoInput] = useState({});
@@ -29,15 +29,10 @@ const Inventory = ({ userProfile, employeeList }) => {
       });
   }, []);
 
-  const unfiltereProductTypes = entireInventory?.map((inventory) => {
-    return inventory?.product?.product_type
-  })
-  const productTypes = unfiltereProductTypes?.filter((item, index) => unfiltereProductTypes?.indexOf(item) === index);
-
   const deleteSubmit = (product) => {
     confirmAlert({
       title: "Confirm to submit",
-      message: `Are you sure to delete ${product.name} `,
+      message: `Are you sure to delete ${product?.name} `,
       buttons: [
         {
           label: "Yes",
@@ -80,14 +75,14 @@ const Inventory = ({ userProfile, employeeList }) => {
     });
   };
 
-  const UpdateProductSubmit = (e) => {
+  const updateProductSubmit = (e) => {
     e.preventDefault();
     console.log({ productInfoInput });
     setShowUpdateProductModal(false);
 
     confirmAlert({
       title: "Confirm to submit",
-      message: `Are you sure to Update ${productInfoInput.name} `,
+      message: `Are you sure to Update Quantity for ${productInfoInput.name} `,
       buttons: [
         {
           label: "Yes",
@@ -130,14 +125,14 @@ const Inventory = ({ userProfile, employeeList }) => {
     });
   };
 
-  const CreateProductSubmit = (e) => {
+  const createProductSubmit = (e) => {
     e.preventDefault();
     console.log({ productInfoInput });
     setShowUpdateProductModal(false);
 
     confirmAlert({
       title: "Confirm to submit",
-      message: `Are you sure to Create Product: ${productInfoInput.product_name} `,
+      message: `Are you sure to Create/Update Inventory for ${productInfoInput.product_name} `,
       buttons: [
         {
           label: "Yes",
@@ -184,7 +179,7 @@ const Inventory = ({ userProfile, employeeList }) => {
     e.preventDefault();
     const productData = {
       ...assignInput,
-      product_name: assignProductData?.product.name,
+      product_name: assignProductData?.product?.name,
     };
 
     fetch(`/inventories/${assignProductData?.id}/assign`, {
@@ -249,49 +244,29 @@ const Inventory = ({ userProfile, employeeList }) => {
               className="flex flex-col gap-4"
               onSubmit={
                 productInfoInput?.update
-                  ? UpdateProductSubmit
-                  : CreateProductSubmit
+                  ? updateProductSubmit
+                  : createProductSubmit
               }
             >
-              <Form.Label style={{ marginBottom: "-1rem" }}>
-                Product Name
-              </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder={` Type Product Name`}
-                onChange={(e) =>
-                  setproductInfoInput({
-                    ...productInfoInput,
-                    product_name: e.target.value,
-                  })
-                }
-                defaultValue={productInfoInput?.product_name}
-                required
-              />
-
-              <Form.Label style={{ marginBottom: "-1rem" }}>
-                Product Type
-              </Form.Label>
-
-              <Form.Select
-                aria-label="Default select example"
-                onChange={(e) =>
-                  setproductInfoInput({
-                    ...productInfoInput,
-                    product_type: e.target.value,
-                  })
-                }
-                required
-              >
-                <option>Select Product Type</option>
-                {productTypes?.map((product_type) => {
-                  return (
-                    <option key={product_type} value={product_type}>
-                      {product_type}
-                    </option>
-                  );
-                })}
-              </Form.Select>
+              {!productInfoInput?.update && (<Form.Select
+                                            aria-label="Default select example"
+                                            onChange={(e) =>
+                                              setproductInfoInput({
+                                                ...productInfoInput,
+                                                product_name: e.target.value,
+                                              })
+                                            }
+                                            required
+                                          >
+                                            <option>Select Product</option>
+                                            {productList?.map((product) => {
+                                              return (
+                                                <option key={product?.name} value={product.name}>
+                                                  {product?.name}
+                                                </option>
+                                              );
+                                            })}
+                                          </Form.Select>)}
 
               <Form.Label style={{ marginBottom: "-1rem" }}>
                 Product Quantity
@@ -346,7 +321,7 @@ const Inventory = ({ userProfile, employeeList }) => {
                     <td className="align-middle">
                       <div className="flex flex-col  gap-2">
                         <span>
-                          {data?.product?.name || "name is not entered"}{" "}
+                          {data?.product?.name}{" "}
                         </span>
                         {/* <span>Product Name: Product </span> */}
                       </div>
@@ -354,8 +329,7 @@ const Inventory = ({ userProfile, employeeList }) => {
                     <td className="align-middle">
                       <div className="flex flex-col  gap-2">
                         <span>
-                          {data?.product?.product_type ||
-                            "product_type is not entered"}{" "}
+                          {data?.product?.product_type}{" "}
                         </span>
                       </div>
                     </td>
