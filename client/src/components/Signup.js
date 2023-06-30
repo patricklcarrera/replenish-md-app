@@ -9,14 +9,15 @@ const formInitialState = {
     email: '',
     password: '',
     gfe: false,
-    percentage: 0,
+    service_percentage: 0,
+    retail_percentage: 0,
     is_inv_manager: false,
     is_admin: false
 };
 
 export default function SignUp({userProfile}) {
     const [formData, setFormData] = useState(formInitialState);
-    const { name, email, password, is_admin, gfe, percentage, is_inv_manager } = formData;
+    const { name, email, password, is_admin, gfe, service_percentage, retail_percentage, is_inv_manager } = formData;
 
     function onSubmit(e) {
         e.preventDefault();
@@ -25,7 +26,8 @@ export default function SignUp({userProfile}) {
             email,
             password,
             gfe,
-            percentage,
+            service_percentage,
+            retail_percentage,
             is_inv_manager,
             is_admin
         };
@@ -96,7 +98,12 @@ export default function SignUp({userProfile}) {
                 ...prevFormData,
                 [name]: value,
             }));
-        } else if (name === 'percentage') {
+        } else if (name === 'service_percentage') {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                [name]: value,
+            }));
+        } else if (name === 'retail_percentage') {
             setFormData((prevFormData) => ({
                 ...prevFormData,
                 [name]: value,
@@ -174,12 +181,25 @@ export default function SignUp({userProfile}) {
 
                 <div className="mb-4">
                     <label htmlFor="gfe" className="text-base me-3 font-medium text-blue-800">
-                        Percentage
+                        Service Percentage
                     </label>
                     <input
                         type="number"
-                        name="percentage"
-                        value={formData.percentage}
+                        name="service_percentage"
+                        value={formData.service_percentage}
+                        onChange={handleChange}
+                        className="p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label htmlFor="gfe" className="text-base me-3 font-medium text-blue-800">
+                        Retail Percentage
+                    </label>
+                    <input
+                        type="number"
+                        name="retail_percentage"
+                        value={formData.retail_percentage}
                         onChange={handleChange}
                         className="p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />

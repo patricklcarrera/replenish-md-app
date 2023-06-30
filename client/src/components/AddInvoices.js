@@ -206,10 +206,11 @@ export default function AddInvoices(props) {
         totalProductPriceSum -
         gfeFee -
         afterTax.retailTotal) *
-      (userProfile?.percentage / 100); //(replace with injector percentage)
+      (userProfile?.service_percentage / 100); //(replace with injector percentage)
     console.log("gfe:" + userProfile?.gfe);
     if (userProfile?.gfe) total += gfeFee;
-    total = total - afterTax.discount + afterTax.retailTotal * 0.15 + afterTax.conciergeFee;
+
+    total = total - afterTax.discount + afterTax.retailTotal * (parseInt(userProfile?.retail_percentage) || 0) + afterTax.conciergeFee;
     console.log(total);
     total = total
     // console.log ("total after overhead fee:" + total);
@@ -396,7 +397,7 @@ export default function AddInvoices(props) {
       charge: getTotal(),
 
     };
-    console.log(userProfile?.percentage);
+    console.log(userProfile?.service_percentage);
     console.log("invoice:", invoice);
     fetch("/invoices/", {
       method: "POST",
