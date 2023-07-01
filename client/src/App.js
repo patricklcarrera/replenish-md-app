@@ -145,8 +145,6 @@ function App() {
                     onSave={handleProductSave}
                     productList={productList}
                     onDeleteProduct={onDeleteProduct}
-                    searchTerm={searchTerm}
-                    changeSearch={changeSearch}
                     userProfile={userProfile}
                   />
                 }
@@ -211,8 +209,6 @@ function App() {
                     onSave={handleProductSave}
                     productList={productList}
                     onDeleteProduct={onDeleteProduct}
-                    searchTerm={searchTerm}
-                    changeSearch={changeSearch}
                     userProfile={userProfile}
                   />
                 }

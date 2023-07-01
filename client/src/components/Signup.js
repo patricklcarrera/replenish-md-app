@@ -126,7 +126,7 @@ export default function SignUp({userProfile}) {
             >
                 <div className="mb-4">
                     <label htmlFor="name" className="block text-base font-medium text-blue-800">
-                        Username
+                        Name
                     </label>
                     <input
                         type="text"
