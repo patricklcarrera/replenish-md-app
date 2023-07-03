@@ -359,7 +359,7 @@ export default function AddInvoices(props) {
       setCurrentRetailProduct({ name: "", price: 0, quantity: 1 });
       let retailProductToBeAdded = {
         ...selectedRetailProduct,
-        quantity: currentProduct.quantity,
+        quantity: currentRetailProduct.quantity,
       };
       setSelectedRetailProduct(null);
       setFormData((prevFormData) => ({
@@ -371,7 +371,6 @@ export default function AddInvoices(props) {
       }));
     }
   };
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -619,6 +618,7 @@ export default function AddInvoices(props) {
                           onChange={handleQuantityChange}
                           min="1"
                           max={currentProduct.maxQtantity}
+                          onKeyDown="return false"
                           className="w-full p-1 
                           border-gray-300 border rounded-md"
                         />

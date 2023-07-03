@@ -199,19 +199,20 @@ export default function Employee({ employee, invoiceList, userProfile }) {
               </Button>
 
               {employee?.is_admin === false && (
-                <OverlayTrigger
-                  trigger="click"
-                  rootClose
-                  placement="bottom"
-                  overlay={updatePopover}
-                >
-                  <>  
+                <>
+                  <OverlayTrigger
+                    trigger="click"
+                    rootClose
+                    placement="bottom"
+                    overlay={updatePopover}
+                  >
                   <Button
                     // onClick={updateGfePercent}
                     variant="info"
                   >
                     Update
                   </Button>
+                  </OverlayTrigger>
                   <Button
                     variant="danger"
                     onClick={() => {
@@ -221,8 +222,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
                   >
                     Delete
                   </Button>
-                  </>
-                </OverlayTrigger>
+                </>
               )}
             </div>
           </>

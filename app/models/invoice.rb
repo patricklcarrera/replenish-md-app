@@ -7,8 +7,8 @@ class Invoice < ApplicationRecord
   has_many :products, through: :products_invoices
   has_one_attached :document, dependent: :purge
 
-  before_save :save_products_quantities
   before_update :revise_charge
+  before_destroy :return_inventory
 
   scope :finalized, -> { where(is_finalized: true) }
   scope :non_finalized, -> { where(is_finalized: false) }
@@ -17,19 +17,18 @@ class Invoice < ApplicationRecord
     products_hash["products"] = products
     products_hash["retail_products"] = retail_products
 
-    save!
-    SendNotificationPdfToAdminsMailer.with(invoice: self).send_mail.deliver
-    update(products_quantities: products_quantities)
-  end
-
-  def finalize_and_send_pdf_mail
-    if products_quantities && products_quantities.any?
-      products_quantities.each do |product_quantity|
-        emp_product_quantity = employee.employees_inventories.where(product: Product.find(product_quantity.keys)).first
-        emp_product_quantity.update!(quantity: (emp_product_quantity.quantity - product_quantity.values.first.to_i))
+    if products_hash && products_hash.any?
+      products_hash.values.flatten(1).map {|arr| {arr[0] => arr[1]}}.each do |product_quantity|
+        emp_product_quantity = employee.employees_inventories.where(product: Product.find_by(name: product_quantity.keys.first)).first
+        emp_product_quantity.update(quantity: (emp_product_quantity.quantity - product_quantity.values.first.to_i))
       end
     end
 
+    save!
+    SendNotificationPdfToAdminsMailer.with(invoice: self).send_mail.deliver
+  end
+
+  def finalize_and_send_pdf_mail
     pdf = Prawn::Document.new(page_size: 'A4')
 
     table_data = []
@@ -81,7 +80,7 @@ class Invoice < ApplicationRecord
     SendPdfToInvoiceMailer.with(invoice: self).send_mail.deliver
   end
 
-  def send_reject_mail(feedback)
+  def reject_and_send_mail(feedback)
     if RejectInvoiceMailer.with(invoice: self, feedback: feedback).send_mail.deliver
       destroy!
     end
@@ -99,7 +98,12 @@ class Invoice < ApplicationRecord
     end
   end
 
-  def save_products_quantities
-    products_quantities = products_hash.values&.map {|product| { Product.find_by(name: product.first[0]).id => product.first[1] } unless product.empty? }.compact
+  def return_inventory
+    if products_hash && products_hash.any?
+      products_hash.values.flatten(1).map {|arr| {arr[0] => arr[1]}}.each do |product_quantity|
+        emp_product_quantity = employee.employees_inventories.find_or_create_by(product: Product.find_by(name: product_quantity.keys.first))
+        emp_product_quantity.update!(quantity: (emp_product_quantity.quantity.to_i + product_quantity.values.first.to_i))
+      end
+    end
   end
 end

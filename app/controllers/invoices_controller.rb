@@ -47,7 +47,7 @@ class InvoicesController < ApplicationController
   end
 
   def send_reject_mail
-    @invoice.send_reject_mail(params[:feedback])
+    @invoice.reject_and_send_mail(params[:feedback])
   end
 
   private

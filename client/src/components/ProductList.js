@@ -1,45 +1,39 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Header from "./Header";
 import Product from "./Product";
-import { Button } from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import Search from "./Search";
 
 export default function ProductList({
-  filteredProducts,
+  productList,
   onDeleteProduct,
-  changeSearch,
-  searchTerm,
   onSave,
   userProfile,
 }) {
-  const [productList, setProductList] = useState([]);
+  const [filteredProductList, setFilteredProductList] = useState(productList);
 
-  useEffect(() => {
-    // Fetch the invoice list from the API
-    fetch("/products")
-      .then((response) => response.json())
-      .then((data) => {
-        setProductList(data); // Update the state with the fetched data
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []); // Empty dependency array to run the effect only once
+  const handleProductSearch = (e) => {
+    const input = e.target.value;
+    const matchedProducts =
+      input === ""
+        ? productList
+        : productList?.filter((product) =>
+            product.name?.includes(input)
+          );
+
+    setFilteredProductList(matchedProducts);
+  };
 
   return (
     <div>
       <Header userProfile={userProfile} />
       <br />
-      {/* <Search
-                searchTerm = {searchTerm}
-                changeSearch= {changeSearch}/> */}
-      <br />
       <div className="col-md-12 text-center">
-        {/*<a href='/addproduct'type="button" className="btn btn-primary">Add product</a>*/}
         {userProfile?.is_admin && (
           <div className="col-md-12 text-center">
+          <input
+            type="text"
+            placeholder="Search here"
+            onChange={handleProductSearch}
+             />
             <a href="/addproduct" type="button" className="btn btn-primary">
               Add product
             </a>
@@ -48,7 +42,7 @@ export default function ProductList({
       </div>
       <br></br>
       <div className="justify-center flex flex-wrap gap-3">
-        {productList?.map((product) => (
+        {(filteredProductList ? filteredProductList : productList)?.map((product) => (
           <Product
             key={product.id}
             isAdmin={userProfile?.is_admin}
