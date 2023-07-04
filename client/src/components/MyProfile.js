@@ -236,79 +236,79 @@ function UserPage({ userProfile, employeeList }) {
       <h1 className="text-4xl font-bold text-center text-blue-600">
         {employee?.name}
       </h1>
-      {userProfile?.inventory_prompts?.length > 0 ?
-      (<h2 className="text-4xl font-bold text-center text-blue-400">
-              Inventory Assigned
-            </h2>) : <></>}
-      <br />
 
-      {userProfile?.inventory_prompts?.length > 0 && (
-        <Table bordered hover responsive className="w-full mt-4 text-center">
-          <thead>
-            <tr>
-              <th>Product </th>
-              <th>Product Type </th>
-              <th>Quantity</th>
-              <th>Assigned By</th>
-              <th className="w-[12rem]"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {userProfile?.inventory_prompts?.map((data) => {
-              console.log(data?.is_accepted);
-              return (
-                <>
-                  {!data?.is_accepted && (
-                    <tr key={data?.id}>
-                      <td className="align-middle">
-                        <div className="flex flex-col  gap-2">
-                          <span>{data?.product?.name} </span>
-                          {/* <span>Product Name: Product </span> */}
-                        </div>
-                      </td>
-                      <td className="align-middle">
-                        <div className="flex flex-col  gap-2">
-                          <span>{data?.product?.product_type} </span>
-                        </div>
-                      </td>
-                      <td className="align-middle">
-                        <div className="flex flex-col  gap-2">
-                          <span>{data?.quantity} </span>
-                        </div>
-                      </td>
-                      <td className="align-middle">
-                        <div className="flex flex-col  gap-2">
-                          <span>{data?.assigned_by} </span>
-                        </div>
-                      </td>
+      {userProfile?.inventory_prompts?.filter((prompt) => !prompt.is_accepted === true)?.length > 0 && (
+        <>
+          <h2 className="text-4xl font-bold text-center text-blue-400">
+            Inventory Assigned
+          </h2>
+          <Table bordered hover responsive className="w-full mt-4 text-center">
+            <thead>
+              <tr>
+                <th>Product </th>
+                <th>Product Type </th>
+                <th>Quantity</th>
+                <th>Assigned By</th>
+                <th className="w-[12rem]"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {userProfile?.inventory_prompts?.map((data) => {
+                console.log(data?.is_accepted);
+                return (
+                  <>
+                    {!data?.is_accepted && (
+                      <tr key={data?.id}>
+                        <td className="align-middle">
+                          <div className="flex flex-col  gap-2">
+                            <span>{data?.product?.name} </span>
+                            {/* <span>Product Name: Product </span> */}
+                          </div>
+                        </td>
+                        <td className="align-middle">
+                          <div className="flex flex-col  gap-2">
+                            <span>{data?.product?.product_type} </span>
+                          </div>
+                        </td>
+                        <td className="align-middle">
+                          <div className="flex flex-col  gap-2">
+                            <span>{data?.quantity} </span>
+                          </div>
+                        </td>
+                        <td className="align-middle">
+                          <div className="flex flex-col  gap-2">
+                            <span>{data?.assigned_by} </span>
+                          </div>
+                        </td>
 
-                      <td className="align-middle">
-                        <div className=" flex justify-around gap-3">
-                          <Button
-                            onClick={async () => {
-                              acceptSubmit({ ...data, isDelete: false });
-                            }}
-                            variant="info"
-                          >
-                            Accept
-                          </Button>
-                          <Button
-                            onClick={async () => {
-                              denySubmit({ ...data, isDelete: true });
-                            }}
-                            variant="danger"
-                          >
-                            Deny
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </>
-              );
-            })}
-          </tbody>
-        </Table>
+                        <td className="align-middle">
+                          <div className=" flex justify-around gap-3">
+                            <Button
+                              onClick={async () => {
+                                acceptSubmit({ ...data, isDelete: false });
+                              }}
+                              variant="info"
+                            >
+                              Accept
+                            </Button>
+                            <Button
+                              onClick={async () => {
+                                denySubmit({ ...data, isDelete: true });
+                              }}
+                              variant="danger"
+                            >
+                              Deny
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                );
+              })}
+            </tbody>
+          </Table>
+        </>
       )}
 
       <div className=" container mx-auto my-3">

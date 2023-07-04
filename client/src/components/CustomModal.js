@@ -41,6 +41,7 @@ const UpdateInvoiceModal = ({
                   }
                   className="w-full mt-1 p-1 border-gray-300 border rounded-md"
                 >
+                  <option>Select Type</option>
                   <option value="fixed">Fixed Amount</option>
                   <option value="percentage">Percentage</option>
                 </select>

@@ -7,6 +7,8 @@ class Invoice < ApplicationRecord
   has_many :products, through: :products_invoices
   has_one_attached :document, dependent: :purge
 
+  validates_presence_of :overhead_fee_type, on: :update, if: lambda{ |overhead_fee_value| overhead_fee_value.present? }
+
   before_update :revise_charge
   before_destroy :return_inventory
 

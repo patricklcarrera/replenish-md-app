@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import { toast } from "react-toastify";
+import { Alert } from "react-bootstrap";
 
 const initialFormState = {
   dateOfService: "",
@@ -18,7 +19,6 @@ const initialFormState = {
   //Client States
   client: { name: "" },
 };
-
 
 export default function AddInvoices(props) {
   const { productList, userProfile } = props;
@@ -38,18 +38,11 @@ export default function AddInvoices(props) {
   const [selectedRetailProduct, setSelectedRetailProduct] = useState(null);
   const [matchingRetailProducts, setMatchingRetailProducts] = useState([]);
   const [clientName, setClientName] = useState("");
-
-  {
-    matchingProducts.map((product) => (
-      <p
-        key={product.id}
-        className="p-2 cursor-pointer hover:bg-gray-100"
-        onClick={() => handleProductSelection(product.name)}
-      >
-        {product.name}
-      </p>
-    ));
-  }
+  const [isAlert, setIsAlert] = useState({
+    retailShow: false,
+    productUsedShow: false,
+    message: "",
+  });
 
   const handleInputChange = (event, index) => {
     const { name, value, type, checked } = event.target;
@@ -186,14 +179,14 @@ export default function AddInvoices(props) {
       tip: formData.tip,
       discount: formData.personalDiscount,
       retailTotal: getTotalRetailProductPriceSum(),
-      conciergeFee: 0
+      conciergeFee: 0,
     };
     let gfeFee = 0;
     if (formData?.gfe) {
       gfeFee = 30;
     }
     if (formData?.conciergeFeePaid) {
-      afterTax.conciergeFee = 50; 
+      afterTax.conciergeFee = 50;
     }
     cashCalculations(afterTax);
     const totalProductPriceSum = getTotalProductPriceSum();
@@ -207,16 +200,20 @@ export default function AddInvoices(props) {
         gfeFee -
         afterTax.retailTotal) *
       (userProfile?.service_percentage / 100); //(replace with injector percentage)
-    console.log("gfe:" + userProfile?.gfe);
+    // console.log("gfe:" + userProfile?.gfe);
     if (userProfile?.gfe) total += gfeFee;
 
-    total = total - afterTax.discount + afterTax.retailTotal * (parseInt(userProfile?.retail_percentage) || 0)/100 + afterTax.conciergeFee;
-    console.log(total);
-    total = total
+    total =
+      total -
+      afterTax.discount +
+      (afterTax.retailTotal * (parseInt(userProfile?.retail_percentage) || 0)) /
+        100 +
+      afterTax.conciergeFee;
+    // console.log(total);
+    total = total;
     // console.log ("total after overhead fee:" + total);
     return total.toFixed(2);
   };
-
 
   /// Product selection functions
   const handleProductNameChange = (e) => {
@@ -255,7 +252,7 @@ export default function AddInvoices(props) {
     const selectedProduct = userProfile?.employees_inventories?.find(
       (product) => product?.product.name === selectedProductName
     );
-    console.log({ selectedProduct });
+    // console.log({ selectedProduct });
     if (selectedProduct.product) {
       setCurrentProduct({
         name: selectedProduct?.product.name,
@@ -279,12 +276,17 @@ export default function AddInvoices(props) {
   };
   const handleAddProduct = () => {
     if (selectedProduct) {
+      setIsAlert({
+        productUsedShow: false,
+        retailShow: false,
+        message: "",
+      });
       setCurrentProduct({ name: "", price: 0, quantity: 1 });
       let productToBeAdded = {
         ...selectedProduct,
         quantity: currentProduct.quantity,
       };
-      console.log("productToBeAdded", productToBeAdded);
+      // console.log("productToBeAdded", productToBeAdded);
       setSelectedProduct(null);
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -368,7 +370,15 @@ export default function AddInvoices(props) {
           ...formData.retailProducts,
           retailProductToBeAdded,
         ],
+
+        
       }));
+
+        setIsAlert({
+          productUsedShow: false,
+          retailShow: false,
+          message: "",
+        });
     }
   };
 
@@ -390,14 +400,12 @@ export default function AddInvoices(props) {
       personal_discount: event.target.personalDiscount.value,
       tip: event.target.tip.value,
       comments: event.target.comments.value,
-      comments: event.target.comments.value,
       products: formData.products,
       retail_products: formData.retailProducts,
       charge: getTotal(),
-
     };
-    console.log(userProfile?.service_percentage);
-    console.log("invoice:", invoice);
+    // console.log(userProfile?.service_percentage);
+    // console.log("invoice:", invoice);
     fetch("/invoices/", {
       method: "POST",
       headers: {
@@ -429,6 +437,13 @@ export default function AddInvoices(props) {
     setMatchingProducts([]);
   };
 
+  console.log(
+    // matchingRetailProducts?.filter((matchProduct) => {
+    //   return matchProduct.name !== currentRetailProduct?.name;
+    // })
+    formData,
+    matchingRetailProducts
+  );
   return (
     <div>
       <Header userProfile={userProfile} />
@@ -596,17 +611,24 @@ export default function AddInvoices(props) {
                         />
                         {matchingProducts?.length >= 0 && (
                           <div className="absolute bg-white w-sm max-h-40 overflow-y-auto rounded-md mt-1 shadow-md">
-                            {matchingProducts.map((product) => (
-                              <p
-                                key={product.id}
-                                className="p-2 cursor-pointer hover:bg-gray-100"
-                                onClick={() =>
-                                  handleProductSelection(product.name)
-                                }
-                              >
-                                {product.name}
-                              </p>
-                            ))}
+                            {matchingProducts
+                              ?.filter(
+                                (item1) =>
+                                  !formData?.products.some(
+                                    (item2) => item2.name === item1.name
+                                  )
+                              )
+                              ?.map((product) => (
+                                <p
+                                  key={product.id}
+                                  className="p-2 cursor-pointer hover:bg-gray-100"
+                                  onClick={() =>
+                                    handleProductSelection(product.name)
+                                  }
+                                >
+                                  {product.name}
+                                </p>
+                              ))}
                           </div>
                         )}
                       </td>
@@ -614,8 +636,21 @@ export default function AddInvoices(props) {
                         <input
                           type="number"
                           name="productQuantity"
+                          placeholder={`max:${currentProduct?.maxQtantity}`}
                           value={currentProduct.quantity}
-                          onChange={handleQuantityChange}
+                          onChange={(e) => {
+                            setIsAlert({
+                              productUsedShow: false,
+                              retailShow: false,
+                              message: "",
+                            });
+                            +e.target.value <= currentProduct?.maxQtantity
+                              ? handleQuantityChange(e)
+                              : setIsAlert({
+                                  productUsedShow: true,
+                                  message: ` Your can only select quantity upto ${currentProduct?.maxQtantity} for ${currentProduct.name}`,
+                                });
+                          }}
                           min="1"
                           max={currentProduct.maxQtantity}
                           onKeyDown="return false"
@@ -648,7 +683,7 @@ export default function AddInvoices(props) {
                         </button>
                       </td>
                     </tr>
-                    {formData.products.map((product, index) => (
+                    {formData.products?.map((product, index) => (
                       <tr key={index}>
                         <td>
                           <p className="w-full p-1 border-gray-500 border rounded-md my-1">
@@ -679,6 +714,9 @@ export default function AddInvoices(props) {
                     ))}
                   </tbody>
                 </table>
+                {isAlert.productUsedShow && (
+                  <span className="text-sm">{isAlert?.message}</span>
+                )}
               </div>
               <div className="border rounded-sm p-2 overflow-x-auto mb-4 retail-products">
                 <table className="w-full table-autol">
@@ -707,27 +745,46 @@ export default function AddInvoices(props) {
                         />
                         {matchingRetailProducts?.length > 0 && (
                           <div className="absolute bg-white w-sm max-h-40 overflow-y-auto rounded-md mt-1 shadow-md">
-                            {matchingRetailProducts.map((product) => (
-                              <p
-                                key={product.id}
-                                className="p-2 cursor-pointer hover:bg-gray-100"
-                                onClick={() =>
-                                  handleRetailProductSelection(product.name)
-                                }
-                              >
-                                {product.name}
-                              </p>
-                            ))}
-
+                            {matchingRetailProducts
+                              ?.filter(
+                                (item1) =>
+                                  !formData?.retailProducts.some(
+                                    (item2) => item2.name === item1.name
+                                  )
+                              )
+                              ?.map((product) => (
+                                <p
+                                  key={product.id}
+                                  className="p-2 cursor-pointer hover:bg-gray-100"
+                                  onClick={() =>
+                                    handleRetailProductSelection(product.name)
+                                  }
+                                >
+                                  {product.name}
+                                </p>
+                              ))}
                           </div>
                         )}
                       </td>
-                      <td>
+                      <td className="">
                         <input
                           type="number"
                           name="productQuantity"
+                          placeholder={`max:${currentRetailProduct?.maxQtantity}`}
                           value={currentRetailProduct.quantity}
-                          onChange={handleRetailQuantityChange}
+                          onChange={(e) => {
+                            setIsAlert({
+                              productUsedShow: false,
+                              retailShow: false,
+                              message: "",
+                            });
+                            +e.target.value <= currentRetailProduct?.maxQtantity
+                              ? handleRetailQuantityChange(e)
+                              : setIsAlert({
+                                  retailShow: true,
+                                  message: ` Your can select upto ${currentRetailProduct?.maxQtantity} quantity`,
+                                });
+                          }}
                           min="1"
                           max={currentRetailProduct?.maxQtantity}
                           className="w-full p-1 border-gray-300 border rounded-md"
@@ -761,6 +818,7 @@ export default function AddInvoices(props) {
                         </button>
                       </td>
                     </tr>
+
                     {formData.retailProducts.map((product, index) => (
                       <tr key={index}>
                         <td>
@@ -792,12 +850,14 @@ export default function AddInvoices(props) {
                     ))}
                   </tbody>
                 </table>
+                {isAlert.retailShow && (
+                  <span className="text-sm">{isAlert?.message}</span>
+                )}
               </div>
               <div className="border rounded-sm p-2 mb-4">
                 <label className="block">
                   Total Product Price Sum: {getTotalProductPriceSum()}
                 </label>
-
               </div>
               <button
                 type="submit"
