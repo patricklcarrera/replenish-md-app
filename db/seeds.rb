@@ -618,7 +618,7 @@ Product.create(
 )
 
 Employee.all.each do |employee|
-    employee.employees_inventories.create!(product: Product.all.reload.sample, quantity: rand(1..100))
+    employee.employees_inventories.create!(product: Product.all.reload.sample, quantity: 1)
 end
 
 Product.all.reload.each do |product|
