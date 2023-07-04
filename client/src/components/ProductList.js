@@ -8,19 +8,9 @@ export default function ProductList({
   onSave,
   userProfile,
 }) {
+  const [searchInput, setSearchInput] = useState("");
+
   const [filteredProductList, setFilteredProductList] = useState(productList);
-
-  const handleProductSearch = (e) => {
-    const input = e.target.value;
-    const matchedProducts =
-      input === ""
-        ? productList
-        : productList?.filter((product) =>
-            product.name?.includes(input)
-          );
-
-    setFilteredProductList(matchedProducts);
-  };
 
   return (
     <div>
@@ -29,11 +19,12 @@ export default function ProductList({
       <div className="col-md-12 text-center">
         {userProfile?.is_admin && (
           <div className="col-md-12 text-center">
-          <input
-            type="text"
-            placeholder="Search here"
-            onChange={handleProductSearch}
-             />
+            <input
+              type="text"
+              className="p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Search Product Name here"
+              onChange={(event) => setSearchInput(event.target.value)}
+            />
             <a href="/addproduct" type="button" className="btn btn-primary">
               Add product
             </a>
@@ -42,15 +33,20 @@ export default function ProductList({
       </div>
       <br></br>
       <div className="justify-center flex flex-wrap gap-3">
-        {(filteredProductList ? filteredProductList : productList)?.map((product) => (
-          <Product
-            key={product.id}
-            isAdmin={userProfile?.is_admin}
-            product={product}
-            onSave={onSave}
-            onDeleteProduct={onDeleteProduct}
-          />
-        ))}
+        {productList?.filter((product) => {
+            return (
+              product.name?.toLowerCase().includes(searchInput?.toLocaleLowerCase()) 
+            );
+          })
+          ?.map((product) => (
+            <Product
+              key={product.id}
+              isAdmin={userProfile?.is_admin}
+              product={product}
+              onSave={onSave}
+              onDeleteProduct={onDeleteProduct}
+            />
+          ))}
       </div>
     </div>
   );

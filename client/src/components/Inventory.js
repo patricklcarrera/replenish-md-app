@@ -20,6 +20,8 @@ const Inventory = ({ userProfile, employeeList, productList }) => {
     quantity: 0,
   });
 
+  const [searchInput, setSearchInput] = useState("");
+
   useEffect(() => {
     fetch("/inventories")
       .then((r) => r.json())
@@ -303,6 +305,14 @@ const Inventory = ({ userProfile, employeeList, productList }) => {
         <h2 className="text-4xl mt-8 font-bold text-center text-blue-400">
           Company Inventory
         </h2>
+        <div className="flex justify-center">
+          <input
+            type="text"
+            className="p-2 mt-1 border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Search Product Name here"
+            onChange={(event) => setSearchInput(event.target.value)}
+          />
+        </div>
         <Table bordered hover responsive className="w-full mt-4 text-center">
           <thead>
             <tr>
@@ -315,7 +325,12 @@ const Inventory = ({ userProfile, employeeList, productList }) => {
           </thead>
           <tbody>
             {entireInventory &&
-              entireInventory?.map((data) => {
+                entireInventory?.filter((data) => {
+                  return (
+                    data?.product?.name?.toLowerCase().includes(searchInput?.toLocaleLowerCase()) 
+                  );
+                })
+                ?.map((data) => {
                 return (
                   <tr key={data?.product?.id}>
                     <td className="align-middle">
