@@ -15,69 +15,13 @@ Client.destroy_all
 Product.destroy_all
 
 Employee.create(
-    name: "Allen Carrera",
-    email: "allen@email.com",
+    name: "Patrick Carrera",
+    email: "patricklcarrera@gmail.com",
     gfe: true,
     service_percentage: 60,
     password: "test123",
     is_admin: true,
     is_inv_manager: true
-)
-
-Employee.create(
-    name: "John Smith",
-    email: "test@email.com",
-    gfe: false,
-    service_percentage: 15,
-    password: "test12345",
-    is_admin: false,
-    is_inv_manager: true
-)
-
-Employee.create(
-    name: "Justin Gaethje",
-    email: "justin@email.com",
-    gfe: true,
-    service_percentage: 20,
-    password: "justin123",
-    is_admin: false,
-    is_inv_manager: true
-)
-
-Employee.create(
-    name: "Jon Snow",
-    email: "john@email.com",
-    gfe: false,
-    service_percentage: 30,
-    password: "snow123",
-    is_admin: true
-)
-
-Employee.create(
-    name: "Jennifer Walker",
-    email: "jennifer@email.com",
-    gfe: true,
-    service_percentage: 50,
-    password: "test12345",
-    is_admin: false
-)
-
-Employee.create(
-    name: "Tyler Clark",
-    email: "Tyler@email.com",
-    gfe: false,
-    service_percentage: 65,
-    password: "test12345",
-    is_admin: true
-)
-
-Employee.create(
-    name: "Kris Johnson",
-    email: "kris@email.com",
-    gfe: true,
-    service_percentage: 35,
-    password: "test12345",
-    is_admin: false
 )
 
 Product.create(
@@ -622,7 +566,7 @@ Employee.all.each do |employee|
 end
 
 Product.all.reload.each do |product|
-    product.create_inventory!(quantity: rand(1..100))
+    product.create_inventory!(quantity: 1)
 end
 
 15.times do

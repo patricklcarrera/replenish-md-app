@@ -14,7 +14,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
   const [showModal, setShowModal] = useState(false);
   const [servicePercentage, setServicePercentage] = useState(employee?.service_percentage, 0);
   const [retailPercentage, setRetailPercentage] = useState(employee?.retail_percentage, 0);
-  console.log(userProfile);
+  
 
   useEffect(() => {
     const filteredInvoices = invoiceList.filter(
