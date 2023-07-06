@@ -12,9 +12,7 @@ const initialFormState = {
   tip: null,
   conciergeFeePaid: false,
   gfe: false,
-  //Product States
   products: [],
-  //Retail Product States
   retailProducts: [],
   //Client States
   client: { name: "" },
