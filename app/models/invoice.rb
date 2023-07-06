@@ -79,7 +79,7 @@ class Invoice < ApplicationRecord
 
     SendNotificationPdfToAdminsMailer.with(invoice: self).send_mail.deliver
 
-    document.purge!
+    document.purge
     File.delete("public/#{employee.name}-Non-Finalized-Invoice-#{id}.pdf")
   end
 
