@@ -5,6 +5,8 @@ class SendNotificationPdfToAdminsMailer < ApplicationMailer
     admins = Employee.admins
     @invoice = params[:invoice]
 
+    attachments["#{@invoice.client.name}-Non-Finalized-Invoice-#{@invoice.id}.pdf"] = @invoice.document.download
+
     admins.each do |admin|
 	    mail(
 	      from: 'patrick@test.com',

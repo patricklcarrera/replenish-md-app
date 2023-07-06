@@ -16,6 +16,8 @@ class Invoice < ApplicationRecord
   scope :non_finalized, -> { where(is_finalized: false) }
 
   def save_pdf_and_send_mail(products, retail_products)
+    # TODO: Refactor the duplicate code to generate the pdf in this and the later method (before the overhead section) 
+
     products_hash["products"] = products
     products_hash["retail_products"] = retail_products
 
@@ -26,8 +28,59 @@ class Invoice < ApplicationRecord
       end
     end
 
+    pdf = Prawn::Document.new(page_size: 'A4')
+
+    table_data = []
+
+    table_data << ["Invoice: #{id}", "Total: #{charge}"]
+    table_data << ["Provider: #{employee.name}", "Client Name: #{client.name}", "Date of Service: #{date_of_service}"]
+    table_data << ["Concierge Fee Paid:#{concierge_fee_paid ? 'Yes' : 'No'}", "GFE:#{gfe ? 'Yes' : 'No'}", "Paid By Client Cash:#{paid_by_client_cash}", "Paid By Client Credit:#{paid_by_client_credit}", "Total Paid by Credit:#{paid_by_client_cash.to_i + paid_by_client_credit.to_i if (paid_by_client_cash && paid_by_client_credit)}"]
+    table_data << ["Personal Discount: #{personal_discount}", "Tip: #{tip}", "Comments: #{comments}"]
+
+    pdf.table(table_data, position: :left)
+
+    if products_hash["products"].any?
+      product_heading = [["Products:   "]]
+      pdf.table(product_heading, position: :left)
+
+      product_table_data = []
+      product_table_data << ["Products", "Quantity", "Price", "Total Price"]
+      products_hash["products"]&.each do |product|
+        product_table_data << [product&.first, product&.second, product&.third, (product.second.to_i * product.third.to_i)]
+      end
+
+      pdf.table(product_table_data, position: :left, :column_widths => [200, 100, 100, 100])
+    end
+
+    if products_hash["retail_products"].any?
+      retail_product_heading = [["Retail Products:   "]]
+      pdf.table(retail_product_heading, position: :left)
+
+      retail_product_table_data = []
+      retail_product_table_data << ["Products", "Quantity", "Price", "Total Price"]
+
+      products_hash["retail_products"].each do |product|
+        retail_product_table_data << [product&.first, product&.second, product&.third, (product.second.to_i * product.third.to_i)]
+      end
+
+      pdf.table(retail_product_table_data, :cell_style => { inline_format: true }, position: :left, :column_widths => [200, 100, 100, 100])
+    end
+
+    # overhead_table_data = []
+    # overhead_table_data << ["Overhead:   "]
+    # overhead_table_data <<["Fee Type: #{overhead_fee_type.capitalize}", "Fee Value: #{overhead_fee_value}"]
+
+    # pdf.table(overhead_table_data, :cell_style => { inline_format: true }, position: :left, :column_widths => [200, 200])
+
+    pdf_file = pdf.render_file("public/#{employee.name}-Non-Finalized-Invoice-#{id}.pdf")
+    document.attach(io: File.open("public/#{employee.name}-Non-Finalized-Invoice-#{id}.pdf"), filename: "#{employee.name}-Non-Finalized-Invoice-#{id}.pdf", content_type: "application/pdf")
+
     save!
+
     SendNotificationPdfToAdminsMailer.with(invoice: self).send_mail.deliver
+
+    document.purge!
+    File.delete("public/#{employee.name}-Non-Finalized-Invoice-#{id}.pdf")
   end
 
   def finalize_and_send_pdf_mail
@@ -75,8 +128,8 @@ class Invoice < ApplicationRecord
 
     pdf.table(overhead_table_data, :cell_style => { inline_format: true }, position: :left, :column_widths => [200, 200])
 
-    pdf_file = pdf.render_file("public/#{employee.name}-Invoice-#{id}.pdf")
-    document.attach(io: File.open("public/#{employee.name}-Invoice-#{id}.pdf"), filename: "#{employee.name}-Invoice-#{id}.pdf", content_type: "application/pdf")
+    pdf_file = pdf.render_file("public/#{employee.name}-Finalized-Invoice-#{id}.pdf")
+    document.attach(io: File.open("public/#{employee.name}-Finalized-Invoice-#{id}.pdf"), filename: "#{employee.name}-Finalized-Invoice-#{id}.pdf", content_type: "application/pdf")
 
     update!(is_finalized: true)
     SendPdfToInvoiceMailer.with(invoice: self).send_mail.deliver
