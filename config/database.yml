@@ -81,7 +81,10 @@ test:
 #
 production:
   <<: *default
-  database: doadmin
-  username: replenish_md_app
+  username: doadmin
+  host: db-inventory-invoice-do-user-12037512-0.b.db.ondigitalocean.com
+  port: 25060
+  name: defaultdb
   password: AVNS_GyGVrJS6iqYEvT3YDJj
+  
 #asdf
