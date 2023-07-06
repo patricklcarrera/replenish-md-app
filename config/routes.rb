@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   post 'employee_inventories/transfer', to: 'employee_inventories#transfer'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  get '/hello', to: 'application#hello_world'
+  get '/', to: 'application#hello_world'
   get '/employees', to: 'employee#index'
   get '/myprofile', to: 'employee#show'
   get '/products', to: 'product#index'
