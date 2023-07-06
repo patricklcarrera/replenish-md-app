@@ -3,7 +3,7 @@
 class SendPdfToInvoiceMailer < ApplicationMailer
   def send_mail
     @invoice = params[:invoice]
-    attachments["#{@invoice.client.name}-Invoice-#{@invoice.id}.pdf"] = @invoice.document.download
+    attachments["#{@invoice.client.name}-Finalized-Invoice-#{@invoice.id}.pdf"] = @invoice.document.download
 
     mail(
       from: 'patrick@test.com',
