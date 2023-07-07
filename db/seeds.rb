@@ -561,10 +561,6 @@ Product.create(
     retail_price: 300
 )
 
-Employee.all.each do |employee|
-    employee.employees_inventories.create!(product: Product.all.reload.sample, quantity: 1)
-end
-
 Product.all.reload.each do |product|
     product.create_inventory!(quantity: 1)
 end
@@ -583,3 +579,8 @@ end
 #         charge: Product.all.sample.retail_price 
 #     )
 # end
+
+
+Employee.all.each do |employee|
+    employee.employees_inventories.create!(product: Product.all.reload.sample, quantity: 1)
+end
