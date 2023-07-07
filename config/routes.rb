@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     post '/login', to: 'sessions#create'
     get '/clients', to: 'clients#index'
     delete '/products', to: 'products#destroy'
-    get '*path', to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html?}
+  
   end
+  get '*path', to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html?}
 end
