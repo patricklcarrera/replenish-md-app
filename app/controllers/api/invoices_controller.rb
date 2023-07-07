@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InvoicesController < ApplicationController
+class Api::InvoicesController < ApplicationController
   skip_before_action :authorized_employee
   before_action :initialize_objects, only: :create
   before_action :find_invoice, only: [:finalize, :update, :send_reject_mail]

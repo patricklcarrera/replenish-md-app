@@ -10,7 +10,7 @@ export default function InvoiceList({ userProfile }) {
     const fiInvoiceList = [];
     const nonFiInvoiceList = [];
     // Fetch the invoice list from the API
-    fetch("/invoices")
+    fetch("/api/invoices")
       .then((response) => response.json())
       .then((data) => {
         data.forEach((invoice) => {

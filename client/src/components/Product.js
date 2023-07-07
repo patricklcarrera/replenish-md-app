@@ -23,7 +23,7 @@ export default function Product({ product, onDeleteProduct, onSave, isAdmin }) {
       retail_price: retailPrice,
     };
 
-    const response = await fetch("/updateproduct/" + product.id + "", {
+    const response = await fetch("api/updateproduct/" + product.id + "", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedProduct),
@@ -86,7 +86,7 @@ export default function Product({ product, onDeleteProduct, onSave, isAdmin }) {
         {
           label: "Yes",
           onClick: () => {
-            fetch("/products/" + product.id + "", { method: "DELETE" }).then(
+            fetch("/api/products/" + product.id + "", { method: "DELETE" }).then(
               () => window.location.reload()
             );
           },

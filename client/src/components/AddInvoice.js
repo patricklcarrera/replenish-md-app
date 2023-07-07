@@ -45,7 +45,7 @@ const handleConsolelog = () => {
 
     const handleAddInvoiceSubmit = (e) => {
       e.preventDefault()
-      fetch("/invoices/new", {
+      fetch("/api/invoices/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

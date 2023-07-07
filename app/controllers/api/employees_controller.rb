@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class EmployeesController < ApplicationController
+class Api::EmployeesController < ApplicationController
   skip_before_action :authorized_employee
   before_action :find_employee, only: %i(update destroy send_reset_password_link reset_password)
 

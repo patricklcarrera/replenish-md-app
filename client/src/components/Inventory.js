@@ -23,7 +23,7 @@ const Inventory = ({ userProfile, employeeList, productList }) => {
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
-    fetch("/inventories")
+    fetch("/api/inventories")
       .then((r) => r.json())
       .then((data) => {
         console.log(data)
@@ -39,7 +39,7 @@ const Inventory = ({ userProfile, employeeList, productList }) => {
         {
           label: "Yes",
           onClick: () => {
-            fetch(`/inventories/${product?.id}`, {
+            fetch(`/api/inventories/${product?.id}`, {
               method: "DELETE",
               headers: {
                 "Content-Type": "application/json",
@@ -89,7 +89,7 @@ const Inventory = ({ userProfile, employeeList, productList }) => {
         {
           label: "Yes",
           onClick: () => {
-            fetch(`/inventories/${productInfoInput?.id}`, {
+            fetch(`/api/inventories/${productInfoInput?.id}`, {
               method: "PATCH",
               headers: {
                 "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const Inventory = ({ userProfile, employeeList, productList }) => {
         {
           label: "Yes",
           onClick: () => {
-            fetch(`/inventories`, {
+            fetch(`/api/inventories`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -184,7 +184,7 @@ const Inventory = ({ userProfile, employeeList, productList }) => {
       product_name: assignProductData?.product?.name,
     };
 
-    fetch(`/inventories/${assignProductData?.id}/assign`, {
+    fetch(`/api/inventories/${assignProductData?.id}/assign`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

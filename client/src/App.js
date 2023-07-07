@@ -27,7 +27,7 @@ function App() {
   const [employeeList, setEmployeeList] = useState([]);
 
   useEffect(() => {
-    fetch("/invoices")
+    fetch("/api/invoices")
       .then((r) => r.json())
       .then((data) => {
         setInvoiceList(data);
@@ -35,7 +35,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("/clients")
+    fetch("/api/clients")
       .then((r) => r.json())
       .then((data) => {
         setClientsList(data);
@@ -43,7 +43,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch(`/employees/myprofile`).then((res) => {
+    fetch(`/api/employees/myprofile`).then((res) => {
       if (res.ok) {
         res.json().then((userProfile) => setUserProfile(userProfile));
       } else {
@@ -55,7 +55,7 @@ function App() {
   const updateEmployee = (employee) => setUserProfile(employee);
 
   useEffect(() => {
-    fetch("/products")
+    fetch("/api/products")
       .then((r) => r.json())
       .then((data) => {
         setProductList(data);
@@ -63,7 +63,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("/employees")
+    fetch("/api/employees")
       .then((r) => r.json())
       .then((data) => {
         // console.log({ data });

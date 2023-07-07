@@ -12,7 +12,7 @@ export default memo(function Header({ userProfile }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    fetch("/logout", {
+    fetch("/api/logout", {
       method: "DELETE",
     }).then((res) => {
       if (res.ok) {

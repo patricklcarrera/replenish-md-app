@@ -178,7 +178,7 @@ function CustomModal(props) {
   }
 
   const updateSubmit = () => {
-    fetch(`/invoices/${invoiceID}`, {
+    fetch(`/api/invoices/${invoiceID}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -208,7 +208,7 @@ function CustomModal(props) {
 
   const rejectSubmit = () => {
     // console.log({ textAreaInput });
-    fetch(`/invoices/${invoiceID}/send_reject_mail`, {
+    fetch(`/api/invoices/${invoiceID}/send_reject_mail`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

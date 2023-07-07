@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProductsController < ApplicationController
+class Api::ProductsController < ApplicationController
   skip_before_action :authorized_employee
   before_action :set_access_control_headers
 

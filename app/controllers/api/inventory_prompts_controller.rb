@@ -1,4 +1,4 @@
-class InventoryPromptsController < ApplicationController
+class Api::InventoryPromptsController < ApplicationController
   before_action :find_inventory_prompt
 
   def accept

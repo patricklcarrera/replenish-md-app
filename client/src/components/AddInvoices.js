@@ -404,7 +404,7 @@ export default function AddInvoices(props) {
     };
     // console.log(userProfile?.service_percentage);
     // console.log("invoice:", invoice);
-    fetch("/invoices/", {
+    fetch("/api/invoices/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

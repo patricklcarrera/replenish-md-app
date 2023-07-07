@@ -19,7 +19,7 @@ export default function AddProduct({addProduct, userProfile}){
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch("/products/new", {
+        fetch("/api/products/new", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

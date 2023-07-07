@@ -7,7 +7,7 @@ export default function EmployeeList({userProfile}){
 
   useEffect(() => {
     // Fetch the invoice list from the API
-    fetch('/invoices')
+    fetch('/api/invoices')
       .then((response) => response.json())
       .then((data) => {
         setInvoiceList(data); // Update the state with the fetched data
@@ -16,7 +16,7 @@ export default function EmployeeList({userProfile}){
         console.log(error);
       });
     // Fetch the employee list from the API
-    fetch('/employees')
+    fetch('/api/employees')
       .then((response) => response.json())
       .then((data) => {
         setEmployeeList(data); // Update the state with the fetched data

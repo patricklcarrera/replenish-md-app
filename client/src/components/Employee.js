@@ -35,7 +35,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
         {
           label: "Yes",
           onClick: () => {
-            fetch("employees/" + employee?.id + "/send_reset_password_link");
+            fetch("/api/employees/" + employee?.id + "/send_reset_password_link");
           },
         },
         {
@@ -47,7 +47,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
   }
 
   function updateGfePercent() {
-    fetch(`employees/${employee?.id}`, {
+    fetch(`/api/employees/${employee?.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
         {
           label: "Yes",
           onClick: () => {
-            fetch(`employees/${employee?.id}`, {
+            fetch(`/api/employees/${employee?.id}`, {
               method: "DELETE",
               headers: {
                 "Content-Type": "application/json",

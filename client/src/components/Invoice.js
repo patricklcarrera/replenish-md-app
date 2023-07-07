@@ -21,7 +21,7 @@ export default function Invoice({ invoice, fiInvoiceList, userProfile }) {
         {
           label: "Yes",
           onClick: () =>
-            fetch("/invoices/" + invoice.id + "/finalize", {
+            fetch("/api/invoices/" + invoice.id + "/finalize", {
               method: "POST",
             })
               .then((res) => {

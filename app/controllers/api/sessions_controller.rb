@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SessionsController < ApplicationController
+class Api::SessionsController < ApplicationController
   skip_before_action :authorized_employee, only: :create
   before_action :find_employee
 

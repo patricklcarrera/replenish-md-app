@@ -32,13 +32,13 @@ export default function SignUp({userProfile}) {
             is_admin
         };
 
-        fetch('/employees')
+        fetch('/api/employees')
             .then((response) => response.json())
             .then((employees) => {
                 if (isDuplicateEmail(email, employees)) {
                     toast.error('Email already exists');
                 } else {
-                    fetch('/employees/new', {
+                    fetch('/api/employees/new', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(employee)

@@ -14,7 +14,7 @@ function ResetPassword () {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    fetch("/employees/reset_password", {
+    fetch("/api/employees/reset_password", {
       method: 'POST',
       headers:{'Content-Type': 'application/json'},
       body:JSON.stringify(formData)

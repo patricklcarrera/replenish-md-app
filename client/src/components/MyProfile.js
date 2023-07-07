@@ -35,7 +35,7 @@ function UserPage({ userProfile, employeeList }) {
   const { id } = params;
 
   useEffect(() => {
-    fetch(`/employees/${id}`).then((res) => {
+    fetch(`/api/employees/${id}`).then((res) => {
       if (res.ok) {
         res.json().then((employee) => {
           setEmployee(employee);
@@ -57,7 +57,7 @@ function UserPage({ userProfile, employeeList }) {
       employee_id: assignProductData?.employee.id,
     };
 
-    fetch(`/employee_inventories/transfer`, {
+    fetch(`/api/employee_inventories/transfer`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +104,7 @@ function UserPage({ userProfile, employeeList }) {
         {
           label: "Yes",
           onClick: () => {
-            fetch(`/inventory_prompts/${data?.id}/accept`, {
+            fetch(`/api/inventory_prompts/${data?.id}/accept`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -161,7 +161,7 @@ function UserPage({ userProfile, employeeList }) {
         {
           label: "Yes",
           onClick: () => {
-            fetch(`/inventory_prompts/${data?.id}/reject`, {
+            fetch(`/api/inventory_prompts/${data?.id}/reject`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

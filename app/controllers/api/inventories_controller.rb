@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InventoriesController < ApplicationController
+class Api::InventoriesController < ApplicationController
   before_action :find_inventory, only: %i(update destroy assign)
   before_action :find_product, only: %i(create update)
   before_action :find_employee, only: :assign

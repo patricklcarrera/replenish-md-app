@@ -1,4 +1,4 @@
-class EmployeeInventoriesController < ApplicationController
+class Api::EmployeeInventoriesController < ApplicationController
   before_action :find_employee
 
   def transfer
