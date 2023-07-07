@@ -17,6 +17,10 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  username: doadmin
+  host: db-inventory-invoice-do-user-12037512-0.b.db.ondigitalocean.com
+  port: 25060
+  password: AVNS_GyGVrJS6iqYEvT3YDJj
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -81,10 +85,7 @@ test:
 #
 production:
   <<: *default
-  username: doadmin
-  host: db-inventory-invoice-do-user-12037512-0.b.db.ondigitalocean.com
-  port: 25060
   name: defaultdb
-  password: AVNS_GyGVrJS6iqYEvT3YDJj
+
   
 #asdf
