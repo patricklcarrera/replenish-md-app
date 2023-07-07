@@ -18,7 +18,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
 
   useEffect(() => {
     const filteredInvoices = invoiceList.filter(
-      (invoice) => invoice.employee.id === employee.id
+      (invoice) => invoice?.employee?.id === employee?.id
     );
     setEmployeeInvoices(filteredInvoices);
   }, [invoiceList, employee]);
@@ -30,12 +30,12 @@ export default function Employee({ employee, invoiceList, userProfile }) {
   function sendResetPasswordLink() {
     confirmAlert({
       title: "Confirm to submit",
-      message: `Are you sure you want to send the reset password mail to ${employee.name}`,
+      message: `Are you sure you want to send the reset password mail to ${employee?.name}`,
       buttons: [
         {
           label: "Yes",
           onClick: () => {
-            fetch("employees/" + employee.id + "/send_reset_password_link");
+            fetch("employees/" + employee?.id + "/send_reset_password_link");
           },
         },
         {
@@ -47,12 +47,12 @@ export default function Employee({ employee, invoiceList, userProfile }) {
   }
 
   function updateGfePercent() {
-    fetch(`employees/${employee.id}`, {
+    fetch(`employees/${employee?.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ gfe, service_percentage: servicePercentage, retail_percentage: retailPercentage, id: employee.id }),
+      body: JSON.stringify({ gfe, service_percentage: servicePercentage, retail_percentage: retailPercentage, id: employee?.id }),
     })
       .then((res) => {
         if (res.ok) {
@@ -158,9 +158,9 @@ export default function Employee({ employee, invoiceList, userProfile }) {
 
   const tailWindEmployeeCard = (
     <Card className="text-center w-[20rem] sm:w-[25rem]" border="info">
-      <Card.Header as="h5">Employee Id {employee.id}</Card.Header>
+      <Card.Header as="h5">Employee Id {employee?.id}</Card.Header>
       <Card.Body className="">
-        <Card.Title className="mb-3">Employee: {employee.name}</Card.Title>
+        <Card.Title className="mb-3">Employee: {employee?.name}</Card.Title>
 
         {userProfile?.is_admin === true ? (
           <>
@@ -182,7 +182,7 @@ export default function Employee({ employee, invoiceList, userProfile }) {
                 onHide={handleClick}
                 setModalShow={setModalShow}
                 employeeInvoices={employeeInvoices}
-                EmployeeId={employee.id}
+                EmployeeId={employee?.id}
               />
             ) : (
               <></>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_25_172303) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_04_023859) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,8 +58,34 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_172303) do
     t.datetime "updated_at", null: false
     t.string "temp_password"
     t.boolean "gfe"
-    t.integer "percentage"
+    t.integer "service_percentage"
     t.boolean "is_inv_manager"
+    t.integer "retail_percentage", default: 0
+  end
+
+  create_table "employees_inventories", force: :cascade do |t|
+    t.integer "employee_id"
+    t.integer "product_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "inventories", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "inventory_prompts", force: :cascade do |t|
+    t.integer "employee_id"
+    t.integer "product_id"
+    t.integer "quantity"
+    t.string "assigned_by", default: "Inventory Manager"
+    t.boolean "is_accepted", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "invoices", force: :cascade do |t|
@@ -77,9 +103,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_172303) do
     t.integer "tip"
     t.boolean "concierge_fee_paid"
     t.boolean "gfe"
-    t.string "overhead_fee_type", default: "fixed"
+    t.string "overhead_fee_type"
     t.integer "overhead_fee_value"
-    t.jsonb "products_quantities"
+    t.jsonb "products_hash", default: {}
   end
 
   create_table "products", force: :cascade do |t|
@@ -94,14 +120,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_25_172303) do
   create_table "products_invoices", force: :cascade do |t|
     t.integer "invoice_id"
     t.integer "product_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "products_quantities", force: :cascade do |t|
-    t.integer "employee_id"
-    t.integer "product_id"
-    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
