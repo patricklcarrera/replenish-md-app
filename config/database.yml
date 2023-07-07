@@ -86,6 +86,11 @@ test:
 production:
   <<: *default
   name: defaultdb
-
+  adapter: postgresql
+  encoding: unicode
+  username: doadmin
+  host: db-inventory-invoice-do-user-12037512-0.b.db.ondigitalocean.com
+  port: 25060
+  password: AVNS_GyGVrJS6iqYEvT3YDJj
   
 #asdf
