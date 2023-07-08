@@ -17,7 +17,7 @@ export default function ProductList({
       <Header userProfile={userProfile} />
       <br />
       <div className="col-md-12 text-center">
-  
+      
           <div className="col-md-12 text-center">
             <input
               type="text"
@@ -25,11 +25,13 @@ export default function ProductList({
               placeholder="Search Product Name here"
               onChange={(event) => setSearchInput(event.target.value)}
             />
+              {userProfile?.is_admin && (
             <a href="/addproduct" type="button" className="btn btn-primary">
               Add product
             </a>
+            )}
           </div>
-   
+        
       </div>
       <br></br>
       <div className="justify-center flex flex-wrap gap-3">
