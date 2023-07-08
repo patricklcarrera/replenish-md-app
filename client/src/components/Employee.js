@@ -158,10 +158,9 @@ export default function Employee({ employee, invoiceList, userProfile }) {
 
   const tailWindEmployeeCard = (
     <Card className="text-center w-[20rem] sm:w-[25rem]" border="info">
-      <Card.Header as="h5">Employee Id {employee?.id}</Card.Header>
+      <Card.Header as="h5">Employee: {employee?.name}</Card.Header>
       <Card.Body className="">
-        <Card.Title className="mb-3">Employee: {employee?.name}</Card.Title>
-
+    
         {userProfile?.is_admin === true ? (
           <>
             <div className="flex justify-between gap-2">
