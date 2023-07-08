@@ -10,7 +10,7 @@ require "faker"
 puts "Seeding data"
 
 
-# Invoice.destroy_all
+Invoice.destroy_all
 Client.destroy_all
 Product.destroy_all
 Employee.destroy_all

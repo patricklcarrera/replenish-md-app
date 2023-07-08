@@ -17,7 +17,7 @@ export default function ProductList({
       <Header userProfile={userProfile} />
       <br />
       <div className="col-md-12 text-center">
-        {userProfile?.is_admin && (
+  
           <div className="col-md-12 text-center">
             <input
               type="text"
@@ -29,7 +29,7 @@ export default function ProductList({
               Add product
             </a>
           </div>
-        )}
+   
       </div>
       <br></br>
       <div className="justify-center flex flex-wrap gap-3">
