@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "./Header";
 import { toast } from "react-toastify";
 import { Alert } from "react-bootstrap";
+import { getDropdownMenuPlacement } from "react-bootstrap/esm/DropdownMenu";
 
 const initialFormState = {
   dateOfService: "",
@@ -125,24 +126,46 @@ export default function AddInvoices(props) {
     let totalPaid = formData.paidByClientCash + formData.paidByClientCredit;
     return totalPaid;
   };
-  const getTotalProductPrice = (product) => {
+
+  const getTotalCostPrice = (product) => {
     return +product.cost_price * +product.quantity;
   };
-  const getTotalProductPriceSum = () => {
+
+  const getConsumableCostPrice = () => {
     let sum = 0;
     formData.products.forEach((product) => {
-      sum += getTotalProductPrice(product);
+      sum += getTotalCostPrice(product);
     });
     return sum;
   };
 
-  const getTotalRetailProductPriceSum = () => {
+  const getRetailCostPrice = () => {
     let sum = 0;
     formData.retailProducts.forEach((product) => {
-      sum += getTotalProductPrice(product);
+      sum += getTotalCostPrice(product);
+    });
+    return sum;
+  }; 
+
+  const getTotalRetailPrice = (product) => {
+    return +product.retail_price * +product.quantity;
+  };
+
+  const getConsumableRetailPrice = () => {
+    let sum = 0;
+    formData.products.forEach((product) => {
+      sum += getTotalRetailPrice(product);
     });
     return sum;
   };
+
+  const getRetailRetailPrice = () => {
+    let sum = 0;
+    formData.retailProducts.forEach((product) => {
+      sum += getTotalRetailPrice(product);
+    });
+    return sum;
+  }; 
 
   const calculateTax = (amountPaid) => {
     let afterTaxprice = amountPaid - amountPaid * 0.031;
@@ -176,7 +199,7 @@ export default function AddInvoices(props) {
       cashRemaining: formData.paidByClientCash,
       tip: formData.tip,
       discount: formData.personalDiscount,
-      retailTotal: getTotalRetailProductPriceSum(),
+      retailTotal: getRetailCostPrice(),
       conciergeFee: 0,
     };
     let gfeFee = 0;
@@ -187,7 +210,7 @@ export default function AddInvoices(props) {
       afterTax.conciergeFee = 50;
     }
     cashCalculations(afterTax);
-    const totalProductPriceSum = getTotalProductPriceSum();
+    const totalProductPriceSum = getConsumableCostPrice();
     const totalPaidByClientAT =
       formData.paidByClientCash + calculateTax(formData.paidByClientCredit);
     let total =
@@ -207,11 +230,37 @@ export default function AddInvoices(props) {
       (afterTax.retailTotal * (parseInt(userProfile?.retail_percentage) || 0)) /
         100 +
       afterTax.conciergeFee;
-    // console.log(total);
-    total = total;
-    // console.log ("total after overhead fee:" + total);
+     //console.log(selectedProduct?.product.cost_price);
+     //console.log ("actual:" + getActualReplenishIncome());
+    //console.log ("expected:" + getExpectedReplenishIncome());
+
     return total.toFixed(2);
   };
+
+  const getExpectedReplenishIncome = () => {
+    let totalRetail = getConsumableRetailPrice() + getRetailCostPrice();
+    let totalCost = getConsumableCostPrice() + getRetailCostPrice();
+    let expectedIncome = totalRetail - totalCost;
+    if (formData.paidByClientCash = 0)
+      expectedIncome = expectedIncome - (expectedIncome * 0.031);
+    expectedIncome = expectedIncome * ((100 - userProfile?.service_percentage )/ 100);
+    console.log(expectedIncome);
+    return expectedIncome
+  }
+
+  const getActualReplenishIncome = () => {
+    let injectorPay = getTotal();
+    let actualIncome =  injectorPay / (userProfile?.service_percentage / 100) * ((100 - userProfile?.service_percentage )/ 100);
+    console.log(actualIncome)
+    return actualIncome;
+  }
+
+  
+  const replenishIncomeFlag = () => {
+    if (getExpectedReplenishIncome > getActualReplenishIncome)
+      return false;
+    else return true;
+  }
 
   /// Product selection functions
   const handleProductNameChange = (e) => {
@@ -401,6 +450,9 @@ export default function AddInvoices(props) {
       products: formData.products,
       retail_products: formData.retailProducts,
       charge: getTotal(),
+      expected_income: getExpectedReplenishIncome(),
+      actual_income: getActualReplenishIncome(),
+      income_flag: replenishIncomeFlag()
     };
     // console.log(userProfile?.service_percentage);
     // console.log("invoice:", invoice);
@@ -854,7 +906,7 @@ export default function AddInvoices(props) {
               </div>
               <div className="border rounded-sm p-2 mb-4">
                 <label className="block">
-                  Total Product Price Sum: {getTotalProductPriceSum()}
+                  Total Product Price Sum: {getConsumableCostPrice()}
                 </label>
               </div>
               <button
