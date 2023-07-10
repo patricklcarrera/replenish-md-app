@@ -222,8 +222,8 @@ export default function AddInvoices(props) {
         afterTax.retailTotal) *
       (userProfile?.service_percentage / 100); //(replace with injector percentage)
     // console.log("gfe:" + userProfile?.gfe);
-    if (userProfile?.gfe) total += gfeFee;
-
+    if (userProfile?.gfe) 
+      total += gfeFee;
     total =
       total -
       afterTax.discount +
@@ -233,7 +233,10 @@ export default function AddInvoices(props) {
      //console.log(selectedProduct?.product.cost_price);
      //console.log ("actual:" + getActualReplenishIncome());
     //console.log ("expected:" + getExpectedReplenishIncome());
-
+    if (userProfile?.gfe && formData?.gfe && totalPaidByClientAT == 0)
+        total = 30;
+    if (!userProfile?.gfe && formData?.gfe && getTotalPaidByClient() == 30)
+        total = 0;
     return total.toFixed(2);
   };
 
