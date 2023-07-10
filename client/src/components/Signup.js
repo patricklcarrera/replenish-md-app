@@ -32,6 +32,7 @@ export default function SignUp({userProfile}) {
             is_admin
         };
 
+        //comment
         fetch('/api/employees')
             .then((response) => response.json())
             .then((employees) => {
