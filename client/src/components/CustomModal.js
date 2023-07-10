@@ -236,7 +236,7 @@ function CustomModal(props) {
       });
   };
 
-  // console.log({ userProfile });
+  // product&.first, product&.second, product&.third, (product.second.to_i * product.third.to_i)
   return (
     <>
       <Modal
@@ -269,6 +269,55 @@ function CustomModal(props) {
                 <div>
                   <p>Date of Service:</p>
                   <div>{dateOfService}</div>
+                </div>
+              </div>
+
+              <div className=" border rounded-sm p-2 mb-4 flex justify-content-center">
+                <div>
+                  <p><b>Products</b></p>
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      <th>Total Price</th>
+                    </tr>
+                  </thead>
+                  {invoiceData?.products_hash?.products.map((product) => (
+                    <tbody>
+                      <tr>
+                        <td>{product[0]}</td>
+                        <td>{product[1]}</td>
+                        <td>{product[2]}</td>
+                        <td>{+(product[1] * product[2])}</td>
+                      </tr>
+                    </tbody>
+                  ))}
+                </div>
+              </div>
+
+              <div className=" border rounded-sm p-2 mb-4 flex justify-content-center">
+                <div>
+                  <p><b>Retail Products</b></p>
+
+                  <thead>
+                    <tr>
+                      <th scope="col">Product</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Total Price</th>
+                    </tr>
+                  </thead>
+                  {invoiceData?.products_hash?.retail_products.map((product) => (
+                    <tbody>
+                      <tr>
+                        <td>{product[0]}</td>
+                        <td>{product[1]}</td>
+                        <td>{product[2]}</td>
+                        <td>{+(product[1] * product[2])}</td>
+                      </tr>
+                    </tbody>
+                  ))}
                 </div>
               </div>
 
