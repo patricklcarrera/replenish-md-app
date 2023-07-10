@@ -7,7 +7,7 @@ import InvoiceList from "./components/InvoiceList";
 import ProductList from "./components/ProductList";
 import Signup from "./components/Signup";
 import EmployeeList from "./components/EmployeeList";
-import Navbar from "./components/Header";
+import Header from "./components/Header";
 import Homepage from "./components/Homepage";
 import MyProfile from "./components/MyProfile";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -101,20 +101,23 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login updateEmployee={updateEmployee} />} />
-          <Route
-            path="/inventories"
-            element={
-              <Inventory
-                userProfile={userProfile}
-                employeeList={employeeList}
-                productList={productList}
-              />
-            }
-          />
+          {userProfile && userProfile.is_inv_manager &&
+            (<Route
+              path="/inventories"
+              element={
+                <Inventory
+                  userProfile={userProfile}
+                  employeeList={employeeList}
+                  productList={productList}
+                />
+              }
+            />)
+          }
+
+          <Route path="/resetPassword" element={<ResetPassword />} />
 
           {userProfile && userProfile.is_admin ? (
             <>
-              <Route path="/resetPassword" element={<ResetPassword />} />
 
               <Route
                 path="/addproduct"
@@ -172,16 +175,6 @@ function App() {
                 }
               />
               <Route
-                path="/inventory"
-                element={
-                  <Inventory
-                    userProfile={userProfile}
-                    employeeList={employeeList}
-                    productList={productList}
-                  />
-                }
-              />
-              <Route
                 path="*"
                 element={
                   <MyProfile
@@ -222,10 +215,6 @@ function App() {
                     userProfile={userProfile}
                   />
                 }
-              />
-              <Route
-                path="/employees"
-                element={<EmployeeList userProfile={userProfile} />}
               />
               <Route
                 path="*"
