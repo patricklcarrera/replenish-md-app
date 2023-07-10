@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap'
 import {useNavigate, useParams} from 'react-router-dom'
 import {toast} from "react-toastify";
 
-function ResetPassword () {
+function ResetPassword({updateEmployee}) {
   const resetPasswordState = {
     password: '',
     confirmPassword: '',
@@ -22,6 +22,7 @@ function ResetPassword () {
     .then(res => {
       if(res.ok){
         res.json().then(user => {
+          updateEmployee(user);
           toast.success('Successfully Logged In with new password.');
           navigate('/myprofile')
         })

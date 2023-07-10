@@ -114,7 +114,7 @@ function App() {
             />)
           }
 
-          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route path="/resetPassword" element={<ResetPassword updateEmployee={updateEmployee} />} />
 
           {userProfile && userProfile.is_admin ? (
             <>

@@ -134,19 +134,19 @@ export default memo(function Header({ userProfile }) {
               </button>
 
               {userProfile?.is_inv_manager === true && (
-                <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
-                  <LinkContainer to="/employees">
-                    <Nav.Link>All Employees</Nav.Link>
-                  </LinkContainer>
-                </button>
-              )}
-              
-              {userProfile?.is_inv_manager === true && (
-                <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
-                  <LinkContainer to="/inventories">
-                    <Nav.Link>Inventories</Nav.Link>
-                  </LinkContainer>
-                </button>
+                <>
+                  <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
+                    <LinkContainer to="/employees">
+                      <Nav.Link>All Employees</Nav.Link>
+                    </LinkContainer>
+                  </button>
+
+                  <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
+                    <LinkContainer to="/inventories">
+                      <Nav.Link>Inventories</Nav.Link>
+                    </LinkContainer>
+                  </button>
+                </>
               )}
 
               <button className="hover:bg-blue-200 px-3 py-2 rounded-md text-lg md:text-sm font-medium text-gray-700">
@@ -170,7 +170,7 @@ export default memo(function Header({ userProfile }) {
 
   return (
     <div>
-      {userProfile && userProfile.is_admin ? adminHeader : employeeHeader}
+      {(userProfile && userProfile?.is_admin) ? adminHeader : employeeHeader}
     </div>
   );
 });
