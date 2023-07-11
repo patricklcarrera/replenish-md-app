@@ -102,16 +102,24 @@ function App() {
         <Routes>
           <Route path="/" element={<Login updateEmployee={updateEmployee} />} />
           {userProfile && userProfile.is_inv_manager &&
-            (<Route
-              path="/inventories"
-              element={
-                <Inventory
-                  userProfile={userProfile}
-                  employeeList={employeeList}
-                  productList={productList}
+            (
+              <>
+                <Route
+                  path="/inventories"
+                  element={
+                    <Inventory
+                      userProfile={userProfile}
+                      employeeList={employeeList}
+                      productList={productList}
+                    />
+                  }
                 />
-              }
-            />)
+                <Route
+                  path="/employees"
+                  element={<EmployeeList userProfile={userProfile} />}
+                />
+              </>
+            )
           }
 
           <Route path="/resetPassword" element={<ResetPassword updateEmployee={updateEmployee} />} />
