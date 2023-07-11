@@ -13,8 +13,8 @@ class Employee < ApplicationRecord
   end
 
   def send_reset_password_mail
-    rand_str = 5.times.map { (0...(rand(7))).map { ('a'..'z').to_a[rand(26)] }.join }.join("")
-    update!(temp_password: "#{name}-#{rand_str}".gsub(/\s+/, ""))
+    rand_str = 5.times.map { (4...8).map { ('a'..'z').to_a[rand(26)] }.join }.join("")
+    update!(temp_password: "#{rand_str}".gsub(/\s+/, ""))
 
     SendResetPasswordLinkMailer.with(employee: self).reset_password_mail.deliver_now
   end
